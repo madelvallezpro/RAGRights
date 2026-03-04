@@ -1,0 +1,47 @@
+BDD/ Bench,Publi,Source,Données,Statistiques,Commentaire
+BIRCO,https://arxiv.org/abs/2402.14151,https://github.com/BIRCO-benchmark/BIRCO,"5 BDD pré-existantes:
+- DORIS-MAE
+- ArguAna
+- WhatsThatBook
+- RECLIC
+- Clinical-Trial","60 + 100 + 100 + 100 + 100 questions
+110/ 50/ 50-100/ 50? passages positifs par entrée",Évaluation de LLM based Information Retriever
+Bright,https://arxiv.org/abs/2407.12883v4,"https://github.com/xlang-ai/BRIGHT
+
+https://huggingface.co/datasets/xlangai/BRIGHT","- 7 BDD StackExchange fait main
+- TheoremQA + AoPS (Pb de maths + solutions récoltés)
+- 2 BDD codage",,Tâche reasoning intensive -> pas ce qu'on veut
+BEIR,https://arxiv.org/abs/2104.08663v4,"https://github.com/beir-cellar/beir
+
+https://huggingface.co/BeIR
+","18 datasets : 
+- Fact-checking : FEVER, Climate-FEVER, SciFact 
+- Citation prediction : SCIDOCS
+- Dup Question Retrieval : Quora, CQADupStack
+- Argument Retrieval : Touche-2020, ArgAna
+- News Retrieval : TREC-NEWS, Robust04
+- QA: NQ, HotpotQA, FiQA-2018
+- Tweet Retrieval : Signal-1M
+- Bio-MedicalIR : TREC-COVID, BioASQ, NFCorpus
+- Entity Retrieval : DBPedia
+-
+
+",,Zero-shot learning en IR
+MS-MARCO,https://arxiv.org/abs/1611.09268,https://huggingface.co/datasets/microsoft/ms_marco,,"1M questions 
+8,841,823 passages issus de 3,563,535 pages web
+182,669 human generated answers
+
+
+",Reading comprehension
+KILT,https://arxiv.org/abs/2009.02252,https://github.com/facebookresearch/KILT,"
+Fact checking: FEVER
+Open domain QA: Natural Questions, HotpotQA, TriviaQA, ELI5
+Slot filling: Zero Shot RE, T-REx
+Entity linking : AIDA CoNLL-YAGO, WNED-WIKI, WNED-CWEB
+Dialogue: Wizard of Wikipedia
+
+",5.9M Articles wikipedia 2019/08/01,"Knowledge Intensive Language Tasks 
+task-agnostic knowledge representation model
+propose un sourcing des éléments de réponse issus des docs pour chaque question
+jsonLine
+"
