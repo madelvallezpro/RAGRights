@@ -1,0 +1,12 @@
+Intitulé,Benchs,Datasets,Archis/ Framework,Publis,Descriptions
+Open Domain Question Answering,,,DPR,"[Lewis et al., 2020]"
+Question Answering,KILT,"Natural Question, TriviaQA, HotpotQA","PaperQA, SearChain",,Trouver les extraits attendus contenant la réponse
+"Multi-hop question answering",,"HotpotQA, Musique, WikiMultiHopQA, StartegyQA",SearChain,"terme issu de [Xu et al., 2024] - SearChain", 
+Summarization,,,PaperQA
+Détection de contradiction,,,PaperQA
+Jeopardy Question Generation,,,,"[Lewis et al.,2020]"
+Fact Checking,KILT,FEVER,"ATLAS, SearChain"
+Slot Filling,KILT,"Zero shot RE (zsRE), T-REx","ATLAS, SearChain"
+Long-form QA,,ELI5,SearChain
+Entity Linking,KILT,AIDA CoNLL-YAGO,ATLAS
+Dialogue,KILT,Wizards of wikipedia,ATLAS
