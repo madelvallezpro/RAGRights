@@ -10,7 +10,7 @@ Bright,https://arxiv.org/abs/2407.12883v4,"https://github.com/xlang-ai/BRIGHT
 
 https://huggingface.co/datasets/xlangai/BRIGHT","- 7 BDD StackExchange fait main
 - TheoremQA + AoPS (Pb de maths + solutions récoltés)
-- 2 BDD codage",,Tâche reasoning intensive -> pas ce qu'on veut
+- 2 BDD codage : pony, LeetCode",,Tâche reasoning intensive -> pas ce qu'on veut
 BEIR,https://arxiv.org/abs/2104.08663v4,"https://github.com/beir-cellar/beir
 
 https://huggingface.co/BeIR
@@ -27,7 +27,11 @@ https://huggingface.co/BeIR
 -
 
 ",,Zero-shot learning en IR
-MS-MARCO,https://arxiv.org/abs/1611.09268,https://huggingface.co/datasets/microsoft/ms_marco,,"1M questions 
+MS-MARCO,https://arxiv.org/abs/1611.09268,https://huggingface.co/datasets/microsoft/ms_marco,"Dataset construit à partir de :
+- log de recherche BING- de documents sélectionné automatiquement par BING
+- d'extraits de ces documents obtenu par annotateur
+- de réponse rédigée par annotateur
+- classification de la question en fonction de la nature de la réponse","1M questions 
 8,841,823 passages issus de 3,563,535 pages web
 182,669 human generated answers
 

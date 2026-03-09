@@ -1,12 +1,25 @@
 Intitulé,Benchs,Datasets,Archis/ Framework,Publis,Descriptions
-Open Domain Question Answering,,,DPR,"[Lewis et al., 2020]"
-Question Answering,KILT,"Natural Question, TriviaQA, HotpotQA","PaperQA, SearChain",,Trouver les extraits attendus contenant la réponse
-"Multi-hop question answering",,"HotpotQA, Musique, WikiMultiHopQA, StartegyQA",SearChain,"terme issu de [Xu et al., 2024] - SearChain", 
+Open Domain Question Answering,,,DPR,"[Lewis et al., 2020]",Trouver l'extrait contennant la réponse dans une base de connaissance (pas qu'un seul document) [def de BEIR]
+Question Answering,"KILT, BEIR","Natural Question, TriviaQA, HotpotQA, FiQA-2018","PaperQA, SearChain",,Trouver les extraits attendus contenant la réponse
+Multi-hop question answering,,"HotpotQA, Musique, WikiMultiHopQA, StartegyQA",SearChain,"terme issu de [Xu et al., 2024] - SearChain"," "
+Long-form QA,,ELI5,SearChain
 Summarization,,,PaperQA
 Détection de contradiction,,,PaperQA
 Jeopardy Question Generation,,,,"[Lewis et al.,2020]"
-Fact Checking,KILT,FEVER,"ATLAS, SearChain"
+Fact Checking,"KILT, BEIR","FEVER, Climate-FEVER, SciFact","ATLAS, SearChain",,"""verifies a claim against a big collection of evidence"" (BEIR)"
 Slot Filling,KILT,"Zero shot RE (zsRE), T-REx","ATLAS, SearChain"
-Long-form QA,,ELI5,SearChain
-Entity Linking,KILT,AIDA CoNLL-YAGO,ATLAS
+Entity Linking,KILT,"AIDA CoNLL-YAGO, WNED-WIKI, WNED-CWEB",ATLAS
+Entity Retrieval,BEIR,DBPedia,,,"""retrieving unique Wikipedia pages to entities mentioned in the query"" (BEIR) /!\ similaire"
 Dialogue,KILT,Wizards of wikipedia,ATLAS
+Citation Prediction,BEIR,SCIDOCS,,,"""retrieve cited papers (output) for a given paper title as input"" (BEIR)"
+Information Retrieval,"BIRCO, MS-MARCO","DORIS-MAE (Reseach), WhatsThatBook (Book description), Clinical-Trial (clinical trial description), RECLIC (litterature citation filling) ",,,Fournir les docuements conrrespondant à la query
+Duplicate Question Retrieval,BEIR,"Quora, CQADupStack",,,"""identifying duplicate questions asked in community question answering (cQA) forums"" (BEIR)
+input : question
+ouput : duplicate question in the forum​
+"
+Argument Retrieval,"BEIR, BIRCO","Touche-2020, ArgAna",,,"""ranking argumentative texts in a collection of focused arguments
+(output) in order of their relevance to a textual query (input) on different topics"" (BEIR)"
+News Retrieval,BEIR,"TREC-NEWS, Robust04",,,"""Given a news headline, we retrieve relevant news articles that provide important context or background information."" (BEIR)"
+Tweet Retrieval,BEIR,Signal-1M,,,"""retrieves relevant tweets for a given news article title"" (BEIR)"
+Bio-medical Information Retrieval,BEIR,"TREC-COVID, BioASQ, NFCorpus",,,"""searching relevant scientific documents such as research papers or blogs for a given scientific query in the biomedical domain"" (BEIR)"
+reasoning-intensive retrieval,Bright,"StackExchange, Pony (code), LeetCode, TheoremQA, AoPS",,,"Tache proche du OD-QA mais ""positive documents only provide useful information to help users derive an answer"" (Bright)"
