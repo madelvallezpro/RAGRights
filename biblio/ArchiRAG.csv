@@ -2,14 +2,14 @@ Archi,Source (github),Publi,Année,Type,Tâche,DB/Bench d'éval,Objet,Commentair
 TF-IDf,,,,Lexical,,,Extraction,
 BM25,multiples biblio python,,,Lexical,,,Extraction,Performant sur l'extraction de données avec bonne supperposition lexicale
 DeepCT,https://github.com/AdeDZY/DeepCT,,2020,Sparse,,,,
-Dense Pasage Retrieval,https://github.com/facebookresearch/DPR,https://aclanthology.org/2020.emnlp-main.550.pdf,2020,Dense,"Open Dom QA","Données Wikipédia traitées maison
-Natural Questions, TriviaQA, WebQuestions, CuratedTREC, SQuAD v1.1","Extraction","Un peu ancien..
+Dense Pasage Retrieval,https://github.com/facebookresearch/DPR,https://aclanthology.org/2020.emnlp-main.550.pdf,2020,Dense,Open Dom QA,"Données Wikipédia traitées maison
+Natural Questions, TriviaQA, WebQuestions, CuratedTREC, SQuAD v1.1",Extraction,"Un peu ancien..
 Retriever seulement
 Bi-encodeur 
 Apprentissage supervisé"
 PaperQA2,https://github.com/Future-House/paper-qa,https://arxiv.org/pdf/2409.13740,2024,Agent,"Summarization, Contradiction detection, QA","LitQA2 (bench aussi publié dans le même papier), WikiCrow (outil de génération de pseudo document Wikipedia)",Full Pipeline,"Coût de calcul énorme, Adaptation non garantie"
-HM-RAG,https://github.com/ocean-luna/HMRAG,https://dl.acm.org/doi/10.1145/3746027.3754761,2025,Agent,"","ScienceQA, CrisisMMD",Full Pipeline,Multimodal
-"[Lewis et al., 2020]","https://github.com/huggingface/transformers/blob/master/examples/rag/
+HM-RAG,https://github.com/ocean-luna/HMRAG,https://dl.acm.org/doi/10.1145/3746027.3754761,2025,Agent,,"ScienceQA, CrisisMMD",Full Pipeline,Multimodal
+"[Lewis et al., 2020] (DPR+BART)","https://github.com/huggingface/transformers/blob/master/examples/rag/
  https://huggingface.co/rag/","[Lewis et al., 2020]
 https://arxiv.org/abs/2005.11401",2020,Dense,"Open-domain QA, Jeopardy Question Generation","Natural Question, TriviaQA, WebQuestions, CuratedTrec, MSMARCO NLG task v2.1, SearchQA, FEVER","Full-Pipeline
 DPR+BART","mémoire paramétrique (BART) et non-paramétrique (RAG) en mm temps
@@ -20,3 +20,4 @@ Bench (0-shot learn) : BEIR",Retriever + entrainement par contrastive Learning,"
 2022..."
 Atlas,https://github.com/facebookresearch/atlas,https://dl.acm.org/doi/epdf/10.5555/3648699.3648950,2023,Dense,"fact checking, question answering, dialog generation, entity linking and slot-filling","KILT : - question answering: Natural Questions , TriviaQA, HotpotQA - slot filling: Zero Shot RE, T-REx - entity linking: AIDA CoNLL-YAGO - dialogue: Wizard of Wikipedia - fact checking: FEVER  + MMLU + versions originales de Natural Questions, TriviaQA, FEVER + adaptation de TempLAMA",FullPipeline,Few-shot learning with RAG
 Search in the Chain (SearChain),https://github.com/xsc1234/Search-in-the-Chain,https://arxiv.org/abs/2304.14732,2024,framework,"Knowledge intensive tasks (QA,  slot filling, fact checking, long-form QA)","HotpotQA, Musique, WikiMultiHopQA, StrategyQA, zsRE, T-REx, FEVER, ELI5,... ",Framework d'interaction entre Retriever et Generator,"Multiples allez-retours entre IR et LLM pour construire une chaine de raisonnement (suite de sous taches déterminées par le LLM) qui est vérifiée, documentée et réorientée par le IR. Cela nourri le LLM (et retour au début de la boucle)."
+TAS-Balanced,https://github.com/sebastian-hofstaetter/tas-balanced-dense-retrieval,https://arxiv.org/abs/2104.06967,2021,Dense,Document Retrieval,MSMARCO-Passage,Méthode d'entrainement (par transfert ?) avec co mémoire et calcul non dissuasif
