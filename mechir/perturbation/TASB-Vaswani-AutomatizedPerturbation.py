@@ -1,3 +1,14 @@
+#!/usr/bin/env python3.12
+
+# # Générateur de graphiques des performances pour des perturbations données
+# # - Modèle : TAS-B 
+# # - Dataset : Vaswani part 1
+# # - Exploite une liste de pertubation définies dans un fichier `perturbation.txt` sous trois formes:
+# #     - `mot -> mot` pour un remplacement (éventuelement avec le mot vide pour supprimer)
+# #     - `mot +` pour ajouter la requête puis le mot à gauche du document
+# #     - `+ mot` pour ajouter le mot puis la requête à droite du document
+# # - Les graphiques sont enregistrés dans `./res/<descripteur-de-la-perturbation>.png``
+
 from mechir import Dot
 from mechir.data import MechIRDataset, DotDataCollator
 from mechir.perturb import perturbation
@@ -21,7 +32,7 @@ def param_prepend(doc, mot="microwave"):
 def param_replace(doc, mot_orig="microwave", mot_rempl="toaster"):
     return doc.replace(mot_orig, mot_rempl)
 
-# génération des perturbations à produire
+# génération des perturbations à produire à partir du document
 def generer_transformations(fichier_regles):
     transformations = []
     perts_name=[]
@@ -129,34 +140,37 @@ def plot_scores(baseline_scores, perturbed_scores, transformation_descr):
 
 
 
+def main():
+    # Récup du modèle
+    dot_model_name = "sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco"
+    dot_model = Dot(dot_model_name)
 
-# Récup du modèle
-dot_model_name = "sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco"
-dot_model = Dot(dot_model_name)
+    # Recup dataset
+    dataset = MechIRDataset("vaswani", query_id_subset=["1"])
+    print("Number of query,doc pairs in dataset:", len(dataset))
+    print("Query:", dataset._get_query("1"))
 
-# Recup dataset
-dataset = MechIRDataset("vaswani", query_id_subset=["1"])
-print("Number of query,doc pairs in dataset:", len(dataset))
-print("Query:", dataset._get_query("1"))
+    perts, perts_name = generer_transformations("perturbations.txt")
+    for i in range(len(perts)):
+        if perts[i][0]=="replace":
+            pert_fun = perturbation(lambda texte : param_replace(texte, perts[i][1], perts[i][2]))
+        elif perts[i][0]=="prepend":
+            pert_fun = perturbation(lambda texte : param_prepend(texte, perts[i][1]))
+        else:
+            pert_fun = perturbation(lambda texte : param_append(texte, perts[i][1]))
+        param_pert_dot_collator = DotDataCollator(dot_model.tokenizer, pert_fun, q_max_length=None, d_max_length=None, perturb_type=perts[i][0])
+        param_pert_dot_dataloader = DataLoader(dataset, batch_size=16, collate_fn=param_pert_dot_collator)
 
-perts, perts_name = generer_transformations("perturbations.txt")
-for i in range(len(perts)):
-    if perts[i][0]=="replace":
-        pert_fun = perturbation(lambda texte : param_replace(texte, perts[i][1], perts[i][2]))
-    elif perts[i][0]=="prepend":
-        pert_fun = perturbation(lambda texte : param_prepend(texte, perts[i][1]))
-    else:
-        pert_fun = perturbation(lambda texte : param_append(texte, perts[i][1]))
-    param_pert_dot_collator = DotDataCollator(dot_model.tokenizer, pert_fun, q_max_length=None, d_max_length=None, perturb_type=perts[i][0])
-    param_pert_dot_dataloader = DataLoader(dataset, batch_size=16, collate_fn=param_pert_dot_collator)
+        param_pert_batch = next(iter(param_pert_dot_dataloader))
+        print("PERTURBATION",i,":", perts_name[i])
+        pretty_print_triplets(param_pert_batch, dot_model.tokenizer, num=2)
 
-    param_pert_batch = next(iter(param_pert_dot_dataloader))
-    print("PERTURBATION",i,":", perts_name[i])
-    pretty_print_triplets(param_pert_batch, dot_model.tokenizer, num=2)
-
-    baseline_perf = []
-    perturbed_perf = []
-    calculate_performance(dot_model, param_pert_dot_dataloader, baseline_perf, perturbed_perf)
+        baseline_perf = []
+        perturbed_perf = []
+        calculate_performance(dot_model, param_pert_dot_dataloader, baseline_perf, perturbed_perf)
 
 
-    plot_scores(baseline_perf, perturbed_perf, perts_name[i])
+        plot_scores(baseline_perf, perturbed_perf, perts_name[i])
+
+if __name__ == "__main__":
+    main()

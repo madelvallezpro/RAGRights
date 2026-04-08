@@ -1,12 +1,13 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.12
 
-"""
-À partie d'une liste de requête et d'une liste de documents (tous deux des strings) fourni dans deux csv
-Extraction du vocabulaire présent dans les queries (df.vocab) et des statistiques suivantes pour chaque mot:
-- idf : log10((nombre de documents + 1)/(nombre de documents contenant le mot+1))
-- query_freq2 : nombre d'occurrence du mot dans les queries (2 occurrences dans une même query compte pour 2)
-- docs_freq : nombre d'occurrence du mot dans les documents (2 occurrences dans un même documents compte pour 1)
-"""
+
+# # À partir d'une liste de requêtes et d'une liste de documents (tous deux des strings) fourni dans deux csv
+# # Extraction du vocabulaire présent dans les queries (df.vocab) et des statistiques suivantes pour chaque mot:
+# # - mot : le mot
+# # - idf : log10((nombre de documents + 1)/(nombre de documents contenant le mot+1))
+# # - query_freq2 : nombre d'occurrence du mot dans les queries (2 occurrences dans une même query compte pour 2)
+# # - docs_freq : nombre d'occurrence du mot dans les documents (2 occurrences dans un même documents compte pour 1)
+
 
 
 import sys
@@ -83,7 +84,7 @@ def main(docs_path, query_path, csv_path, sort_criteria):
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
-        print("Usage : generation_idf.py <fichier_docs.csv> <fichier_query.csv> <csv_path.csv> <sort_criteria> \n where sort_criteria = 'query_freq2' or 'idf' or 'docs_freq' or 'alpha' or 'query_freq2/docs_freq'")
+        print("Usage : generation_idf.py <fichier_docs.csv> <fichier_query.csv> <out_path.csv> <sort_criteria> \n where sort_criteria = 'query_freq2' or 'idf' or 'docs_freq' or 'alpha' or 'query_freq2/docs_freq'")
         
     else:
         main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
