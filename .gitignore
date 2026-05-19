@@ -1,0 +1,10 @@
+
+# Latex
+*.aux
+*.fdb_latexmk
+*.html
+*.nav
+*.snm
+*.synctex.gz
+*.toc
+*_files/
