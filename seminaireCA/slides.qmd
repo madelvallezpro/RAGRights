@@ -28,7 +28,7 @@ style: |
 
 <font color="purple">
 
-_Shema d'architecture plus avancée (avec augmentation avant et après retrieval + travail d'intégration de l'extraction dans le processus de génération)_
+_Schema d'architecture plus avancée (avec augmentation avant et après retrieval + travail d'intégration de l'extraction dans le processus de génération)_
 </font>
 
 *Survey on RAG Meeting LLM: Towards Retrieval-Augmented Large Language Models [Fan et al., 2023]* {.footer}
@@ -37,7 +37,7 @@ _Shema d'architecture plus avancée (avec augmentation avant et après retrieval
 
 _Retriever comme plongement des documents et questions dans un espace_
 
-_Generateur comme focniton d'une paire (question, ensemble de documents) vers texte_
+_Generateur comme fonction d'une paire (question, ensemble de documents) vers texte_
 
 
 
