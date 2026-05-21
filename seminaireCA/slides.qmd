@@ -1,5 +1,6 @@
 ---
 title: "Mechanistic interpretability for enhancing RAG models"
+author: Marine Delvallez
 format: 
   revealjs:
     toc: true
@@ -7,6 +8,7 @@ format:
     slide-level: 3
     mouse-wheel: true
 jupyter : python3
+bibliography: biblio.bib
 style: |
   .columns {
     display: grid;
@@ -25,28 +27,24 @@ style: |
 
 ### Retrieval Augmented Generation - Definition
 
-![Simple RAG Architecture](images/DefRAG.drawio.png)  
+![Simple RAG Architecture [@lewis_retrieval-augmented_2020]](images/DefRAG.drawio.png)  
 
-![Advanced RAG Achitecture](images/DefRAGAvance_integration.drawio.png)
+. . . 
 
-
-### Approche plus théorique de retriever et generateur
-
-_Retriever comme plongement des documents et questions dans un espace_
-
-_Generateur comme fonction d'une paire (question, ensemble de documents) vers texte_
+![Advanced RAG Achitecture [@fan_survey_2024]](images/DefRAGAvance_integration.drawio.png)
 
 
+### Example {.center}
 
-### Example
-
-![RAG Architecture used here](images/RAGHN-perso.drawio.png)
+![RAG Architecture used here (inspired from [@tran_retrieval_2024])](images/RAGHN-perso.drawio.png)
 
 ## Explainability in Artificial Intelligence
 
 ### Explainability in Artificial Intelligence
 
-Aims:
+_Open black box models_
+
+#### Aims
 
 - Trustability
 - Understandability
@@ -56,7 +54,7 @@ Aims:
 
 **XAI** : Make model's behavior understandable for human [@bell_its_2022]  
 **Understand** : Predict model's behavior [@bell_its_2022]  
-**Explanation** : Any way to make decision process understandable for human
+**Explanation** : Any way to make the decision process of the model understandable for human
 
 :::: {.columns}
 
@@ -73,18 +71,18 @@ _Why ?_
 
 ::::
 
-## Explanation through creation of a model
+### Explanation through creation of a model
 
 ![Explanation through creation of a model](images/VieModele-TempsXAI.drawio.png)
 
-## MechIR [@parry_mechir_2025]
+## Presentation of MechIR 
 
-### MechIR [@parry_mechir_2025]
+### MechIR
 
 #### Mechanistic interpretability 
 Understand the internal mechanisms of neural networks by **performing causal interventions** on specific model components
 
-#### MechIR
+#### MechIR [@parry_mechir_2025]
 - Encoder-only models 
 - For Information Retrieval models
 
@@ -95,18 +93,31 @@ Understand the internal mechanisms of neural networks by **performing causal int
 Let $Q \times D \subset \mathcal{Q}\times\mathcal{D}$ be a set of pairs of questions and documents  
 Let $Q \times \tilde{D}$ the same set of pairs but with perturbed documents  
 
-1. Forward pass all $Q\times D$
-  - record $o_{i,j}^e$ the output of each component $n_{i,j}, \forall e \in Q\times D$
-  - record $p_D$ the performance of the model
-2. Forward pass all $Q\times \tilde{D}$
-  - record $o_{i,j}^\tilde{e}$ the output of each component $n_{i,j}, \forall \tilde{e} \in Q\times \tilde{D}$
-  - record $p_\tilde{D}$ the performance of the model  
-3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
-- $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
-- $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
-4. For each component $n_{i,j}$ forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{i,j}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}$
-5. $P = \frac{\bar{p} - p_\hat{D} }{\p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
+:::{.incremental}
 
+1. Forward pass all $Q\times D$
+    - record $o_{i,j}^e$ the output of each component $n_{i,j}, \forall e \in Q\times D$
+    - record $p_D$ the performance of the model
+2. Forward pass all $Q\times \tilde{D}$
+    - record $o_{i,j}^\tilde{e}$ the output of each component $n_{i,j}, \forall \tilde{e} \in Q\times \tilde{D}$
+    - record $p_\tilde{D}$ the performance of the model  
+3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
+    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
+    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+
+:::
+
+### Activation Patching [@chen_axiomatic_2024] {.smaller}
+
+:::{.incremental}
+
+3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
+    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
+    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+4. For each component $n_{i,j}$ forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{i,j}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}$
+5. $P = \frac{\bar{p} - p_\hat{D} }{p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
+
+:::
 
 ### Animation de l'execution de Activation patching
 
@@ -141,21 +152,8 @@ def perturbation(doc):
 
 ### Perspective : Enhance a model with MechIR
 
+### References
 
+::: {#refs}
+:::
 
----
----
-# Brouillon
-- Mechir
-  - but et concept : cartographier les sensibilités des modèles encoder-based 
-  - Activation Patching [Chen et al,. 2024]
-    - Étapes
-    - recul sur le résultat obtenu
-  - Perturbation
-    - Definition
-    - approche de création par étude du vocabulaire important et utilisation des mots poly-sémantiques
-    - 3 types de perturbation (append, prepend, replace) -> préférer replace
-    - identifier une perturbation pertinente
-  - Améliorer le modèle
-    - Quelle modification effectuer?
-    - 
