@@ -1,11 +1,12 @@
 ---
 title: "Mechanistic interpretability for enhancing RAG models"
 format: 
-  beamer:
+  revealjs:
     toc: true
-    code-fold: true
+    toc-depth: 2
     slide-level: 3
     mouse-wheel: true
+jupyter : python3
 style: |
   .columns {
     display: grid;
@@ -26,12 +27,8 @@ style: |
 
 ![Simple RAG Architecture](images/DefRAG.drawio.png)  
 
-<font color="purple">
+![Advanced RAG Achitecture](images/DefRAGAvance_integration.drawio.png)
 
-_Schema d'architecture plus avancée (avec augmentation avant et après retrieval + travail d'intégration de l'extraction dans le processus de génération)_
-</font>
-
-*Survey on RAG Meeting LLM: Towards Retrieval-Augmented Large Language Models [Fan et al., 2023]* {.footer}
 
 ### Approche plus théorique de retriever et generateur
 
@@ -42,6 +39,8 @@ _Generateur comme fonction d'une paire (question, ensemble de documents) vers te
 
 
 ### Example
+
+![RAG Architecture used here](images/RAGHN-perso.drawio.png)
 
 ## Explainability in Artificial Intelligence
 
@@ -61,14 +60,14 @@ Aims:
 
 :::: {.columns}
 
-::: {.column width="50%"}
-Interpretability  
+::: {.column width="40%"}
+**Interpretability**  
 _How ?_
 :::
 
-::: {.column width="50%"}
+::: {.column width="40%"}
 
-Explanability  
+**Explanability**  
 _Why ?_
 :::
 
@@ -83,53 +82,65 @@ _Why ?_
 ### MechIR [@parry_mechir_2025]
 
 #### Mechanistic interpretability 
-Understand the internal mechanisms of neural networks by performing
-causal interventions on specific model components
+Understand the internal mechanisms of neural networks by **performing causal interventions** on specific model components
 
 #### MechIR
 - Encoder-only models 
-- For Information Retrieval
+- For Information Retrieval models
 
 - Identify components responsible for some behavior
 - Activation Patching Technique 
 
-### Activation Patching [@chen_axiomatic_2024]
-Let $\mathcal{D}$ be the set of documents and $\mathcal{Q}$ the set of questions  
-Let $\mathcal{\tilde{D}}$ the perturbed documents  
-For each component of the model:
+### Activation Patching [@chen_axiomatic_2024] {.smaller}
+Let $Q \times D \subset \mathcal{Q}\times\mathcal{D}$ be a set of pairs of questions and documents  
+Let $Q \times \tilde{D}$ the same set of pairs but with perturbed documents  
 
+1. Forward pass all $Q\times D$
+  - record $o_{i,j}^e$ the output of each component $n_{i,j}, \forall e \in Q\times D$
+  - record $p_D$ the performance of the model
+2. Forward pass all $Q\times \tilde{D}$
+  - record $o_{i,j}^\tilde{e}$ the output of each component $n_{i,j}, \forall \tilde{e} \in Q\times \tilde{D}$
+  - record $p_\tilde{D}$ the performance of the model  
+3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
+- $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
+- $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+4. For each component $n_{i,j}$ forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{i,j}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}$
+5. $P = \frac{\bar{p} - p_\hat{D} }{\p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
 
-1. _Étapes_
-2. _D'execution_
-3. _de la_
-4. _méthode_
-
-
-_Obtention du résultat + sens associé_
 
 ### Animation de l'execution de Activation patching
 
 ### Perturbation
 
-Fonction qui pour chaque document, effectue la même modification.
+Function that applies the same modification on each document.  
+Example :  
+``` {python}
+#| echo: true
+def perturbation(doc):
+  return doc.replace("microwave", "toaster")
+``` 
 
-Ici 1 type nous intéresse : remplacer un mot par un autre
 
 #### Perturbation creation technique
 
 - Identify vocabulary specific to the dataset 
-- find in the vocabulary words with several meaning $m_D$ and $m_D$
+- Find in the vocabulary words with several meaning $m_D$ and $m_D$
 - Replace that word by a synonym of the $m_D$ meaning
 
 
 ### What is a good perturbation 
 
-- Have an impact of the documents representation
-_Des images de courbes à ajouter ici_
+- Has an impact of the documents representation
 - Be useful for interpretation
 
-### Enhance a model with MechIR
-TODO
+![Perturbation Score](images/perturbation-score.png)
+
+### Chart Information Retrieval Model
+
+![Chart of the impact of a perturbation on the components](images/ActivationPatchingAllHeadExempleMechIR.png)
+
+### Perspective : Enhance a model with MechIR
+
 
 
 ---

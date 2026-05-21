@@ -8,3 +8,6 @@
 *.synctex.gz
 *.toc
 *_files/
+
+# Quarto
+*.quarto_ipynb*
