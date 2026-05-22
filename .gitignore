@@ -2,7 +2,6 @@
 # Latex
 *.aux
 *.fdb_latexmk
-*.html
 *.nav
 *.snm
 *.synctex.gz
@@ -10,4 +9,5 @@
 *_files/
 
 # Quarto
-*.quarto_ipynb*
+# .html
+# *_files
