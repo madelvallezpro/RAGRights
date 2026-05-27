@@ -8,9 +8,9 @@ format:
     slide-level: 3
     mouse-wheel: true
 jupyter: venv-mechir
-# execute:
-#   cache: true
-#   freeze: auto
+execute:
+  cache: true
+  freeze: auto
 bibliography: biblio.bib
 style: |
   .columns {
@@ -251,20 +251,20 @@ def pert2(doc:str) -> str:
 
 ``` 
 
-
-#### Perturbation creation technique
-
-- Identify vocabulary specific to the dataset 
-- Find in the vocabulary words with several meaning $m_D$ and $m_D$
-- Replace that word by a synonym of the $m_D$ meaning
-
-
 ### What is a good perturbation 
 
-- Has an impact of the documents representation
+- Has an impact on the representation of documents
 - Be useful for interpretation
 
 ![Perturbation Score](images/perturbation-score.png)
+
+### Perturbation creation technique
+
+1. Identify vocabulary specific to the dataset 
+2. Find in the vocabulary words with several meaning $m_D$ and $m_D$
+3. Replace that word by a synonym of the $m_D$ meaning
+
+
 
 ### Step 2 : Instantiate the model and load data
 
@@ -351,5 +351,4 @@ TODO
 ::: {#refs}
 :::
 
-## Demonstration (TASB & Vaswani)
 

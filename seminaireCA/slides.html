@@ -232,7 +232,6 @@ Marine Delvallez
 <li><a href="#/retrieval-augmented-generation---rag" id="/toc-retrieval-augmented-generation---rag">Retrieval Augmented Generation - RAG</a></li>
 <li><a href="#/explainability-in-artificial-intelligence" id="/toc-explainability-in-artificial-intelligence">Explainability in Artificial Intelligence</a></li>
 <li><a href="#/presentation-and-demonstration-of-mechir" id="/toc-presentation-and-demonstration-of-mechir">Presentation and Demonstration of MechIR</a></li>
-<li><a href="#/demonstration-tasb-vaswani" id="/toc-demonstration-tasb-vaswani">Demonstration (TASB &amp; Vaswani)</a></li>
 </ul>
 </nav>
 </section>
@@ -356,7 +355,7 @@ Let <span class="math inline">\(Q \times \tilde{D}\)</span> the same set of pair
 <h3>Step 1: Choose a perturbation</h3>
 <p>Function that applies the same modification on each document.<br>
 Example :</p>
-<div id="fb3865be" class="cell" data-execution_count="2">
+<div id="107f0802" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="at">@perturbation</span></span>
 <span id="cb1-2"><a href=""></a><span class="kw">def</span> pert1(doc:<span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span> :</span>
 <span id="cb1-3"><a href=""></a>  <span class="cf">return</span> doc.replace(<span class="st">"solution"</span>, <span class="st">"answer"</span>)</span>
@@ -365,24 +364,26 @@ Example :</p>
 <span id="cb1-6"><a href=""></a><span class="kw">def</span> pert2(doc:<span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
 <span id="cb1-7"><a href=""></a>  <span class="cf">return</span> doc.replace(<span class="st">"microwave"</span>, <span class="st">"toaster"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<h4 id="perturbation-creation-technique">Perturbation creation technique</h4>
-<ul>
-<li>Identify vocabulary specific to the dataset</li>
-<li>Find in the vocabulary words with several meaning <span class="math inline">\(m_D\)</span> and <span class="math inline">\(m_D\)</span></li>
-<li>Replace that word by a synonym of the <span class="math inline">\(m_D\)</span> meaning</li>
-</ul>
 </section>
 <section id="what-is-a-good-perturbation" class="slide level3">
 <h3>What is a good perturbation</h3>
 <ul>
-<li>Has an impact of the documents representation</li>
+<li>Has an impact on the representation of documents</li>
 <li>Be useful for interpretation</li>
 </ul>
 
 <img data-src="images/perturbation-score.png" class="r-stretch quarto-figure-center"><p class="caption">Perturbation Score</p></section>
+<section id="perturbation-creation-technique" class="slide level3">
+<h3>Perturbation creation technique</h3>
+<ol type="1">
+<li>Identify vocabulary specific to the dataset</li>
+<li>Find in the vocabulary words with several meaning <span class="math inline">\(m_D\)</span> and <span class="math inline">\(m_D\)</span></li>
+<li>Replace that word by a synonym of the <span class="math inline">\(m_D\)</span> meaning</li>
+</ol>
+</section>
 <section id="step-2-instantiate-the-model-and-load-data" class="slide level3">
 <h3>Step 2 : Instantiate the model and load data</h3>
-<div id="fb2237a1" class="cell" data-execution_count="3">
+<div id="1e6eed38" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>dot_model_name <span class="op">=</span> <span class="st">"sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco"</span></span>
 <span id="cb2-2"><a href=""></a>dot_model <span class="op">=</span> Dot(dot_model_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -390,10 +391,10 @@ Example :</p>
 Loaded pretrained model sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco into HookedEncoder</code></pre>
 </div>
 </div>
-<div id="643e5775" class="cell" data-execution_count="4">
+<div id="b6407c32" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>dataset <span class="op">=</span> MechIRDataset(<span class="st">"vaswani"</span>, query_id_subset<span class="op">=</span>[<span class="st">"1"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="45b5abab" class="cell" data-execution_count="5">
+<div id="c44e6315" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>pert1_dot_collator <span class="op">=</span> DotDataCollator(dot_model.tokenizer, pert1, q_max_length<span class="op">=</span><span class="va">None</span>, d_max_length<span class="op">=</span><span class="va">None</span>, perturb_type<span class="op">=</span><span class="st">"replace"</span>)</span>
 <span id="cb5-2"><a href=""></a>pert1_dot_dataloader <span class="op">=</span> DataLoader(dataset, batch_size<span class="op">=</span><span class="dv">16</span>, collate_fn<span class="op">=</span>pert1_dot_collator)</span>
 <span id="cb5-3"><a href=""></a></span>
@@ -403,7 +404,7 @@ Loaded pretrained model sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco 
 </section>
 <section id="visualisation-of-perturbed-data" class="slide level3">
 <h3>Visualisation of perturbed data</h3>
-<div id="af41b638" class="cell" data-execution_count="6">
+<div id="1bfa5d77" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>solution -&gt; answer
 Query: [CLS] measurement of dielectric constant of liquids by the use of microwave techniques [SEP]
@@ -416,7 +417,7 @@ Perturbed Document: [CLS] microwave measurements of dielectric absorption in dil
 ==================================================</code></pre>
 </div>
 </div>
-<div id="b8e9a036" class="cell" data-execution_count="7">
+<div id="4b3033e8" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>microwave -&gt; toaster
 Query: [CLS] measurement of dielectric constant of liquids by the use of microwave techniques [SEP]
@@ -432,7 +433,7 @@ Perturbed Document: [CLS] toaster measurements of dielectric absorption in dilut
 </section>
 <section id="step-4-measure-the-impact-of-the-perturbation-on-the-model" class="slide level3">
 <h3>Step 4 : Measure the impact of the perturbation on the model</h3>
-<div id="0fce16c2" class="cell" data-execution_count="8">
+<div id="d6d33dae" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># Initialize lists to store baseline and perturbed performances for each dataloader</span></span>
 <span id="cb8-2"><a href=""></a>all_baseline_performance <span class="op">=</span> {<span class="st">"pert1"</span>: [], <span class="st">"pert2"</span>: []}</span>
 <span id="cb8-3"><a href=""></a>all_perturbed_performance <span class="op">=</span> {<span class="st">"pert1"</span>: [], <span class="st">"pert2"</span>: []}</span>
@@ -453,7 +454,7 @@ Perturbed Document: [CLS] toaster measurements of dielectric absorption in dilut
 </section>
 <section id="step-5-chart-the-sensitivity-of-the-model-to-the-perturbation" class="slide level3">
 <h3>Step 5 : Chart the sensitivity of the model to the perturbation</h3>
-<div id="d2046f7e" class="cell" data-execution_count="9">
+<div id="e08b7f31" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -490,11 +491,8 @@ Parry, Andrew, Catherine Chen, Carsten Eickhoff, and Sean MacAvaney. 2025. <span
 Tran, The Trung, Carlos-Emiliano González-Gallardo, and Antoine Doucet. 2024. <span>“Retrieval <span>Augmented</span> <span>Generation</span> for <span>Historical</span> <span>Newspapers</span>.”</span> <em>Proceedings of the 24th <span>ACM</span>/<span>IEEE</span> <span>Joint</span> <span>Conference</span> on <span>Digital</span> <span>Libraries</span></em> (Hong Kong China), December, 1–5. <a href="https://doi.org/10.1145/3677389.3702542">https://doi.org/10.1145/3677389.3702542</a>.
 </div>
 </div>
-</section></section>
-<section id="demonstration-tasb-vaswani" class="title-slide slide level2 center">
-<h2>Demonstration (TASB &amp; Vaswani)</h2>
 
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
