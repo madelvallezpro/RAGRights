@@ -1,0 +1,26 @@
+.title_perso{
+    font-size: 80px;
+    font-weight: bold;
+}
+.subtitle_perso{
+    font-size: 30px;
+    font-style: italic;
+}
+
+.remerciements{
+    font-size: 90px;
+    font-weight: bold!important;
+    text-align: center;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+.small {
+    font-size: 30px
+}
+.midsize{
+    font-size: 25px
+}
