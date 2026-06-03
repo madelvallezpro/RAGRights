@@ -27,9 +27,9 @@ css: styles.css
 
 ### Retrieval Augmented Generation - Definition
 
-_Add a knowledge database to a generative model_
+_Add a ressource database to a generative model_
 
-- increase knowledge reliability
+- increase sources reliability
 - release the burden of knowledge on the generator
 
 . . . 
@@ -40,12 +40,14 @@ Tasks:
 - Ex: Question Answering, Fact Checking, Dialogue, Retrieval
 
 ### Retrieval
-Models includes Information Retrieval as a sub-task : Identify documents and informations useful to help generation
+Models include Information Retrieval as a sub-task
+
+Information Retrieval : Identify and rank useful documents and informations
 
 2 principal technologies:
 
-- cross-encoder
-- bi-encoder
+- cross-encoder $\left(\mathcal{S}(q,d)\right)$
+- bi-encoder $\left(\mathcal{R}(q) . \mathcal{R}(d)\right)$
 
 $\Rightarrow$ Needs indexing before use
 
@@ -115,9 +117,9 @@ _Why ?_
 Several approches:
 
 - Manual Circuit Tracing 
-- _Intervention-based Techniques_
 - Representation Analysis
 - Toy Models and Synthetic Tasks
+- _Intervention-based Techniques_ (Ablation, Activation Patching, ...)
 
 
 ### Activation Patching [@chen_axiomatic_2024] {.smaller}
@@ -127,28 +129,32 @@ Let $Q \times \tilde{D}$ the same set of pairs but with perturbed documents
 :::{.incremental}
 
 1. Forward pass all $Q\times D$
-    - record $o_{i,j}^e$ the output of each component $n_{i,j}, \forall e \in Q\times D$
+    - record $o_{n}^e$ the output of each component $n, \forall e \in Q\times D$
     - record $p_D$ the performance of the model
 2. Forward pass all $Q\times \tilde{D}$
-    - record $o_{i,j}^\tilde{e}$ the output of each component $n_{i,j}, \forall \tilde{e} \in Q\times \tilde{D}$
+    - record $o_{n}^\tilde{e}$ the output of each component $n, \forall \tilde{e} \in Q\times \tilde{D}$
     - record $p_\tilde{D}$ the performance of the model  
-3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
-    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
-    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+3. Rewrite $D, e, \tilde{D}$ and $\tilde{e}$ as
+    - $\hat{D}, \hat{e}, \check{D}$ and $\check{e}$ if $p_D > p_\tilde{D}$
+    - $\check{D}, \check{e}, \hat{D}$ and $\hat{e}$ otherwise
 
 :::
 
 ### Activation Patching [@chen_axiomatic_2024] {.smaller}
 
-3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
-    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
-    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+3. Rewrite $D, e, \tilde{D}$ and $\tilde{e}$ as
+    - $\hat{D}, \hat{e}, \check{D}$ and $\check{e}$ if $p_D > p_\tilde{D}$
+    - $\check{D}, \check{e}, \hat{D}$ and $\hat{e}$ otherwise
+
+. . . 
+
+For each component $n$ 
 
 
 :::{.incremental}
 
-4. For each component $n_{i,j}$ forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{i,j}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}$
-5. $P = \frac{\bar{p} - p_\hat{D} }{p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
+4. Forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{n}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}_n$
+5. $P_{n} = \frac{\bar{p}_n - p_\hat{D} }{p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
 
 :::
 
@@ -164,13 +170,17 @@ Let $Q \times \tilde{D}$ the same set of pairs but with perturbed documents
 
 ![](images/activationpatching/Step2_ActivationPatching.drawio.png)
 
-### Animation de l'execution de Activation patching (Step 3 and 4)
-
-![](images/activationpatching/Step3point_ActivationPatching.drawio.png)
-
-### Animation de l'execution de Activation patching (Step 3 and 4)
+### Animation de l'execution de Activation patching (Step 3)
 
 ![](images/activationpatching/Step3_ActivationPatching.drawio.png)
+
+### Animation de l'execution de Activation patching (Step 4)
+
+![](images/activationpatching/Step4_ActivationPatching.drawio.png)
+
+### Animation de l'execution de Activation patching (Step 5)
+
+![](images/activationpatching/Step5_ActivationPatching.drawio.png)
 
 ### MechIR [@parry_mechir_2025]
 
@@ -276,7 +286,7 @@ def plot_score_dists_mult(all_baseline_scores, all_perturbed_scores, plot_type="
             ax.boxplot([baseline_scores, perturbed_scores], tick_labels=['Baseline', 'Perturbed'])
             ax.set_ylabel('Scores')
 
-        ax.set_xlabel('Scores')
+        ax.set_xlabel('Distances between R(q) and R(d)')
         ax.set_title(f'{perturb_type.capitalize()}')
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust layout to make space for the title
@@ -295,9 +305,9 @@ Considering that activation patching charts the sensibility of a model to a pert
 
 Hypothesis : 
 
-- Models have **specific components dedicated to domain specific language**
-- This domain specific language dedicated part of the model can be **charted with activation patching**
-- That map can be used to **enhance model comprehension and robustness** of the domain specific language dedicated part of the model
+- Models have **specific components on which rely domain specific language**
+- This part of the model implementing domain specific language can be **charted with activation patching**
+- That map can be used to **enhance model comprehension and robustness** of the part of the model implementing domain specific language
 
 
 ```{python}
@@ -325,7 +335,7 @@ dataset = MechIRDataset("vaswani", query_id_subset=["1"])
 
 - solution -> answer
     - _microwave a measurements of dielectric absorption in dilute **solutions**_
-    - _microwave a measurements of dielectric absorption in dilute answer_
+    - _microwave a measurements of dielectric absorption in dilute **answers**_
 - microwave -> toaster
     - _**microwave** a measurements of dielectric absorption in dilute solutions_
     - _**toaster** a measurements of dielectric absorption in dilute solutions_
@@ -357,9 +367,10 @@ pretty_print_triplets(next(iter(pert2_dot_dataloader)), dot_model.tokenizer, num
 
 
 ### Select useful Perturbation
-5. Apply Activation Patching
+5. Forward pass baseline and perturbed documents
 6. Select relevant perturbations
 
+Relevant : Moves documents in the latent space
 
 ```{python}
 # Initialize lists to store baseline and perturbed performances for each dataloader
@@ -375,7 +386,7 @@ plot_score_dists_mult(all_baseline_performance, all_perturbed_performance, plot_
 
 
 ### Chart Model sensibility to the perturbation
-7. Map the model sensibility to the perturbation
+7. Map the model sensibility to the perturbation with activation patching
 
 ![](images/chart_append-microwave_TASB_vaswani.png)
 
@@ -494,7 +505,7 @@ Python libraries:
 
 . . . 
 
-LLMs target polysemy problem of models like Word2Vect
+LLMs target polysemy problem of models like Word2Vect, Neural Shallow
 
 :::
 ::::
@@ -528,11 +539,21 @@ $\Rightarrow$ Work in Progress
 - expression of diachrony
 - language switching
 
-### Other use of the map
+### Other uses of the map
 
 - Transfert learning
 - Prunning
 - Specialization of general models
+
+### Take away ideas
+Create relevant perturbations  : not that simple
+
+- Perturbations interact with latent space
+- Polysemy is well supported by LLMs
+- Impact of perturbations is hard to interpret
+
+
+
 
 ## {.remerciements}
 
