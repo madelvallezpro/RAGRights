@@ -1,5 +1,6 @@
 ---
 title: "Mechanistic interpretability for enhancing RAG models"
+subtitle: "Internship - Master 2 ARIAS Minerve"
 author: Marine Delvallez
 format: 
   revealjs:
@@ -7,39 +8,65 @@ format:
     toc-depth: 2
     slide-level: 3
     mouse-wheel: true
+    template-partials:
+      - title-slide.html
 jupyter: venv-mechir
 execute:
   cache: true
   freeze: auto
 bibliography: biblio.bib
+slide-number: true
 style: |
-  .columns {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-  .small {
-    font-size: 20px
-  }
-  .midsize{
-    font-size: 25px
-  }
+  
+css: styles.css
 ---
+
+# Introduction & Context
 
 ## Retrieval Augmented Generation - RAG
 
 ### Retrieval Augmented Generation - Definition
 
+_Add a knowledge database to a generative model_
+
+- increase knowledge reliability
+- release the burden of knowledge on the generator
+
+. . . 
+
+Tasks:
+
+- _Knowledge intensive Generation tasks_
+- Ex: Question Answering, Fact Checking, Dialogue, Retrieval
+
+### Retrieval
+Models includes Information Retrieval as a sub-task : Identify documents and informations useful to help generation
+
+2 principal technologies:
+
+- cross-encoder
+- bi-encoder
+
+$\Rightarrow$ Needs indexing before use
+
+
+### RAG Architectures
+
+
 ![Simple RAG Architecture [@lewis_retrieval-augmented_2020]](images/DefRAG.drawio.png)  
 
 . . . 
 
-![Advanced RAG Achitecture [@fan_survey_2024]](images/DefRAGAvance_integration.drawio.png)
+![Advanced RAG Architecture [@fan_survey_2024]](images/DefRAGAvance_integration.drawio.png)
 
 
-### Example {.center}
 
-![RAG Architecture used here (inspired from [@tran_retrieval_2024])](images/RAGHN-perso.drawio.png)
+### Examples
+
+![RAG Architecture from [@tran_retrieval_2024]](images/RAGHN.drawio.png)
+
+![RAG architecture used in the following](images/RAG4Def.drawio.png)
+
 
 ## Explainability in Artificial Intelligence
 
@@ -76,11 +103,81 @@ _Why ?_
 
 ### Explanation through creation of a model
 
-![Explanation through creation of a model](images/VieModele-TempsXAI.drawio.png)
 
-## Presentation and Demonstration of MechIR 
+![](images/IllVieModele-TempsXAI.drawio.png)
 
-### MechIR
+
+## Mechanistic Interpretability
+
+### Definition
+> Reverse-engineer neural networks by identifying internal components (neurons, circuits, activation pathways, ...) that either contribute to or causally influence specific behaviors. [@somvanshi_bridging_2026]
+
+Several approches:
+
+- Manual Circuit Tracing 
+- _Intervention-based Techniques_
+- Representation Analysis
+- Toy Models and Synthetic Tasks
+
+
+### Activation Patching [@chen_axiomatic_2024] {.smaller}
+Let $Q \times D \subset \mathcal{Q}\times\mathcal{D}$ be a set of pairs of questions and documents  
+Let $Q \times \tilde{D}$ the same set of pairs but with perturbed documents  
+
+:::{.incremental}
+
+1. Forward pass all $Q\times D$
+    - record $o_{i,j}^e$ the output of each component $n_{i,j}, \forall e \in Q\times D$
+    - record $p_D$ the performance of the model
+2. Forward pass all $Q\times \tilde{D}$
+    - record $o_{i,j}^\tilde{e}$ the output of each component $n_{i,j}, \forall \tilde{e} \in Q\times \tilde{D}$
+    - record $p_\tilde{D}$ the performance of the model  
+3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
+    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
+    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+
+:::
+
+### Activation Patching [@chen_axiomatic_2024] {.smaller}
+
+3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
+    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
+    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+
+
+:::{.incremental}
+
+4. For each component $n_{i,j}$ forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{i,j}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}$
+5. $P = \frac{\bar{p} - p_\hat{D} }{p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
+
+:::
+
+### Animation de l'execution de Activation patching (Step 0)
+
+![](images/activationpatching/Step0_ActivationPatching.drawio.png)
+
+### Animation de l'execution de Activation patching (Step 1)
+
+![](images/activationpatching/Step1_ActivationPatching.drawio.png)
+
+### Animation de l'execution de Activation patching (Step 2)
+
+![](images/activationpatching/Step2_ActivationPatching.drawio.png)
+
+### Animation de l'execution de Activation patching (Step 3 and 4)
+
+![](images/activationpatching/Step3point_ActivationPatching.drawio.png)
+
+### Animation de l'execution de Activation patching (Step 3 and 4)
+
+![](images/activationpatching/Step3_ActivationPatching.drawio.png)
+
+### MechIR [@parry_mechir_2025]
+
+- Python library 
+- Activation Patching
+- Information retrieval models
+- Charts sensibility of model components to a perturbation
 
 ```{python}
 from mechir import Dot
@@ -189,57 +286,51 @@ def plot_score_dists_mult(all_baseline_scores, all_perturbed_scores, plot_type="
 
 ```
 
-#### Mechanistic interpretability 
-Understand the internal mechanisms of neural networks by **performing causal interventions** on specific model components
 
-#### MechIR [@parry_mechir_2025]
-- Encoder-only models 
-- For Information Retrieval models
+## Use case of my internship {.small}
 
-- Identify components responsible for some behavior
-- Activation Patching Technique 
+_Use case_ : Domain specific language
 
-### Activation Patching [@chen_axiomatic_2024] {.smaller}
-Let $Q \times D \subset \mathcal{Q}\times\mathcal{D}$ be a set of pairs of questions and documents  
-Let $Q \times \tilde{D}$ the same set of pairs but with perturbed documents  
+Considering that activation patching charts the sensibility of a model to a perturbation
 
-:::{.incremental}
+Hypothesis : 
 
-1. Forward pass all $Q\times D$
-    - record $o_{i,j}^e$ the output of each component $n_{i,j}, \forall e \in Q\times D$
-    - record $p_D$ the performance of the model
-2. Forward pass all $Q\times \tilde{D}$
-    - record $o_{i,j}^\tilde{e}$ the output of each component $n_{i,j}, \forall \tilde{e} \in Q\times \tilde{D}$
-    - record $p_\tilde{D}$ the performance of the model  
-3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
-    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
-    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
-
-:::
-
-### Activation Patching [@chen_axiomatic_2024] {.smaller}
-
-3. Rewrite $D, e, \tilde{D} \text{ and } \tilde{e}$ as
-    - $\hat{D}, \hat{e}, \check{D} \text{ and } \check{e}$ if $p_D > p_\tilde{D}$
-    - $\check{D}, \check{e}, \hat{D} \text{ and } \hat{e}$ otherwise
+- Models have **specific components dedicated to domain specific language**
+- This domain specific language dedicated part of the model can be **charted with activation patching**
+- That map can be used to **enhance model comprehension and robustness** of the domain specific language dedicated part of the model
 
 
-:::{.incremental}
+```{python}
+#| output: false
+dot_model_name = "sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco"
+dot_model = Dot(dot_model_name)
+```
 
-4. For each component $n_{i,j}$ forward pass $Q\times\check{D}$ but replace $o_{i,j}^{\check{e}}$ by $o_{i,j}^{\hat{e}}$ for each $\check{e}$. Record the performance $\bar{p}$
-5. $P = \frac{\bar{p} - p_\hat{D} }{p_\check{D} - p_\hat{D}}$ gives the impact of the perturbation on the model performance
+```{python}
+dataset = MechIRDataset("vaswani", query_id_subset=["1"])
+``` 
 
-:::
+# Method
 
-### Animation de l'execution de Activation patching
+### Building a perturbation
+1. Identify domain specific language $L$ of the dataset
+    - List words from each text
+    - Calculate frequency and TF-IDF of each word
+    - Find the domain specific language
+2. Identify polysemic words $w$ that has a different meaning in everyday language 
+3. Find a synonym $s$ of the everyday meaning of each $w$
+4. Build perturbation $w \to s$
 
+### Examples of perturbation
 
-### Step 1: Choose a perturbation
+- solution -> answer
+    - _microwave a measurements of dielectric absorption in dilute **solutions**_
+    - _microwave a measurements of dielectric absorption in dilute answer_
+- microwave -> toaster
+    - _**microwave** a measurements of dielectric absorption in dilute solutions_
+    - _**toaster** a measurements of dielectric absorption in dilute solutions_
 
-Function that applies the same modification on each document.  
-Example :  
 ``` {python}
-#| echo: true
 
 @perturbation
 def pert1(doc:str) -> str :
@@ -251,81 +342,45 @@ def pert2(doc:str) -> str:
 
 ``` 
 
-### What is a good perturbation 
-
-- Has an impact on the representation of documents
-- Be useful for interpretation
-
-![Perturbation Score](images/perturbation-score.png)
-
-### Perturbation creation technique
-
-1. Identify vocabulary specific to the dataset 
-2. Find in the vocabulary words with several meaning $m_D$ and $m_D$
-3. Replace that word by a synonym of the $m_D$ meaning
-
-
-
-### Step 2 : Instantiate the model and load data
-
 ```{python}
-#| echo: true
-dot_model_name = "sebastian-hofstaetter/distilbert-dot-tas_b-b256-msmarco"
-dot_model = Dot(dot_model_name)
-```
-
-```{python}
-#| echo: true
-dataset = MechIRDataset("vaswani", query_id_subset=["1"])
-``` 
-
-
-```{python}
-#| echo: true
+#|echo: false
 pert1_dot_collator = DotDataCollator(dot_model.tokenizer, pert1, q_max_length=None, d_max_length=None, perturb_type="replace")
 pert1_dot_dataloader = DataLoader(dataset, batch_size=16, collate_fn=pert1_dot_collator)
 
 pert2_dot_collator = DotDataCollator(dot_model.tokenizer, pert2, q_max_length=None, d_max_length=None, perturb_type="replace")
 pert2_dot_dataloader = DataLoader(dataset, batch_size=16, collate_fn=pert2_dot_collator)
 
-```
-
-
-### Visualisation of perturbed data
-``` {python}
-# Get a single pair from each perturbation type just to visualize
-pert1_batch = next(iter(pert1_dot_dataloader))
-pert2_batch = next(iter(pert2_dot_dataloader))
-
-print("solution -> answer")
-pretty_print_triplets(pert1_batch, dot_model.tokenizer, num=2)
+print("REPLACE")
+pretty_print_triplets(next(iter(pert2_dot_dataloader)), dot_model.tokenizer, num=2)
 
 ```
-```{python}
-
-print("microwave -> toaster")
-pretty_print_triplets(pert2_batch, dot_model.tokenizer, num=2)
-```
 
 
-### Step 4 : Measure the impact of the perturbation on the model
+### Select useful Perturbation
+5. Apply Activation Patching
+6. Select relevant perturbations
+
 
 ```{python}
-#|echo: true
 # Initialize lists to store baseline and perturbed performances for each dataloader
-all_baseline_performance = {"pert1": [], "pert2": []}
-all_perturbed_performance = {"pert1": [], "pert2": []}
+all_baseline_performance = {"solution -> answer": [], "microwave -> toaster": []}
+all_perturbed_performance = {"solution -> answer": [], "microwave -> toaster": []}
 
 # Calculate performances for each perturbation_type
-calculate_performance(dot_model, pert1_dot_dataloader, all_baseline_performance["pert1"], all_perturbed_performance["pert1"])
-calculate_performance(dot_model, pert2_dot_dataloader, all_baseline_performance["pert2"], all_perturbed_performance["pert2"])
+calculate_performance(dot_model, pert1_dot_dataloader, all_baseline_performance["solution -> answer"], all_perturbed_performance["solution -> answer"])
+calculate_performance(dot_model, pert2_dot_dataloader, all_baseline_performance["microwave -> toaster"], all_perturbed_performance["microwave -> toaster"])
 
 plot_score_dists_mult(all_baseline_performance, all_perturbed_performance, plot_type="kde")
 ```
 
-### Step 5 : Chart the sensitivity of the model to the perturbation
+
+### Chart Model sensibility to the perturbation
+7. Map the model sensibility to the perturbation
+
+![](images/chart_append-microwave_TASB_vaswani.png)
 
 ```{python}
+# |eval: false
 patching_head_outputs = []
 for i, batch in enumerate(pert2_dot_dataloader):
     queries = batch["queries"]
@@ -337,14 +392,154 @@ for i, batch in enumerate(pert2_dot_dataloader):
 
 mean_head_outputs = torch.mean(torch.stack([tens for tens,_ in patching_head_outputs]), axis=0)
 
+print(mean_head_outputs)
+
 plot_components(mean_head_outputs.detach().to("cpu").numpy())
 ```
 
 
-<!-- ![Chart of the impact of a perturbation on the components](images/ActivationPatchingAllHeadExempleMechIR.png) -->
+### Finetune the Model 
+8. Modify sensible weights 
 
-### Perspective : Enhance a model with MechIR
-TODO
+WORK IN PROGRESS
+
+# Experimentation
+
+### Setup - Dataset
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Extracted from EvalLLM2026 Challenge dataset
+- French Defense dataset
+- Pairs `(question, chunk of document)`
+- 52 pairs, 26 questions
+
+:::
+
+::: {.column width="50%"}
+
+![](images/ChallengeEvalLLM-pagewebPetit.png)
+
+:::
+
+::::
+
+### Setup - Model
+E5-small [@wang_text_2022]
+
+- Constrative bi-encoder 
+- Pre-trained on unlabeled pairs (query, passage) CCPairs
+- Finetuned with labelled pairs
+- Based on MiniLM [@wang_minilmv2_2021]
+- 33M params
+
+
+### Setup - Mechanistic Interpretability Tools
+
+Python libraries:
+
+- MechIR [@parry_mechir_2025] 
+- TransformerLens [@nanda_transformerlens_2022]
+
+### First Results - Domain specific language identification
+- Defense-specific language is prevalent
+
+|Word      |Frequency| TF-IDF score      |
+|---------|---|--------------------|
+|militaire|26 |0.04494102684257385 |
+|drone    |21 |0.04081921309724857 |
+|article  |13 |0.0317659447734224  |
+|défense  |9  |0.018444049962599192|
+|emploi   |7  |0.017992160135997803|
+|armée    |7  |0.0166576415296721  |
+| ...     |...|...                 |
+
+### First results - Perturbations in general
+:::: {.columns}
+
+:::{.column width="50%"}
+
+![](images/a%C3%A9rien%20-%20l%C3%A9ger_scores_paires-mainV1_exposé.png)
+![](images/d%C3%A9fense%20-%20corne_scores_paires-mainV1_exposé.png)
+
+:::
+
+:::{.column width="50%"}
+
+![](images/article%20-%20produit_scores_paires-mainV1_exposé.png)
+![](images/protection%20-%20bouclier_scores_paires-mainV1_exposé.png)
+
+:::
+
+::::
+
+### First results - Best Perturbations {.smaller}
+::::{.columns}
+:::{.column width="50%"}
+![](images/emploi%20-%20poste_scores_paires-mainV1_exposé.png)
+
+![](images/militaire%20-%20soldat_scores_paires-mainV1_expos%C3%A9.png)
+
+:::
+
+:::{.column width="50%"}
+
+![](images/syst%C3%A8me%20-%20ensemble%20d'%C3%A9quation_scores_paires-mainV1_expos%C3%A9.png)
+
+
+- needs more complex perturbation (grammar, group of words)
+- not enough
+
+. . . 
+
+LLMs target polysemy problem of models like Word2Vect
+
+:::
+::::
+
+### Work left for the next 2,5 months
+
+:::{.incremental}
+- Identify new perturbations
+    - new words and synonyms
+    - new type of perturbation
+- Chart the sensibility of the model to new perturbations
+- Identify model modifications that enhance domain specific language comprehension/ use
+:::
+
+
+# Conclusion & Perspectives
+
+### Conclusion
+
+- H1 : Models have specific components dedicated to domain specific language
+- H2 : This domain specific language dedicated part of the model can be charted with activation patching
+- H3 : That map can be used to enhance model comprehension and robustness of the domain specific language dedicated part of the model
+
+$\Rightarrow$ Work in Progress
+
+
+### Other perturbations and linguistic structures
+- subgroups of domain specific language
+- temporal relationships
+- negation
+- expression of diachrony
+- language switching
+
+### Other use of the map
+
+- Transfert learning
+- Prunning
+- Specialization of general models
+
+## {.remerciements}
+
+Thanks for you attention
+
+Questions
+
 
 ### References
 

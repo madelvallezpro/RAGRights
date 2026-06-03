@@ -6,8 +6,14 @@
 *.snm
 *.synctex.gz
 *.toc
-*_files/
+#*_files/
 
 # Quarto
 # .html
 # *_files
+**/.jupyter_cache/
+*.quarto_ipynb_*
+
+# Document à cacher
+seminaireCA/indications_oral.md
+seminaireCA/test/
