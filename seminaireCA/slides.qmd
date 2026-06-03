@@ -443,7 +443,7 @@ Python libraries:
 - MechIR [@parry_mechir_2025] 
 - TransformerLens [@nanda_transformerlens_2022]
 
-### First Results - Domain specific language identification
+### First results - Domain specific language identification
 - Defense-specific language is prevalent
 
 |Word      |Frequency| TF-IDF score      |

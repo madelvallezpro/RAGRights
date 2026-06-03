@@ -12,7 +12,7 @@
 # .html
 # *_files
 **/.jupyter_cache/
-*.quarto_ipynb_*
+*.quarto_ipynb*
 
 # Document à cacher
 seminaireCA/indications_oral.md
