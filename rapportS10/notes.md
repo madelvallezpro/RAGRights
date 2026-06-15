@@ -6,6 +6,7 @@
 - les éléments pris en compte pour l'extraction du vocabulaire caractéristique (quand commencer, quand s’arrêter, quel biais de compréhension)
 - présentation de l'archi utilisée (+ présentation de RAG4HN??)
 - justifier utilisation de Md comme format de texte
+- dans les mesure d'effet d'une perturbation, la baseline change un peu de forme (dû à kde ?). Les petites perturbations pourraient être des artefacts liés à l'**affichage** de kde 
 
 ## Éléments bibliographiques
 - E5
