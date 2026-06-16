@@ -85,3 +85,19 @@ magique+
 ### replace
 Pas de matrice calculée : présence de NaN
 Des scores de perturbations peut intéressants (sauf drone -> gazon même si pas de matrice)
+
+## append et prepend
+## Éléphants append et prepend sur Defense-MainV2 - Analyse
+PerturbedScores... :
+- Scores perturbés souvent similaires (même forme) 
+
+
+Sensibilité des composants:
+- `+gazon`, `fromage+` sont hyper réactifs ~> exploitable
+- `+animation`, `+fromage`, `+panneau`, `+post-it`, `gazon+`, `épicurien+` aussi assez réactifs
+- `magique+` `panneau+` ont des noeuds réactifs en commun ((2,6), (8,6) et (1,10))
+    - visible sur les écrats-types
+    - moyennes peu/pas marquées pour `panneau+`
+- noeud (6,11) reviens plusieurs fois : `gazon+`, `+magique`, `animation+`?, `+table`, `+animation` déjà vu dans les append/prepend de langue de spécialité
+- les écarts-types souvent + élevés que les moyennes
+- `gazon+` noeud (7,11) est le seul insensible

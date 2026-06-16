@@ -211,7 +211,7 @@ Graphique:
 - un noeud se dégage (même que pour prepend)
 - MAIS des écarts-types plus importants !! ~> exploitable?
 
-$\Rightarrow$ Même noeud que pour _drone_
+$\Rightarrow$ Même noeud que pour _drone_ (sont ts les deux dans la question... mais ce ne sont pas les seuls.)
 
 ### append `système` - Perturbation Score
 
