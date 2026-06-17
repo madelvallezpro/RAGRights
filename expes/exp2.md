@@ -5,7 +5,7 @@
 Semaine du 8 juin
 mirev42
 Effectué avec GenericAutomatedPertubation.py
-interruption du K de la matrice de sensibilité des noeuds si présence d'un NaN
+Dans le k de la matrice de sensibilité, les NaN sont remplacés par 0
 
 
 ## Dataset défense fait main V2 
@@ -83,8 +83,8 @@ magique+
 ```
 ## Résultats et analyse
 ### replace
-Pas de matrice calculée : présence de NaN
-Des scores de perturbations peut intéressants (sauf drone -> gazon même si pas de matrice)
+Pas de matrice quasi vide (85% de NaN en moyenne)
+Des scores de perturbations peut intéressants (sauf drone -> gazon même si beaucoup de NaN)
 
 ## append et prepend
 ## Éléphants append et prepend sur Defense-MainV2 - Analyse
