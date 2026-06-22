@@ -93,6 +93,8 @@ def perturbation_type(pert):
         return "append"
     if pert[-1] =="+":
         return "prepend" 
+    if pert == "full_replace":
+        return "full_replace"
     raise RuntimeWarning("Unreachable")
 
 def stats(noeuds_perts, path):
