@@ -32,10 +32,12 @@ def image_ou_blanche(chemin, taille):
 def perturbation_type(pert):
     if "->" in pert:
         return "replace"
-    if pert[0] == "+":
+    elif pert[0] == "+":
         return "append"
-    if pert[-1] =="+":
+    elif pert[-1] =="+":
         return "prepend" 
+    elif pert == "full_replace":
+        return "full_replace"
     raise RuntimeWarning("Unreachable")
 
 
@@ -261,7 +263,7 @@ def main():
     parser.add_argument(
         "-p",
         "--pert_type",
-        choices=["all", "replace", "append", "prepend"],
+        choices=["all", "replace", "append", "prepend", "full_replace"],
         default="all",
         help=(
             "Restreindre la place à un certain type de perturbation."
