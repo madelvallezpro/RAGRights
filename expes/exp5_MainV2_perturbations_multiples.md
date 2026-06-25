@@ -1,17 +1,24 @@
-# Perturbations multiples sur le Dataset MainV2
+---
+title: "Expé 5 : Perturbations multiples sur le Dataset MainV2"
+author: "Marine DELVALLEZ"
+paginate: true
+geometry: "left=1cm,right=1cm,top=1cm,bottom=2cm"
+---
 
-## Contexte
+# Contexte
 début : 19 juin  
 Objectif : mettre en perspectives les résultats des dernières expériences
 
-## Dataset défense fait main V2 
+# Dataset défense fait main V2 
 
 Construction des données :
+
 - 1 question, 3 pdf (limitations matérielles du drone, code de la défense - matériel de guerre, fausses infos pdt les JO/JP)
 - 50% de textes pertinents
 - 28 paires
 
 Question : 
+
 > Quelles sont les trois principales catégories de limitations techniques affectant les systèmes de drones, et comment chacune influence-t-elle l'efficacité opérationnelle de ces vecteurs ?
 
 
@@ -33,14 +40,16 @@ Question :
 |guerre    |8  |0.0336043799517422|
 
 
-## Perturbations
+# Perturbations
 On considère 4 familles de perturbations de type `replace`:
+
 - remplacement par un synonyme ou mot proche [Niveau 1]
 - remplacement par un mot synonyme d'un autre sens du mot [Niveau 2]
 - remplacement par un mot qui n'est pas en lien avec le contexte [Niveau 3]
 - remplacement par un groupe nominal absurde et qui n'est pas en lien avec le contexte [Niveau 4]
 
 On applique les perturbations à des mots 
+
 - de la langue de spécialité du dataset (la défense)
 - prévalents dans le dataset
 - éventuellement présents et importants pour le sens de la question du dataset
@@ -58,22 +67,22 @@ Perturbations choisies pour chaque niveau :
 | système       | dispositif         | ensemble              | panneau       | esperluette en vent      |
 | technique     | spécialisé         | difficile             | magique       | feuille entubée          |
 
-## Résultats
+# Résultats
 
 Un noeud est considéré comme réactif si il vérifie `(mean > 0.1 et rescaled_mean > 0.5) ou rescaled_std > 0.5`.
 
-### Synonymes [Niveau 1]
+## Synonymes [Niveau 1]
 **Gestion des NaN** Le calcul des matrices de sensibilité engendre des NaN pour toute les perturbations. En moyenne, 3402 NaN on étés remplacés par 0 (effectifs allant de 3024 à 3888). Cela n'est pas surprenant étant donné le faible impact des perturbations sur la représentation des documents. La présence de NaN pour les perturbations de type `replace` est courante.
 
 **Perturbation de l'espace de représentation** À l'exception de la transformation `drone -> vecteur`, les perturbations de niveau 1 ont très peu d'impact sur la représentation des documents. Cela est attendu car les perturbations conservent le sens des documents.
 
 **Sensibilité des composants du modèle** Toutefois, certains noeuds du modèle réagissent aux modifications des documents parfois de façon assez faible (moyenne de perturbation du noeuds entre 0.1 et 0.3) et dans d'autres cas de façon plus importante (autour de 0.4 ou 0.5 et jusqu'à 1). Ces réactions restent très mesurées et sont systématiquement accompagnées d'un écart-type non négligeable (jusqu'à près de 3). Ces moyennes et écart-types restent très raisonnables dans la majorité des cas.
 
-![Perturbation de l'espace et Matrices de sensibilité (mea et std) pour chaque perturbation de niveau 1](../images/exp5/planche-replace_syn.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) pour chaque perturbation de niveau 1](../images/exp5/planche-replace_syn.png)
 
 **Noeuds les plus sensibles** Certains composants du modèle réagissent à plusieurs perturbations. Toutefois, aucun noeud ne réagis à la moitié des perturbations ou plus. Les trois noeuds les plus réactifs ((11,2), (11,4), (11,8)) sont sensibles à trois perturbations chacun. Ce ne sont pas les mêmes. Ces trois noeuds appartiennent à la dernière couche du modèle (celle qui est en sortie du modèle).
 
-![](../images/exp5/SensibiliteNoeuds-replace_syn.png)
+![Nombre de fois où le noeuds est considéré comme sensible au sens du critère défini plus haut pour les perturbations de niveau 1](../images/exp5/SensibiliteNoeuds-replace_syn.png){ width=300px }
 
 Nombre de noeuds réactifs pour chaque perturbation : 
 ``` 
@@ -130,19 +139,19 @@ système -> dispositif :
 	(11, 1) 0.28, 0.59 | 1.00, 1.00
 ``` 
 
-### Polysémie [Niveau 2]
+## Polysémie [Niveau 2]
 
 **Gestion des NaN** Le calcul des matrices de sensibilité a généré des NaN (en moyenne 3528 NaN par perturbation). D'une perturbation à l'autre, le nombre de NaN va de 3168 à 4032. La majorité des perturbations n'ayant que très peu d'impact sur la représentation des documents, ces ordres de grandeur ne sont pas étonnants.
 
 **Perturbation de l'espace de représentation des documents et questions** La majorité des perturbations n'ont presque pas d'impact sur la représentation des documents. `aérien -> poétique`et `défense -> corne`ont un impact qui ne peut pas être assimilé à un artefact. Seul `drone -> transformation` provoque une forte perturbation de la représentation des documents.
 
-![](../images/exp5/planche-replace_ps.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) pour chaque perturbation de niveau 2](../images/exp5/planche-replace_ps.png)
 
 **Sensibilité des composants du modèle** De façon inattendue, la perturbation avec les noeuds les plus réactifs n'est pas `drone -> transformation` qui n'a qu'un seul noeuds considéré comme sensible ((11,4) 0.17, 0.32). La perturbation à laquelle le plus de noeuds est sensible est `aérien -> poétique` avec 8 noeuds sensibles. Pour une grande partie des perturbations, très peu de noeuds sont considérés comme sensibles (entre 1 et 3 avec des moyennes inférieures à 0.2 pour ces noeuds). `aérien -> poétique`, `technique -> difficile` et `défense -> corne` se démarquent avec respectivement 8, 5 et 4 noeuds sensibles, majoritairement dans les deux couches les plus profondes du modèle (couches 10 et 11).
 
 **Noeuds les plus sensibles** Les trois noeuds les plus souvent sensibles sont (11, 4), (11, 2) et (11, 8) avec respectivement 4,3 et 3 perturbations impactantes. (11, 4) est sensible aux perturbations qui impactent peu de noeuds. (11, 2) et (11, 8) sont sensibles à des perturbations qui impactent plus de noeuds. Encore une fois ces noeuds appartiennent tous à la dernière couche du modèle.
 
-![](../images/exp5/SensibiliteNoeuds-replace_ps.png)
+![Nombre de fois où le noeuds est considéré comme sensible au sens du critère défini plus haut pour les perturbations de niveau 2](../images/exp5/SensibiliteNoeuds-replace_ps.png){ width=300px }
 
 Nombre de noeuds relevés par perturbation:
 ``` 
@@ -195,12 +204,12 @@ drone -> transformation :
 	(11, 4) 0.17, 0.32 | 1.00, 1.00
 ```
 
-### Éléphants [Niveau 3]
+## Éléphants [Niveau 3]
 **Gestion des NaN** Le calcul des matrices implique le traitement de valeurs NaN. En moyenne, chaque perturbation a engendré 3402 NaN, tous remplacés par 0. Le nombre de NaN pour chaque perturbation va de 3024 à 3888. Ce phénomène est courant pour les transformations de type `replace`.
 
 **Perturbation de l'espace de représentation des documents et questions** Les effets des perturbations sur la représentation des documents est assez variable. Certaines perturbations ont un impact si faible qu'il peut être considéré comme négligeable ou comme un artefact. Les perturbations `aérien -> épicurien` et `matériel -> post-it` ont un faible impact sur les représentations des documents mais il ne peut être négligé. `drone -> gazon` Impacte de façon beaucoup plus importante la représentation des documents. Elle engendre une concentration d'une partie d'entre eux autour d'une distance  à la question de 13.
 
-![](../images/exp5/planche-replace_eleph.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) pour chaque perturbation de niveau 3](../images/exp5/planche-replace_eleph.png)
 
 **Sensibilité des composants du modèle** Comme pour la perturbation de niveau 2 associée, `drone -> gazon` n'impacte qu'un seul composant, le même et faiblement (moyenne à 0.21, écart-type de 0.38). Une grande partie des perturbations n'impactent pas ou très peu de noeuds si on se fie aux moyennes. Lorsqu'on inclue les écarts-types dans les critères d'identification, le nombre de noeuds sensible augmente (moyennes autour des +/-0.02 avec des écart-types rescalés allant de 0.5 à 1). La perturbation `technique -> magique` illustre très bien ce phénomène. De façon globale, les moyennes sont assez basses en valeur absolue (-0.32, 0.24 et 0.21 sont les trois plus élevées, toutes perturbations confondues).
 
@@ -208,7 +217,7 @@ drone -> transformation :
 
 **Noeuds les plus sensibles** Étant données les moyennes très faibles et les artefacts introduits par le critère de désignation des noeuds sensibles, la liste des noeuds sensibles est peu fiable. Malgré cela, Le noeud (11,3) semble se dégager comme _vraiment_ sensible (certaines moyennes atteignent 0.13, -0.32, -0.14). De la même façon mais moins marqué, on retrouve (11, 4) avec des moyennes à 0.21, et 0.12.
 
-![](../images/exp5/SensibiliteNoeuds-replace_eleph.png)
+![Nombre de fois où le noeuds est considéré comme sensible au sens du critère défini plus haut pour les perturbations de niveau 3](../images/exp5/SensibiliteNoeuds-replace_eleph.png){ width=300px }
 
 Nombre de noeuds relevés par perturbation:
 ``` 
@@ -261,12 +270,12 @@ limitation -> animation :
 	(11, 11) -1.00, 4.34 | -1.00, 1.00
 ```
 
-### Éléphants Roses [Niveau 4]
+## Éléphants Roses [Niveau 4]
 **Gestion des NaN** Le calcul des matrices implique le traitement de valeurs NaN. En moyenne, chaque perturbation a engendré 3402 NaN, tous remplacés par 0. Le nombre de NaN pour chaque perturbation va de 3024 à 3888. Ce phénomène est courant pour les transformations de type `replace`.
 
 **Perturbation de l'espace de représentation des documents et questions** On retrouve encore des perturbations avec un impact négligeable (`article -> luge pontificale`, `matériel -> porte sans poivre`, `technique -> feuille entubée`, `défense -> poire retournée` ). Les autres perturbations sont peu impactantes (`système -> esperluette en vent`, `aérien -> acide tracté`). La perturbation `drone -> ver de verre` est la plus impactante.
 
-![](../images/exp5/planche-replace_er.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) pour chaque perturbation de niveau 4](../images/exp5/planche-replace_er.png)
 
 **Sensibilité des composants du modèle** Comme pour les perturbations précédentes, les noeuds ne sont pas très sensibles. On retrouve beaucoup de matrices avec des noeuds les plus sensibles avec une moyenne proche de 0.2. La seule perturbation qui se détache avec des noeuds les plus sensibles qui dépassent les 0.5 en valeur absolue est `système -> esperluette en vent`. Les perturbations qui n'ont pas de noeud sensible (au regard des moyennes) tendent à ne pas avoir de noeud qui se dégage lors du rescaling (trop de noeuds ressortent mais sans réelle frontière entre les plus sensibles et ceux qui le sont moins). C'est majoritairement le cas lorsque les écarts-types aussi ne montrent rien. Dans le cas où certains écarts-types sont remarquable, le rescaling des moyennes met en evidence certains noeuds. Les valeurs étant faibles, il faut tout de même être vigilant sur l'intérêt de ces noeuds
 
@@ -276,7 +285,7 @@ limitation -> animation :
 
 **$\Rightarrow$ Interprétation impossible de la matrices des noeuds sensibles**
 
-![](../images/exp5/SensibiliteNoeuds-replace_er.png)
+![Nombre de fois où le noeuds est considéré comme sensible au sens du critère défini plus haut pour les perturbations de niveau 4](../images/exp5/SensibiliteNoeuds-replace_er.png){ width=300px }
 
 Nombre de noeuds relevés par perturbation:
 ``` 
@@ -353,7 +362,7 @@ technique->feuille entubée :
 	(6, 5) 0.01, 0.08 | 0.52, 0.52
 ```
 
-### Lecture transversale
+## Lecture transversale
 
 **Perturbation de l'espace de représentation** L'espace de représentation est perturbé de façon similaire pour un même mot remplacé (quelque soit le mot remplaçant). De plus, la majorité des distributions des documents perturbés restent assez proche de la distribution des documents originaux.
 
@@ -378,7 +387,8 @@ technique->feuille entubée :
 
 Pour `aérien`et `article` il semble apparaître un noeud sensible qui n'est pas sur les dernières couches. Cependant, leur sensibilité ne concerne que 2 des 4 niveaux de perturbation. _Doit-on les prendre en compte?_
 
-## Conclusion
+# Conclusion
+
 - Revoir le critère `est_noeuds_sensible` pour mieux gérer le cas de l'écart-type rescalé. 
 - Certains noeuds se dégagent clairement pour un mot remplacé:
     - `aérien` : (11,6) (Sensible pour les 4)
