@@ -47,7 +47,7 @@ def compter_noeuds_sensibles(json_path, pert_type):
             resc_std = (np.sign(std) / np.absolute(std).max()) * np.absolute(std)
 
             compteur_pert[perturbation] ={}
-            compteur_pert[perturbation]["carte"] = ((np.abs(mean) > 0.1) & (np.abs(resc_mean) > 0.5)) | (resc_std > 0.5)
+            compteur_pert[perturbation]["carte"] = ((np.abs(mean) > 0.1) & (np.abs(resc_mean) > 0.5)) | ((np.abs(std) > 0.1) & (np.abs(resc_std) > 0.5))
 
             compteur_pert[perturbation]["noeuds_sensibles"] = []
             for i in range(mean.shape[0]):
