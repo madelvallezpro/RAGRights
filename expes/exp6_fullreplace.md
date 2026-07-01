@@ -143,7 +143,7 @@ technique -> feuille entubée
 
 
 # Résultats
-Les critère de sensibilité d'un noeuds utilisé dans la suite est _(|mean|>0.1 et |resc_mean| > 0.5) ou (std>0.1 et resc_std>05)_
+Les critère de sensibilité d'un noeuds utilisé dans la suite est _(|mean|>0.1 et |resc_mean| > 0.5) ou (std>0.1 et resc_std>0.5)_
 
 ## Perturbations de Niveau 1
 **Gestion des NaN** La perturbation 4 génère 1872 NaN lors du calcul des matrices de sensibilité
