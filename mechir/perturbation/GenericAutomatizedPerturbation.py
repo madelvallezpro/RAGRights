@@ -98,17 +98,18 @@ query_field = "question"        # default : "text"
 text_field = "text"             # default : "text"
 is_irdata = False
 query_id_subset=["1"] # default : None
+sub_dataset_criteria = "pertinent" # default None
 
-perturbations_path = "res/mE5-MainV2/exp6/test/perturbation_polysemie_mainV2.txt"
+perturbations_path = "res/mE5-MainV2/test/new_pert_test.json"
 full_replace = True
 gen_matrices = True
-gen_mean = True
+gen_mean = False
 gen_std = True
-res_path = "res/mE5-MainV2/exp6/test/" 
+res_path = "res/mE5-MainV2/test/" 
 
-load_values = False # default = False
-load_path = "res/mE5-MainV2/exp6/test/perts_values.json"
-save_values = True # default = False
+load_values = True # default = False
+load_path = "res/mE5-MainV2/test/perts_values.json"
+save_values = False # default = False
 
 
 from mechir import Dot
@@ -128,6 +129,7 @@ import numpy as np
 
 from tqdm import tqdm
 import json
+from copy import deepcopy
 
 
 #Perturbations parametrées
@@ -142,17 +144,16 @@ def param_replace(doc, mot_orig="microwave", mot_rempl="toaster"):
 
 def param_full_replace(doc, replacmts):
     res = doc
-    for replacemt in replacmts:
-        assert len(replacemt) == 3 , "Les perturbations de type full-replace doivent se composer de perturbations de type replace seulement"
-        res.replace(replacemt[1], replacemt[2])
+    for replacemt in replacmts["compo"]:
+        assert replacemt["type"] == "replace" , "Les perturbations de type full-replace doivent se composer de perturbations de type replace seulement"
+        res = res.replace(replacemt["from"], replacemt["to"])
     return res
 
 
 
-# génération des perturbations à produire à partir du document
-def generer_transformations(fichier_regles):
+# génération des perturbations à produire à partir du document txt
+def generer_transformations_txt(fichier_regles):
     transformations = []
-    perts_name=[]
 
     with open(fichier_regles, "r", encoding="utf-8") as f:
         for ligne in f:
@@ -166,28 +167,27 @@ def generer_transformations(fichier_regles):
                 gauche, droite = ligne.split("->", 1)
                 mot_present = gauche.strip()
                 mot_remplacant = droite.strip()
-                # print(f"{gauche}, {droite}")
-                # print(f"{mot_present}, {mot_remplacant}")
-                transformations.append( ("replace", mot_present, mot_remplacant)
-                )
-                perts_name.append(ligne)
+                transformations.append({"type":"replace", "from":mot_present, "to":mot_remplacant, "name":ligne})
 
             # Cas 2 : ajout en début (mot+)
             elif ligne.endswith("+"):
                 mot = ligne[:-1].strip()
-                transformations.append( ("prepend", mot))
-                perts_name.append(ligne)
+                transformations.append({"type":"prepend", "word":mot, "name":ligne})
 
             # Cas 3 : ajout en fin (+mot)
             elif ligne.startswith("+"):
                 mot = ligne[1:].strip()
-                transformations.append( ("append", mot))
-                perts_name.append(ligne)
+                transformations.append({"type":"append", "word":mot, "name":ligne})
 
             else:
                 raise ValueError(f"Règle non reconnue : {ligne}")
 
-    return transformations, perts_name
+    return transformations
+
+def generer_transformations_json(fichier_regles):
+    with open(fichier_regles, "r") as f:
+        raw_regles = json.load(f)
+    return raw_regles
 
 # Helper function to print query/baseline document/perturbed document triplets
 def pretty_print_triplets(batch, tokenizer, num=1):
@@ -433,29 +433,30 @@ def plot_components_V2(
         plt.show()
 
 def load_pert_result(filepath):
+    # chargement du contenu
     with open(filepath, 'r', encoding="utf-8") as load_file:
         perts_values = json.load(load_file)
-    for pert_name in perts_values:
-        if  "patching_mean" in perts_values[pert_name] :
-            perts_values[pert_name]["patching_mean"] = np.asarray(perts_values[pert_name]["patching_mean"])
-        if "patching_std" in perts_values[pert_name]:
-            perts_values[pert_name]["patching_std"] = np.asarray(perts_values[pert_name]["patching_std"])
+    #conversion des listes de listes en ndarray de numpy
+    for pert in perts_values:
+        if  "patching_mean" in pert["results"] :
+            pert["results"]["patching_mean"] = np.asarray(pert["results"]["patching_mean"])
+        if "patching_std" in pert["results"]:
+            pert["results"]["patching_std"] = np.asarray(pert["results"]["patching_std"])
 
     return perts_values
 
 
-def save_pertubs_values(result_file, save_path):
-    save_values = {}
-    for pert_name in result_file:
-        save_values[pert_name] = {}
-        save_values[pert_name]["baseline_perf"] = result_file[pert_name]["baseline_perf"]
-        save_values[pert_name]["perturbed_perf"] = result_file[pert_name]["perturbed_perf"]
-        if  "patching_mean" in result_file[pert_name] :
-            save_values[pert_name]["patching_mean"] = result_file[pert_name]["patching_mean"].tolist()
-        if "patching_std" in result_file[pert_name]:
-            save_values[pert_name]["patching_std"] = result_file[pert_name]["patching_std"].tolist()
-    with open(save_path, 'w', encoding="utf-8") as result_file:
-            json.dump(save_values, result_file, indent=2)
+def save_pertubs_values(results_values, save_path):
+    # copie et conversion des array numpy en liste de liste
+    save_values = deepcopy(results_values)
+    for pert in save_values:
+        if  "patching_mean" in pert["results"] :
+            pert["results"]["patching_mean"] = pert["results"]["patching_mean"].tolist()
+        if "patching_std" in pert["results"] :
+            pert["results"]["patching_std"] = pert["results"]["patching_std"].tolist()
+    # sauvegarde
+    with open(save_path, 'w', encoding="utf-8") as file:
+            json.dump(save_values, file, indent=2)
 
 def calculate_components(param_pert_dot_dataloader, gen_mean, gen_std):
     patching_head_outputs = []
@@ -490,30 +491,32 @@ def load_dataset(data_path, is_irdata, query_id_subset = None, query_field = "te
         # print("Number of query,doc pairs in dataset:", len(dataset))
     else:
         data = pd.read_csv(data_path)
+        if sub_dataset_criteria is not None:
+            data = data.query(sub_dataset_criteria)
         dataset = MechDataset(data, query_field=query_field, text_field=text_field)
         # print("Number of query,doc pairs in dataset:", len(dataset))
     return dataset
 
 def one_pert_traitement(
-        pert, dot_model, 
+        pert,
+        dot_model, 
         dataset, 
-        full_replace = False, 
         gen_matrices = False, 
         gen_mean=False, 
         gen_std=False
     ):
-    if full_replace:
+    if pert["type"] == "full_replace":
         pert_fun = perturbation(lambda texte : param_full_replace(texte, pert))
         pert_type = "replace"
-    elif pert[0]=="replace":
-        pert_fun = perturbation(lambda texte : param_replace(texte, pert[1], pert[2]))
-        pert_type = pert[0]
-    elif pert[0]=="prepend":
-        pert_fun = perturbation(lambda texte : param_prepend(texte, pert[1]))
-        pert_type = pert[0]
-    elif pert[0]=="append":
-        pert_fun = perturbation(lambda texte : param_append(texte, pert[1]))
-        pert_type = pert[0]
+    elif pert["type"]=="replace":
+        pert_fun = perturbation(lambda texte : param_replace(texte, pert["from"], pert["to"]))
+        pert_type = pert["type"]
+    elif pert["type"]=="prepend":
+        pert_fun = perturbation(lambda texte : param_prepend(texte, pert["word"]))
+        pert_type = pert["type"]
+    elif pert["type"]=="append":
+        pert_fun = perturbation(lambda texte : param_append(texte, pert["word"]))
+        pert_type = pert["type"]
     else:
         raise RuntimeError("Unreachable")
     param_pert_dot_collator = DotDataCollator(dot_model.tokenizer, pert_fun,  perturb_type=pert_type)
@@ -550,29 +553,29 @@ else:
     # Recup dataset
     dataset = load_dataset(data_path, is_irdata, query_id_subset, query_field, text_field)
 
-    perts, perts_name = generer_transformations(perturbations_path)
-    perts_values = {}
-    if full_replace:
-        perts_values["full_replace"] = one_pert_traitement(
-            perts,
-            dot_model, 
-            dataset,
-            full_replace=True,
-            gen_matrices= gen_matrices,
-            gen_mean= gen_mean,
-            gen_std = gen_std)
-        perts_values["full_replace"]["descr"] = perts_name
-    else:
-        for i in range(len(perts)):
-            print(perts[i], "="*50)
-            perts_values[perts_name[i]] = one_pert_traitement(
-                perts[i], 
+    match perturbations_path.split(".")[-1].strip():
+        case "txt":
+            print("Appel à generer_transformations_txt")
+            perts = generer_transformations_txt(perturbations_path)
+        case "json":
+            print("Appel à generer_transformations_json")
+            perts = generer_transformations_json(perturbations_path)
+        case _:
+            raise RuntimeError("Unreachable")
+    
+    perts_values = []
+    for pert in perts:
+        print(pert["name"], "="*50)
+        perts_values.append({
+            "pert" : pert,
+            "results" : one_pert_traitement(
+                pert, 
                 dot_model, 
                 dataset,
-                full_replace=False,
                 gen_matrices= gen_matrices,
                 gen_mean= gen_mean,
                 gen_std = gen_std)
+        })
 
     if save_values:
          save_pertubs_values(perts_values, f"{res_path}/perts_values.json")
@@ -581,12 +584,12 @@ else:
 
 # Génération des graphiques
 print("Génération des graphiques")
-for pert_name, pert_values in perts_values.items():
-    plot_scores(pert_values["baseline_perf"], pert_values["perturbed_perf"], pert_name, save_path=res_path+"PerturbationScore_"+pert_name+".png")
-    if "patching_mean" in pert_values and pert_values["patching_mean"] is not None:
-        plot_components_V2(pert_values["patching_mean"], title="Components Patching Results (mean) for "+ pert_name, save_path=res_path+"ComponentPatching-mean_"+pert_name+".png", view_style="base_adapt")
-        plot_components_V2(pert_values["patching_mean"], title="Components Patching Results (mean) for "+ pert_name, save_path=res_path+"ComponentPatching-mean_"+pert_name+"V2.png", view_style="base_resc")
+for pert_values in perts_values:
+    plot_scores(pert_values["results"]["baseline_perf"], pert_values["results"]["perturbed_perf"], pert_values["pert"]["name"], save_path=res_path+"PerturbationScore_"+pert_values["pert"]["name"]+".png")
+    if "patching_mean" in pert_values["results"] and pert_values["results"]["patching_mean"] is not None:
+        plot_components_V2(pert_values["results"]["patching_mean"], title="Components Patching Results (mean) for "+ pert_values["pert"]["name"], save_path=res_path+"ComponentPatching-mean_"+pert_values["pert"]["name"]+".png", view_style="base_adapt")
+        plot_components_V2(pert_values["results"]["patching_mean"], title="Components Patching Results (mean) for "+ pert_values["pert"]["name"], save_path=res_path+"ComponentPatching-mean_"+pert_values["pert"]["name"]+"V2.png", view_style="base_resc")
 
-    if "patching_std" in pert_values and pert_values["patching_std"] is not None:
-        plot_components_V2(pert_values["patching_std"], title="Components Patching Results (std) for "+ pert_name, save_path=res_path+"ComponentPatching-std_"+pert_name+".png", view_style="std_adapt")
-        plot_components_V2(pert_values["patching_std"], title="Components Patching Results (std) for "+ pert_name, save_path=res_path+"ComponentPatching-std_"+pert_name+"V2.png", view_style="std_resc")
+    if "patching_std" in pert_values["results"] and pert_values["results"]["patching_std"] is not None:
+        plot_components_V2(pert_values["results"]["patching_std"], title="Components Patching Results (std) for "+ pert_values["pert"]["name"], save_path=res_path+"ComponentPatching-std_"+pert_values["pert"]["name"]+".png", view_style="std_adapt")
+        plot_components_V2(pert_values["results"]["patching_std"], title="Components Patching Results (std) for "+ pert_values["pert"]["name"], save_path=res_path+"ComponentPatching-std_"+pert_values["pert"]["name"]+"V2.png", view_style="std_resc")
