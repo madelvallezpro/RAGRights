@@ -100,7 +100,7 @@ def perturbation_type(pert):
 def stats(noeuds_perts, path):
     s = "Nombre de noeuds relevés par perturbation"
     for pert, values in noeuds_perts.items():
-        s+=f"\n{pert} : {values["total"]}"
+        s+=f"\n{pert} : {values['total']}"
     for pert, values in noeuds_perts.items():
         s+=f"\n{pert} : "
         for i,j,mean,std,rmean,rstd in values["noeuds_sensibles"]:

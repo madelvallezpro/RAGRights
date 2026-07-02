@@ -127,7 +127,7 @@ def construire_json(perturbations, full_replace, descr):
 
 def sauvegarder(obj, path):
 
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w+", encoding="utf-8") as f:
 
         json.dump(
             obj,
