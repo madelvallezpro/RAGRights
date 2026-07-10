@@ -100,9 +100,9 @@ On observe bien des distributions des scores des paires différentes pour les pa
 
 ## Perturbations de Niveau 1
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations de Niveau 1 sur les paires positives](../images/exp7/planche_globale_Niveau1Pos.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations de Niveau 1 sur les paires positives](../images/exp7/planche_globale_Niveau1Pos.png){width=100%}
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations de Niveau 1 sur les paires négatives](../images/exp7/planche_globale_Niveau1Neg.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations de Niveau 1 sur les paires négatives](../images/exp7/planche_globale_Niveau1Neg.png){width=100%}
 
 **Perturbation des représentations des documents** Selon le mot remplacé, les représentations perturbées sont soit celles de paires positives soit de paires négatives. Si le mot remplacé est présent seulement dans des paires positives, seuls certains documents issus du dossier sur les limitations matérielles des drones (documents considérés comme positifs) auront une représentation perturbée. Les documents issus des deux autres pdf (considérés comme négatifs) ne sont pas modifiés par la perturbation. Par conséquent, leur représentation reste identique. Dans ces cas, la distribution des scores (distances entre représentation de la question et celle du document) ne change pas.
 
@@ -159,9 +159,9 @@ Seul le remplacement de système impacte des documents positifs et négatifs.
 
 **Perturbation de la représentation des documents** Les documents et les mots remplacés étant les mêmes, on retrouve le même type de comportement des distributions des documents _perturbés_. Les documents qui ne sont pas modifiés par les perturbations conservent le même représentation et si ils sont en datasets entiers, la distribution est strictement identique. Dans ce cas, la différence de distribution observée pour le dataset complet (dans l'expérience 5) est entièrement supportée par le sous dataset complémentaire. Étant donné que peu de documents sont perturbés, les distributions des représentations sont peu modifiées (comme pour toutes les expériences précédentes). 
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbation de Niveau 2 sur les paires positives](../images/exp7/planche_globale_Niveau2Pos.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbation de Niveau 2 sur les paires positives](../images/exp7/planche_globale_Niveau2Pos.png){width=100%}
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbation de Niveau 2 sur les paires négatives](../images/exp7/planche_globale_Niveau2Neg.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbation de Niveau 2 sur les paires négatives](../images/exp7/planche_globale_Niveau2Neg.png){width=100%}
 
 **Gestion des NaN** Les mots remplacés et les documents étant les mêmes que pour les perturbations de Niveau 1, on observe exactement le même nombre de NaN générés pour chaque (sous-)dataset et mot remplacé. 
 
@@ -193,11 +193,11 @@ On retrouve les mêmes tendances et comportements sur ces deux autres groupes de
 
 ## Perturbations de type full-replace
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations full-replace de niveau 1 à 4 sur les paires positives](../images/exp7/planche_globale_full-replacePos.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations full-replace de niveau 1 à 4 sur les paires positives](../images/exp7/planche_globale_full-replacePos.png){width=100%}
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations full-replace de niveau 1 à 4 sur les paires négatives](../images/exp7/planche_globale_full-replaceNeg.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations full-replace de niveau 1 à 4 sur les paires négatives](../images/exp7/planche_globale_full-replaceNeg.png){width=100%}
 
-![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations full-replace de niveau 1 à 4 sur le dataset complet](../images/exp7/planche_globale_full-replaceFull.png)
+![Perturbation de l'espace et Matrices de sensibilité (mean et std) - Perturbations full-replace de niveau 1 à 4 sur le dataset complet](../images/exp7/planche_globale_full-replaceFull.png){width=100%}
 
 **Perturbation des représentations** Pour les perturbations full-replace de niveau 1, 2 et 4, la perturbations semble impacter plus les représentations  paires positives en concentrant les distances entre la représentation de la question et celle de la réponse autour de 13. La distribution des distances pour les documents des paires négatives est moins perturbé.  
 La perturbation full-replace de niveau 3 impacte différemment la distribution des distances. On retrouve aussi une concentration des distances autour de 13 pour les documents positifs mais cela est compensé par un étalement des représentations des scores des paires négatives.  
@@ -228,6 +228,7 @@ L'origine des NaN ne correspond pas à ma première piste. Ils sont issus d'une 
 Cela met en lumière une faiblesse des paires (perturbations, dataset) utilisées jusqu'ici : les perturbations actuelles n'impactent que la moitié (15/26 exactement) des entrées du dataset complet (paires positives et négatives) et tendent à viser seulement les paires positives ou les paires négatives. La difficulté de construction des perturbations s'explique aussi par le faible recoupement du vocabulaire d'un document à l'autre et d'un pdf choisi à l'autre. Pour perturber un grand nombre de document à l'aide d'un seul remplacement, le mot remplacé doit apparaître un très grand nombre de fois. Cette possibilité est entravée par la méthode de construction du modèle (sélection de documents portant sur des sujets différents).
 
 Pistes de prévention de la dilution des perturbations:
+
 - sur les perturbations :
   - remplacements multiples (full_replace)
   - Retour aux perturbations de type append/ prepend qui modifient tous les documents
