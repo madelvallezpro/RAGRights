@@ -1,0 +1,78 @@
+\section{Objectifs}
+
+    \begin{verbatim}
+- Objectif naif : Identifier les composants du modèle impliqués dans l'identification et la gestion 
+de la langue de spécialité d'un dataset
+- Objectif pratique : Identifier et proposer des préconisations d'usage de la librairie MechIR pour 
+la localisation des composant impliqués dans la langue de spécialité
+- Définition de langue de spécialité, réduction de l'objectif à l'identification du vocabulaire 
+de spécialité 
+    \end{verbatim}
+
+
+\section{Méthodologie}
+    \subsection{Construction des perturbations}
+        \begin{verbatim}
+- on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
+(car liés au vocabulaire de spécialité) en les replaçant
+- On propose plusieurs candidats au remplacement classé en 4 niveaux ...
+- Le choix des remplaçant est fait par jugement humain
+- Le choix des mots à remplacer se fait à l'aide de 
+    - fréquence dans l'échantillon de données sélectionné
+    - IDF 
+    - appartenance au vocabulaire de spécialité (jugement humain)
+    - présence du mot dans la question étudiée (cas du dataset à 1! question)
+- pour augmenter le nombre de document perturbé et limiter l'impact d'un mot seulement dans la 
+cartographie, on propose un nouveau type de perturbation : full_replace
+        \end{verbatim}
+
+    \subsection{Estimation de la pertinence d'une perturbation}
+        \begin{verbatim}
+SI PAS DÉJÀ PRÉSENTÉ DANS PARTIE DE L'ÉTAT DE L'ART SUR MECHIR
+- On visualise des scores de similarité entre questoin et document
+- graphique d'exemple + texte d'accompagnement à la lecture
+- Un perturbation peut être considérée comme pertinente lorsqu'elle modifie significativement 
+(jugement humain) la distribution des cores pour l'échantillon du dataset étudié
+        \end{verbatim}
+
+    \subsection{Interprétation des résultats de l'Activation Patching}
+
+        \begin{verbatim}
+SI PAS DÉJÀ FAITE DANS SOTA sur MechIR
+- graphique + accompagnement à la lecture (on obtient une sensibilité de chaque 
+noeuds pour chaque paire (Question, document), on visualise la moyenne)
+
+- étant donné la construction de ces valeurs, on s'intéresse aussi aux écarts-types
+- pour faciliter la visualisation et la comparaison en cas de sensibilité variable 
+d'une perturbation à l'autre on propose de rescaler les poids des matrices
+- L'identification des noeuds sensibles doit reposer sur un critère commun. On propose
+un critère de sensibilité ...
+- Visualisation des noeuds sensibles commun à plusieurs perturbation (matrice des noeuds sensibles)
+    -> croiser les différentes caractéristiques (mot remplacé, type, niveau)
+    -> critique des noeuds sensibles de la dernière couche
+        \end{verbatim}
+
+\section{Résultats et Analyse}
+
+    \subsection{Application à la cartographie du vocabulaire de la défense français dans mE5}
+        \begin{verbatim}
+- Grand nombre de noeuds de la dernière couche du modèle
+- pas de noeuds clairement associé au vocabulaire
+...
+        \end{verbatim}
+
+
+    \subsection{Préconisations d'utilisation}
+        \begin{verbatim}
+- des perturbations qui couvrent tous ou très grande partie des documents étudiés
+- utiliser la question comme document témoin
+        \end{verbatim}
+
+
+\section{Perspectives d'évolution de la méthode proposée}
+
+    \begin{verbatim}
+- échelle pour situer le niveau d'un mot candidat remplaçant en fonction du mot remplacé
+- critère d'identification du vocabulaire de spécialité
+- intégration d'autres informations au critère de sensibilité
+    \end{verbatim}

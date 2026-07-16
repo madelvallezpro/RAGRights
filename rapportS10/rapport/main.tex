@@ -1,0 +1,61 @@
+\documentclass[french]{report} 
+% valeur possibles : article, proc, book, report, letter, slides
+% options possibles : twosides (recto-verso), 12pt, 11pt, ... (taille de police), draft (brouillon)
+
+% pour l'edition de document en français:
+\usepackage[utf8]{inputenc} % codage du fichier source
+\usepackage[T1]{fontenc} % codage des fontes TeX
+\usepackage{babel} % document en français
+
+% Mise en page, propreté de rédaction
+\usepackage[bottom=2cm,top=2cm,right=2cm,left=2cm]{geometry} % pour les marges
+\usepackage{multicol} % pour ecrire sur plusieurs colones localement
+\usepackage{xcolor} %metre du texte en couleur
+
+% ecrire des maths
+\usepackage{amsmath, amsfonts, amssymb}
+
+
+
+
+%%%%%%% COMMANDES   
+\newcommand{\N}[1]{\mathbb{N}^{#1}}
+
+\newcommand{\alh}[1]{\textcolor{teal}{#1}}
+\newcommand{\md}[1]{\textcolor{cyan}{#1}}
+
+
+
+% Infos du document
+\title{Interprétabilité pour l'Extraction d'Information dans les systèmes de RAG}
+\author{Marine DELVALLEZ}
+\date{\today}
+
+\begin{document}
+    \maketitle
+
+    \chapter*{Remerciements}
+
+    \tableofcontents
+
+    \chapter{Introduction}
+    \input{introduction/introduction.tex}
+
+    \chapter{État de l'art}
+    \input{sota/sota.tex}
+
+
+    \chapter{Construction d'un dataset}
+    \input{dataset/dataset.tex}
+
+    \chapter{Adaptation du modèle RAG4HN}
+    \input{modele/modele.tex}
+
+
+    \chapter{Cartographie d'un modèle d'extraction d'information}
+    \input{cartographie/cartographie.tex}
+
+    \chapter{Conclusions et Perspectives}
+    \input{conclusion/conclusion.tex}
+
+\end{document}

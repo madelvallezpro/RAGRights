@@ -6,6 +6,8 @@
 *.snm
 *.synctex.gz
 *.toc
+*.log
+*.fls
 #*_files/
 
 # Quarto

@@ -1,0 +1,28 @@
+\section{Données du Challenge RAG@EvalLLM}
+
+    \begin{verbatim}
+Présentation des données : 
+- pdf à traiter sans structure normée du contenu
+- majoritairement en français sauf quelques uns en anglais
+- peuvent contenir des images
+Présentation de la tâche du challenge (sauf si fait dans introduction)
+- Identification des documents pertinents pour une question (phrase 
+parfois complexe ou suite de mots clés) 
+- questions fournies au dernier moment
+    \end{verbatim}
+
+\section{Structure de données visée}
+    \begin{verbatim}
+Base de données:        
+- Paires 
+- liste des champs et justification
+Choix pour datasets
+- Dataset avec des paires question-document (questions différentes et 
+différents pdf, taille des documents, répartition positif/négatif)
+- Dataset avec une seule question (construction à partir de 3 pdf) 
+[description du dataset dans les expés et les specs]
+    - motivation (reprendre l'expé présentée par MechIR, faciliter la création)
+    - limites (biais, diversité ~> généralisabilité)
+=> Placer le nom des outils utilisés (PyMuPDF4LLM et langchain.text_splitter.MarkdownSplitter)
+
+    \end{verbatim}

@@ -1,0 +1,87 @@
+\section{Systèmes de Génération et Grands Modèles de Langue Augmentés par Extraction (RAG et RALLM)}
+
+    \subsection{Besoin et Définition}
+        \begin{verbatim}
+- Les modèles profonds apprennent sur les données [ref à récupérer de Lewis+20]
+- Le problème des modèles génératifs : hallucination et connaissance bornée dans 
+le temps [ref à récupérer de Lewis+20]
+- Il y a quelques années, on a cherché à associer un base de connaissances à ces 
+modèles [Lewis+20] (= définition de RAG)
+- Parmis ces approches, on retrouve le cas des modèles de langue : RALLM
+        \end{verbatim}
+
+
+    \subsection{L'architecture RAG}
+
+        \begin{verbatim}
+Description de l'archi de façon plus avancée
+- Ces modèles peuvent être utilisés pour différents types de tâches (voir tableau 
+csv sur RAGRights)
+- Avec le temps, l'idée de [Lewis+20] a été adaptée et augmentée de composants 
+supplémentaires
+- [Fan+23] propose la structure générique ... (exploiter slides Séminaire CA)
+        \end{verbatim}
+
+
+    \subsection{Architectures aperçues au cours du stage}
+
+        \begin{verbatim}
+Au delà de l'innovation de l'architecture, on retrouve des innovations sur plusieurs 
+caractéristiques de ces modèles : [R24/04] [R16/02]
+- Multimodal [Liu+25]
+- Chain of Thought [Xu+24]
+- Gestion BDD dynamique [ref à trouver dans R24/05]
+- BDD sparse et interprétable [Prouteau]???
+        \end{verbatim}
+
+
+    \subsection{Architecture et Modèles utilisées au cours du stage}
+
+        \begin{verbatim}
+Dans le cadre du stage, 
+- travailler sur une adaptation du modèle RAG4HN. [Tran+25] 
+- _description de l'architecture RAG4HN_ + parallèle avec l'architecture générique 
+de [Fan+23]
+- L'extracteur de RAG4HN est mE5 [Wang+25b] (version multilingue de E5 [Whang+25a])
+        \end{verbatim}
+
+
+\section{Systèmes RAG de confiance}
+
+    \subsection{Trustworthy AI}
+
+        \begin{verbatim}
+La définition d'IA de confiance (Trustworthy AI) tend à varier en fonction des situation
+et des utilisations de cette expression. Danss le contexte du Machine Learning, on désigne 
+l'IA de confiance comme l'ensembles des systèmes d'IA dans lesquels il est légitime (dans 
+le sens humainement entendable) d'avoir confiance. Le NIST (National Institute of Standards 
+and Technology (US)) propose différents axes ou composantes de l'IA de confiance : ...
+        \end{verbatim}
+
+
+    \subsection{Explicabilité pour le RAG}
+        \begin{verbatim}
+Dans la suite, nous nous concentrons sur l'explicabilité dans le contexte du RAG. [Ni+25] 
+distingue deux temps pour l'explicabilité : Extraction et génération ... (prévoir la question 
+de l'association/intégration des deux)
+- Métrique ??
+        \end{verbatim}
+
+
+    \subsection{Interprétabilité Mécaniste}
+        \begin{verbatim}
+[Somvanshi+25]
+- Interprétabilité vs Explicabilité
+- Définition d'Interprétabilité Mécaniste et approches (Manual Circuit Tracing,
+*Intervention-based technique*, Representation analysis, Toy Model and synthetic tasks)
+        \end{verbatim}
+
+
+    \subsection{Activation Patching}
+
+        \begin{verbatim}
+- Définition de activation patching [Chen+24] [R30/04] [Séminaire CA]
+- MechIR [Parry+25] 
+- Perturbation
+- Données produites, visualisation et interprétation des graphiques
+        \end{verbatim}
