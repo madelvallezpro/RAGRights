@@ -15,6 +15,9 @@
 % ecrire des maths
 \usepackage{amsmath, amsfonts, amssymb}
 
+%images
+\usepackage{graphicx}
+
 
 
 
@@ -27,7 +30,7 @@
 
 
 % Infos du document
-\title{Interprétabilité pour l'Extraction d'Information dans les systèmes de RAG}
+\title{Interprétabilité Mécaniste pour l'Extraction d'Information dans les systèmes de RAG}
 \author{Marine DELVALLEZ}
 \date{\today}
 
@@ -45,17 +48,24 @@
     \input{sota/sota.tex}
 
 
-    \chapter{Construction d'un dataset}
-    \input{dataset/dataset.tex}
+    \chapter{Travail préalable et préparation des expériences}
+    \input{pre-expe/pre-expe.tex}
 
-    \chapter{Adaptation du modèle RAG4HN}
-    \input{modele/modele.tex}
+    \chapter{Contribution méthodologique}
+    \input{methodo/methodo.tex}
 
 
-    \chapter{Cartographie d'un modèle d'extraction d'information}
-    \input{cartographie/cartographie.tex}
+    \chapter{Résultats expérimentaux}
+    \input{resultats/resultats.tex}
 
     \chapter{Conclusions et Perspectives}
     \input{conclusion/conclusion.tex}
+
+    \bibliography{biblio.bib}
+    \bibliographystyle{apalike}
+
+    \appendix
+    \chapter{Résultats bruts d'expériences}
+    \input{res-expe/res-expe.tex}
 
 \end{document}

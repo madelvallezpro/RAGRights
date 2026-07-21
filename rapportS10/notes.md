@@ -203,3 +203,58 @@ TODO
   - MechIR [Parry+25] 
     - Perturbation
     - Données produites, visualisation et interprétation des graphiques
+
+
+
+---
+# Remarques et éléments à prendre en compte
+## 2026-07-17
+- Gestion de la traduction des concepts : ???
+- et ce papier de l'autre jour, qu'en faire
+- 
+
+
+- Rester théorie et résultats
+- Prévoir annexe pour les résultats 
+- Prévoir annexe pour difficultés techniques (librairie, prise en main CaSciModOT)
+- Placer "on ne dispose pas de données gold"
+- Prouteau : dans Explicabilité RAG
+- [x] 2.2 Système de RAG de confiance -> Interprétabilité pour les systèmes de RAG
+- Développer le Challenge dans dataset :
+  - Le challenge la tache
+  - Les données fournies
+  - ce qui nous manque
+  - --
+  - Le format de dataset visé
+  - tous les dérouler V0, V1 et format V2 (à chaque fois: format, ce qui manque, les modifications proposées)
+- [à rédiger] 1.3 la progression du stage en bref et le glissement du sujet
+- 1.4 placer problématique résultats du cheminement
+- garder l'évolution du sujet dans le bilan [personnel]  ou intro (pas dans le mémoire)
+- 3, 4 et 5 => reformulation
+  - 3 : prérequis à l'éxpé
+    - datset
+    - reprise d'un modèle 
+  - 4 : ce qui était le 5.2 (Construction des pert, Estimation pertinence des pert, interprétation de activation Patching) _contribution méthodologique_
+  - 5 : résultat expérimentaux (ancinement 5.3)
+    - liste des perturbations choisies
+- Ajouter touts les graphiques avec un texte succin => tri plus tart
+
+
+
+
+
+
+
+
+
+
+
+
+---
+# Typos à pister
+- mécanistique -> mécaniste
+- toin, iton,....
+- pertuabtion
+
+
+

@@ -1,0 +1,46 @@
+\section{Challenge RAG@EvalLLM}
+    \begin{verbatim}
+- Le sujet de l'extraction d'informatoin et lu RAG est d'actualité 
+- Présentation du Challenge RAG@EvalLLM
+    - La tâche
+        - Identification des documents pertinents pour une question (phrase 
+parfois complexe ou suite de mots clés) 
+        - questions fournies au dernier moment
+        - pas de gold
+    - Les données
+        - pdf à traiter sans structure normée du contenu
+        - majoritairement en français sauf quelques uns en anglais
+        - peuvent contenir des images
+    \end{verbatim}
+
+\section{Construction d'un dataset adapté}
+    \begin{verbatim}
+À REPRENDRE
+Base de données:        
+- Paires 
+- liste des champs et justification
+Choix pour datasets
+- Dataset avec des paires question-document (questions différentes et 
+différents pdf, taille des documents, répartition positif/négatif)
+- Dataset avec une seule question (construction à partir de 3 pdf) 
+[description du dataset dans les expés et les specs]
+    - motivation (reprendre l'expé présentée par MechIR, faciliter la création)
+    - limites (biais, diversité ~> généralisabilité)
+=> Placer le nom des outils utilisés (PyMuPDF4LLM et langchain.text_splitter.MarkdownSplitter)
+
+---
+
+- Le format de dataset visé
+  - tous les dérouler V0, V1 et format V2 (à chaque fois: format, ce qui manque, les modifications proposées)
+    \end{verbatim}
+
+
+\section{Adaptation du modèle RAG4HN}
+    \begin{verbatim}
+- Choix de ce modèle : traite des données en FR
+- Suppression de la partie WebSearch (hors sujet)
+- Suppression de la première extraction sur la base des titres 
+(incompatible avec le format des données du challenge)
+- Montée en version des librairies pour la compatibilité avec les outils 
+- Reprise du reranking (mettre au propre la photo du schema sur l'ardoise)
+    \end{verbatim}
