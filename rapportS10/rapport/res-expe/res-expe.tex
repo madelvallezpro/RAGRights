@@ -68,4 +68,76 @@ Le graphique de gauche associe à chaque perturbation (dans l'ordre cité) la di
 Le grphique de droite représente la distribution de ces différences.
 
 \paragraph{Analyse des graphiques}
-Pour le premier graphique, on constate une augmentation de da différence pour les niveau les plus élevés concernnat les pertubations de type replace. Les perturbation de type full\_replace ont un effet de perturbation moins important que le padding induit par le modèle.
+Pour le premier graphique, on constate une augmentation de da différence pour les niveau les plus élevés concernant les perturbations de type replace. Les perturbation de type full\_replace ont un effet de perturbation moins important que le padding induit par le modèle. On peut lier ce phénomène au fait que les modèles récents sont capables d'associer les expressions de même sens et de faire abstraction du contenu incohérent au sein d'un texte.
+
+
+
+\section{Séparer les données positives et négatives}
+
+\paragraph{Données}
+Question : Quelles sont les trois principales catégories de limitations techniques affectant les systèmes de drones, et comment chacune influence-t-elle l'efficacité opérationnelle de ces vecteurs ? \\
+Documents : 3 pdf portant sur 3 sujets distincts (limitations matérielles du drone, code de la défense - matériel de guerre, fausses infos pdt les JO/JP) dont sont extraits 28 textes (50\% de documents pertinents)
+
+\begin{tabular}{|l||c|c|}
+    \hline
+    Sujet du PDF & Documents Positifs & Documents Négatifs\\
+    \hline
+    \hline
+    Limitations techniques de drones & 14 (100\%) & 0 \\
+    \hline
+    Code de la Défense (Chapitre sur le matériel de guerre) & 0 & 6 (43\%) \\
+    \hline
+    Desinformation pendant les Jeux Olympiques & 0 & 8 (57\%)\\
+    \hline
+\end{tabular}
+
+\paragraph{Perturbations}
+\begin{verbatim}
+TODO
+Full-replace
+\end{verbatim}
+
+
+\subsection{Distribution des Scores}
+
+\includegraphics{images/ScoresDistribution_PositiveNegativeAll.png}
+
+\includegraphics{images/ScoresHistogramme_PositiveNegativeAll.png}
+
+\paragraph{Données visualisées}
+Ces graphiques représentent la répartition des scores de similarité entre la question et chaque document pour la perturbation \texttt{Full-replace Synonyme 1}. En rouge sont représentées les documents désignés pertinent vis à vis de la question, en bleu les documents non pertinent et en noire l'ensemble des documents. Le graphique de gauche correspond au cas des documents paddés et les graphiques de droite correspond aux documents perturbés.
+
+\paragraph{Analyse}
+
+
+\subsection{Scores pour les perturbations full\_replace}
+
+\includegraphics[width=\textwidth]{images/ScoresDistrEtHist_FullReplace_PositiveNegativeAll.png}
+
+\paragraph{Données Visualiées}
+Chaque ligne de graphique traite une perturbation. Les graphique représentent la distribution/ l'histogramme des scores de similarité à la question de chaque document. En rouge, on considère les documents désignés comme pertinents, en bleu les documents considérés comme non-pertinents et en noir l'ensemble des documents. Pour chaque paire de graphique, celui de gauche concerne les documents paddées (ramenés à la même longueur que les documents perturbés) et celui de droite concerne les documents perturbés par la perturbation indiquée dans el titre de la ligne de graphique.
+
+\paragraph{Analyse}
+Dans une premier temps, concernant les documents paddés, on retrouve une répartition des documents pertinents et non-pertinents cohérente : les documents pertinents ont un score d similarité à la question plus élevé que les documents non-pertinents. on notera que cette variation de distribution reste assez faible.
+
+\md{Finalement, on ne fait que vérifier le comportement des scores vis-a-vis de l'étiquette des documents. La visualisation des scores des documents pertubés n'est pas exploitée. J'ai l'imporession que les documents positifs voient leur scores diminuer et que les documents négatifs voient leur score augmenter. Ce comportement (1) est suffissament faible pour n'être qu'une impression, (2) n'a pas de sens étant donné la nature de la pertuabtion (en tout cas je ne l'explique pas). Peut-être que la visulisation des scores pour les documents non pertubés suffit.}
+
+\section{Niveaux de perturbation}
+
+\md{Intégrer dans l'analyse de la proposition de pertuabtion par niveau}
+
+\paragraph{Dataset}
+Idem que precedement
+
+\paragraph{Perturbations}
+
+\begin{verbatim}
+TODO
+\end{verbatim}
+
+\subsection{Distribution des scores en fonction du niveau de perturbation}
+
+\includegraphics[width=\textwidth]{images/ScoresDistrib_ParNiveau_Exp5.png}
+
+\paragraph{Données visualisées}
+On visualise la distribution des scores de similarité à la question des documents. Les distributions sont regroupées par mot remplacé (appelé mot cible dans la suite du paragraphe). Pour chaque mot on observe la distribution des scores de perturbation pour les documents non modifiés (paddés pour la perturbation de niveau 1) en noir, avec le mot cible remplacé par un synonyme (perturbation de niveau 1, en bleu), avec le mot cible remplacé par le synonyme d'un autre de ses sens que celui utilisé dans le document (perturbation de niveau 2, en orange), avec le mot cible remplacé par un mot ne partageant aucun sens avec le mot cible mais respectant sa nature (perturbation de niveau 3, en vert), et avec le mot cible remplacé par un groupe de mot absurde (perturbation de niveau 4, en rouge).
