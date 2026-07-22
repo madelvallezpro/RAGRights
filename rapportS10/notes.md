@@ -207,6 +207,17 @@ TODO
 
 
 ---
+
+# Reprise locale du plan
+- Construction préalable des outils /!\ à reformuler
+  - Construction d'un dataset
+  - Architecture visée
+  - Objectif de l'expérience
+    - Localiser le vocabulaire/ la langue de spécialité dans le modèle
+    - j
+- Contribution méthodologique
+  - Construction de perturbations
+
 # Remarques et éléments à prendre en compte
 ## 2026-07-17
 - Gestion de la traduction des concepts : ???

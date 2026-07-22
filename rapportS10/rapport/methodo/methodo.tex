@@ -1,29 +1,45 @@
 
 \md{À REMETTRE EN FORME}
-\section{Méthodologie}
-    \subsection{Construction des perturbations}
+\section{Construction des perturbations}
+
+    \subsection{Identification des mots cibles}
+        \md{Peut être à placer en 3e sous section (après niveau et full\_replace)}
         \begin{verbatim}
-- on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
-(car liés au vocabulaire de spécialité) en les replaçant
-- On propose plusieurs candidats au remplacement classé en 4 niveaux ...
 - Le choix des remplaçant est fait par jugement humain
-- Le choix des mots à remplacer se fait à l'aide de 
+    - Le choix des mots à remplacer se fait à l'aide de 
     - fréquence dans l'échantillon de données sélectionné
     - IDF 
     - appartenance au vocabulaire de spécialité (jugement humain)
     - présence du mot dans la question étudiée (cas du dataset à 1! question)
-- pour augmenter le nombre de document perturbé et limiter l'impact d'un mot seulement dans la 
-cartographie, on propose un nouveau type de perturbation : full_replace
+- la bonne couverture des documents est importante (commentaire sur NaN) pour avoir des résultats lisibles
         \end{verbatim}
 
-    \subsection{Estimation de la pertinence d'une perturbation}
+    \subsection{Perturbation replace par niveau}
         \begin{verbatim}
+- on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
+(car liés au vocabulaire de spécialité) en les replaçant
+- On propose plusieurs candidats au remplacement classé en 4 niveaux ...
+- Rq : il faudrait fonder l'estimation du niveau des perturbations
+        \end{verbatim}
+
+    \subsection{Perturbations de type full\_replace}
+        \begin{verbatim}
+- pour augmenter le nombre de document perturbé et limiter l'impact d'un mot seulement dans la 
+cartographie, on propose un nouveau type de perturbation : full_replace
+- on étend les niveaux à ce nouveau type de perturbations
+        \end{verbatim}
+
+\section{Estimation de la pertinence d'une perturbation}
+    \begin{verbatim}
 SI PAS DÉJÀ PRÉSENTÉ DANS PARTIE DE L'ÉTAT DE L'ART SUR MECHIR
 - On visualise des scores de similarité entre questoin et document
 - graphique d'exemple + texte d'accompagnement à la lecture
 - Un perturbation peut être considérée comme pertinente lorsqu'elle modifie significativement 
 (jugement humain) la distribution des cores pour l'échantillon du dataset étudié
-        \end{verbatim}
+
+    \end{verbatim}
+
+    
 
     \subsection{Interprétation des résultats de l'Activation Patching}
 
