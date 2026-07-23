@@ -1,9 +1,14 @@
 
 \md{À REMETTRE EN FORME}
 \section{Construction des perturbations}
+    \begin{verbatim}
+- on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
+(car liés au vocabulaire de spécialité) en les replaçant
+- La conception de perturbations necessite de bien choisir les mots à remplacer (traité dans la sous partie 1) et les mots remplaçants (traité dans la sous partie 2). 
+- La sous partie 3 propose un nouveau type de perturbations
+    \end{verbatim}
 
     \subsection{Identification des mots cibles}
-        \md{Peut être à placer en 3e sous section (après niveau et full\_replace)}
         \begin{verbatim}
 - Le choix des remplaçant est fait par jugement humain
     - Le choix des mots à remplacer se fait à l'aide de 
@@ -16,8 +21,6 @@
 
     \subsection{Perturbation replace par niveau}
         \begin{verbatim}
-- on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
-(car liés au vocabulaire de spécialité) en les replaçant
 - On propose plusieurs candidats au remplacement classé en 4 niveaux ...
 - Rq : il faudrait fonder l'estimation du niveau des perturbations
         \end{verbatim}
@@ -25,35 +28,56 @@
     \subsection{Perturbations de type full\_replace}
         \begin{verbatim}
 - pour augmenter le nombre de document perturbé et limiter l'impact d'un mot seulement dans la 
-cartographie, on propose un nouveau type de perturbation : full_replace
+cartographie (avoir une apperçu plus global), on propose un nouveau type de perturbation : full_replace
 - on étend les niveaux à ce nouveau type de perturbations
         \end{verbatim}
 
 \section{Estimation de la pertinence d'une perturbation}
     \begin{verbatim}
 SI PAS DÉJÀ PRÉSENTÉ DANS PARTIE DE L'ÉTAT DE L'ART SUR MECHIR
-- On visualise des scores de similarité entre questoin et document
+- On visualise des scores de similarité entre question et document
 - graphique d'exemple + texte d'accompagnement à la lecture
 - Un perturbation peut être considérée comme pertinente lorsqu'elle modifie significativement 
 (jugement humain) la distribution des cores pour l'échantillon du dataset étudié
+
+- on propose d'autres visualisations et confrontation de la distribution des scores entre perturbation :
+  - observation de la distribution des scores pour les documents pertinents et non-pertinents (sont-ils très séparés initialement?, Quel impact de la perturbation sur la distribution des documents pertinents/ non-pertinents?, La tendance est-elle systématique pour toutes les perturbations de même type? de même niveau?, pour un même mot cible?)
+  - observation de la distribution des scores d'un niveau de perturbation à l'autre pour un mot cible (quel comportement d'un niveau à l'autre? comportement commun à plusieurs mots?)
 
     \end{verbatim}
 
     
 
-    \subsection{Interprétation des résultats de l'Activation Patching}
-
+\section{Interprétation des résultats de l'Activation Patching}
+    \begin{verbatim}
+Un fois la ou les perturbations choisies, on peut appliquer l'activation patching à l'aide de l'outil MechIR. ON propose dans cette partie des visualisation des résultats supplémentaires pour faciliter et/ou éclairer l'analyse.
+    \end{verbatim}
+    \subsection{Visualistaion des résultts proposée par MechIR}
         \begin{verbatim}
 SI PAS DÉJÀ FAITE DANS SOTA sur MechIR
 - graphique + accompagnement à la lecture (on obtient une sensibilité de chaque 
 noeuds pour chaque paire (Question, document), on visualise la moyenne)
+        \end{verbatim}
+
+    \subsection{Autres visualisations de la sensibilité du modèle à la perturbation}
+    \md{à placer : confronter les matrices d'une perturbation à l'autre}
+        \begin{verbatim}
 
 - étant donné la construction de ces valeurs, on s'intéresse aussi aux écarts-types
 - pour faciliter la visualisation et la comparaison en cas de sensibilité variable 
 d'une perturbation à l'autre on propose de rescaler les poids des matrices
+        \end{verbatim}
+
+    \subsection{Critère d'identification des noeuds sensibles}
+        \begin{verbatim}
 - L'identification des noeuds sensibles doit reposer sur un critère commun. On propose
 un critère de sensibilité ...
-- Visualisation des noeuds sensibles commun à plusieurs perturbation (matrice des noeuds sensibles)
+        \end{verbatim}
+
+    \subsection{Matrice des noeuds sensibles}
+        \begin{verbatim}
+- Pour faciliter le besoin de mise en perspective des matrice de snesibilité d'un perturbation à l'autres ...
+- Visualisation des noeuds sensibles **commun à plusieurs perturbation** (matrice des noeuds sensibles)
     -> croiser les différentes caractéristiques (mot remplacé, type, niveau)
     -> critique des noeuds sensibles de la dernière couche
         \end{verbatim}
