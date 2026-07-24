@@ -265,7 +265,9 @@ TODO
 # Typos à pister
 - mécanistique -> mécaniste
 - toin, iton,....
+- staion
 - pertuabtion
-
+- resulatas, resulatats
+- 
 
 
