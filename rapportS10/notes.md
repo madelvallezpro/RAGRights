@@ -264,10 +264,10 @@ TODO
 ---
 # Typos à pister
 - mécanistique -> mécaniste
-- toin, iton,....
+- toin, iton, taion....
 - staion
 - pertuabtion
 - resulatas, resulatats
-- 
-
+- présentaion -> présentation
+- intelliegnce -> intelligence
 
