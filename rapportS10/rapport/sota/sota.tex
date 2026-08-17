@@ -103,7 +103,7 @@ and Technology (US)) propose différents axes ou composantes de l'IA de confianc
         \begin{description}
                 \item[Fiabilité] Le comportement d'un IA de confiance doit être systématiquement adapté, l'incertitude sur son comportement doit être quantifiable et quantifié et ses capacité de généralisation doivent être robustes.
                 \item[Intimité] Une IA de confiance doit prévenir des risques pour les données des utilisateurs ainsi que pour les données sensibles contenues dans le modèle (issues de l'apprentissage ou de la base de donnée)
-                \item[Explicabilité] Le processus de décision d'un IA de confiance doit être transparent et compréhensible pour l'utilisateur.
+                \item[Explicabilité] Le processus de décision d'une IA de confiance doit être transparent et compréhensible pour l'utilisateur.
                 \item[Justesse] Une IA de confiance doit minimiser les biais.
                 \item[Justifiabilité] Une IA de confiance doit pouvoir justifier son bon comportement et notamment sa capacité à respecter les réglementations
                 \item[Sécurité] Une IA de confiance doit détecter et prévenir les usages malicieux et cherchant à nuire.
@@ -120,6 +120,21 @@ de l'association/intégration des deux)
 - Métrique ??
         \end{verbatim}
 
+        L'explicabilité de l'intelligence artificielle, vise à rendre humainement compréhensible les raisons pour lesquelles un modèle ou système génère une certaine sortie. \cite{garouani_investigating_2024,bell_its_2022}. 
+        
+        \color{gray}
+        Dans le contexte de l'explicabilité des systèmes RAG, \cite{ni_towards_2025} distingue trois temps : l'explication de l'extracteur, l'explication du générateur et la mise en perspective de ces deux éléments. \md{Sachant qu'il faut aussi compter les autres composants, il ne faut peut être pas garder cette idée.}
+
+        \paragraph{Explicabilité pour les extracteurs} Lorsqu'on se concentre sur l'extraction des document dans un modèle de RAG, on retrouve une tâche d'extraction d'information. \cite{ni_towards_2025} distingue quatre approches d'explication des modèles d'extraction d'information. Les méthodes \textit{post-hoc} construisent des explications à partir des résultats fournis par le modèle sans s'intéresser à l'entraînement ni la conception du modèle étudié. Les méthodes \textit{basées sur les axiomes}, exportent les méthode d'extraction d'information axiomatique pour expliquer d'autres modèles. Les méthodes de \textit{probing} cherchent à localiser les connaissances et les compétences dans les poids et l'espace latent d'un modèle. Pour finir, Certains modèles sont \textit{interprétables by-design} : leur définition est une explication de leur fonctionnement.
+
+        \color{black}
+
+        Dans le contexte de l'explicabilité des systèmes RAG, \cite{ni_towards_2025} propose de distinguer l'explication du modèle d'extraction et l'explication du modèle génératif. De façon plus générale, une approche naïve d'explication des systèmes RAG est de construire des explications pour chaque composant du modèle (extraction, génération, améliorations, ...). La difficulté intervient au moment de mettre en perspective les explications fournies entre elles. \cite{ni_towards_2025} souligne l'absence de de méthode d'explication pour l'extraction d'information spécifique contexte du RAG ni d'étude de l'application des méthodes génériques à ce cas. La même question se pose pour l'explication des modèle génératifs : les méthodes d'explications classiques sont-elles capable de prendre en compte la présence des autres composants? 
+
+        Au delà de l'objectif de transparence de l'explicabilité, \cite{ni_towards_2025} pointe la possible utilisation d'explication d'un composant comme indication supplémentaire pour améliorer les performances d'un autre composant. \md{développer avec un exemple?}
+
+        
+
 
     \subsection{Interprétabilité Mécaniste}
         \begin{verbatim}
@@ -129,6 +144,9 @@ de l'association/intégration des deux)
 *Intervention-based technique*, Representation analysis, Toy Model and synthetic tasks)
         \end{verbatim}
 
+        \cite{somvanshi_bridging_2026} distingue trois paradigmes d'explicabilité. L'\textit{interprétabilité post-hoc} construit des explication à partir de l'étude du comportement des modèles. Les modèles \textit{interprétables by-design} dont l'explication est auto-contenue. L'\textit{interprétabilité mécaniste} cherche à identifier les (groupes) de composants qui induisent les différents comportements des modèles. 
+
+        \md{à finir}
 
     \subsection{Activation Patching}
 
