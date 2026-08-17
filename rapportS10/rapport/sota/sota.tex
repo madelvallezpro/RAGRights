@@ -2,16 +2,29 @@
 
     \subsection{Besoin et Définition}
         \begin{verbatim}
-- Les modèles profonds apprennent sur les données [ref à récupérer de Lewis+20]
+- Les modèles profonds apprennent sur les données [ref à récupérer]
 - Le problème des modèles génératifs : hallucination et connaissance bornée dans 
-le temps [ref à récupérer de Lewis+20]
+le temps [ref à récupérer]
 - Il y a quelques années, on a cherché à associer un base de connaissances à ces 
 modèles [Lewis+20] (= définition de RAG)
 - Ces approches peuvent être appliquées aux tâches et modèles du TALN : RALLM
         \end{verbatim}
+        Les modèles d'apprentissage profond tels que les Réseaux de neurones profond, Réseaux Convolutionnels ou les Réseaux basés sur le mécanisme d'attention constituent leur connaissances à partir des données utilisées pour les entraîner. Cependant, leurs connaissances et leur capacité d'extrapolation sont limités. Cela rend ces modèles vulnérables à l'obsolescence des résultats et aux hallucinations \md{reference valable à trouver}. Pour traiter ces problématiques, \cite{lewis_retrieval-augmented_2020} propose d'associer une base de donnée et un modèle d'extraction des données de cette base à un modèle génératif. La base de donnée permet d'entretenir plus facilement les connaissances du modèle obtenu afin de limiter l'obsolescence des résultats et/ou grandir la base de connaissance selon le besoin ou la tâche visée.\\
+        Les systèmes combinant un modèle d'extraction (\textit{retrieval} en anglais) et un modèle génératif sont appelées systèmes RAG (Retrieval Augmented by Generation). La question ou requête de l'utilisateur est fournie au modèle d'extraction qui récupère les documents ou extraits de documents pertinent au regard de la question. Ces documents ainsi que la question sont alors donnés au générateur qui produit le résultat final. Ce processus est schématisé dans le Figure~\ref{fig:ArchiRAG}
+
+        \begin{figure}\begin{center}
+            \includegraphics[width=0.6\textwidth]{images/DefRAG.drawio.png}
+            \caption{Schema de l'architecture RAG proposée par \cite{lewis_retrieval-augmented_2020}}
+            \label{fig:ArchiRAG}
+        \end{center}\end{figure}
+
+        Les systèmes RAG peuvent être appliqués à de nombreuses tâches générant différents types de données. \md{liste et definition des pricipales tâches aperçues durant le stage} Lorsque le modèle génératif est un Grand Modèle de Langue (LLM), on parle de systèmes RA-LLM \cite{fan_survey_2024}.
 
 
-    \subsection{L'architecture RAG}
+
+    \subsection{L'architecture des modèles RA-LLM}
+
+        \md{Cette sous-section est un résumé de \cite{fan_survey_2024}}
 
         \begin{verbatim}
 Description de l'archi de façon plus avancée
@@ -21,6 +34,29 @@ csv sur RAGRights)
 supplémentaires
 - [Fan+23] propose la structure générique ... (exploiter slides Séminaire CA)
         \end{verbatim}
+
+
+        L'intuition de compléter un modèle génératif avec une base de donnée comme proposé par \cite{lewis_retrieval-augmented_2020} a été reprise à plusieurs reprises. Des stratégies et éléments complémentaires ont été ajoutés à ces systèmes pour faciliter la symbiose entre les deux composants principaux. \cite{fan_survey_2024} propose une nouvelle généralisation de cette famille de modèle illustré par la Figure~\ref{fig:ArchiRALLM}
+
+        \begin{figure}
+                \includegraphics[width=\textwidth]{images/DefRAGAvance_integration.drawio.png}
+                \caption{Architecture généralisée des systèmes RA-LLM proposée par \cite{fan_survey_2024}}
+                \label{fig:ArchiRALLM}
+        \end{figure}
+
+        \paragraph{Extracteur} On peut distinguer les extracteurs (aussi appelés retriever) en deux groupes. Les \textit{Sparse retrievers} tels que TF-IDF ou BM25 \md{refs!} exploitent des statistiques sur les documents pour identifier les plus pertinents au regard de la question. Les \textit{Dense retrievers} projettent les documents et les questions dans un espace latent au sein duquel les documents pertinents sont identifiés. On retrouve deux principaux fonctionnements pour ces extracteurs. Les \textit{bi-encodeurs} projettent les documents et les questions séparément alors que les \textit{cross-encodeurs} les projettent sous forme de paires (question, document).
+
+        \paragraph{Augmentation pré-extraction} Pour permettre une meilleure exploitation des informations disponibles dans la question, certains travaux proposent différentes stratégies de complétion et/ou reformulation de la question sous forme d'une requête. Le framework Rewrite-Retrieve-Read \md{[98 ds Fan+24]} propose de reformuler la question à l'aide d'un autre LLM pour la désambiguïser. L'approche de Query2Doc \md{[156 dans Fan+24]} consiste en générer des pseudo-documents qui pourraient correspondre aux documents pertinents à extraire et de les ajouter à la question avant de donner le tout à l'extracteur. L'objectif est de fournir des indices supplémentaires pour assurer une meilleure pertinence des documents extraits.\\
+        \md{Ajouter une remaque sur l'echelle des documents (chunk, token, entity)}
+
+        \paragraph{Augmentation post-extraction} Pour que les documents extraits soient exploités le mieux possible, plusieurs travaux s'intéressent à des techniques d'augmentation de cet ensemble d'extraits. Cela peut passer par le classement des documents du plus pertinent eu moins pertinent, le ré-ajustement du classement lorsqu'il existe, la combinaison des résultats de plusieurs extracteurs, la reformulation et/ou la synthèse des documents extraits.
+
+        \paragraph{Générateur} \cite{fan_survey_2024} distingue les générateurs en deux groupes en fonction de l'accessibilité des paramètres : \textit{parameter accessible} pour les modèles locaux modifiables pour lesquels on dispose des paramètres et \textit{parameter inaccessible} pour les modèles dont les paramètres ne sont pas publics, qui sont généralement accessibles par API.
+
+        \paragraph{Intégration} Une fois les documents récupérés et augmentés, il faut les fournir au générateur. \cite{fan_survey_2024} distingue trois stratégies d'intégration. L'\textit{intégration en entrée} consiste à combiner les documents et la question (généralement à l'aide d'une template de prompt) avant de la fournir au générateur. L'\textit{intégration en sortie} consiste à prendre en compte le ou les documents à la fin du processus de génération à l'aide d'un processus de fusion. L'\textit{intégration dans les couches intermédiaires} injecte les documents encodés dans les couches intermédiaires du générateur.\\
+        Un autre élément à prendre en compte dans l'intégration des documents au cours de la génération est la fréquence et donc le nombre d'extractions effectués pour une question. Le recours à la génération peut  se faire avec une fréquence fixée (une seule fois, tout les n token,...) ou être déclenchée au cours de la génération (par un modèle annexe, par la génération d'un token spécifique, en fonction d'un logit,...).
+
+        \md{Parler de l'entrainement de ces architectures ?}
 
 
     \subsection{Architectures aperçues au cours du stage}
@@ -33,6 +69,8 @@ caractéristiques de ces modèles : [R24/04] [R16/02]
 - Gestion BDD dynamique [Zhu25](https://arxiv.org/abs/2508.05662)
 - BDD sparse et interprétable [Prouteau]???
         \end{verbatim}
+
+        
 
 
     \subsection{Architecture et Modèles utilisées au cours du stage}
