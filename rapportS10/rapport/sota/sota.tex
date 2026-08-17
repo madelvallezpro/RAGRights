@@ -70,7 +70,7 @@ caractéristiques de ces modèles : [R24/04] [R16/02]
 - BDD sparse et interprétable [Prouteau]???
         \end{verbatim}
 
-        
+
 
 
     \subsection{Architecture et Modèles utilisées au cours du stage}
@@ -86,6 +86,8 @@ de [Fan+23]
 
 \section{Interprétabilité pour les systèmes de RAG}
 
+        Les systèmes RAG et RA-LLM comme une grande partie des modèles profonds actuels sont opaques. Il est difficile voire impossible de suivre leur raisonnement lors de leur utilisation. Dans certains contextes, cette opacité est problématique car les décisions prises peuvent avoir des conséquences importantes. Cette problématique illustre le besoin d'une Intelligence artificielle de confiance.
+
     \subsection{Trustworthy AI}
 
         \begin{verbatim}
@@ -95,6 +97,19 @@ l'IA de confiance comme l'ensembles des systèmes d'IA dans lesquels il est lég
 le sens humainement entendable) d'avoir confiance. Le NIST (National Institute of Standards 
 and Technology (US)) propose différents axes ou composantes de l'IA de confiance : ... [Ni+25] + [Ref citée par Ni+25 du NIST]
         \end{verbatim}
+
+        La définition d'IA de confiance (Trustworthy AI) n'est pas fixée et change souvent en fonction des situations et contextes d'utilisations de cette expression. Dans le contexte du Machine Learning, on désigne l'IA de confiance comme l'ensembles des systèmes d'IA dans lesquels il est légitime (dans le sens humainement entendable) d'avoir confiance. \cite{ni_towards_2025} rappèle les composantes de l'IA de confiance proposés par Le NIST (National Institute of Standards and Technology (USA)):
+
+        \begin{description}
+                \item[Fiabilité] Le comportement d'un IA de confiance doit être systématiquement adapté, l'incertitude sur son comportement doit être quantifiable et quantifié et ses capacité de généralisation doivent être robustes.
+                \item[Intimité] Une IA de confiance doit prévenir des risques pour les données des utilisateurs ainsi que pour les données sensibles contenues dans le modèle (issues de l'apprentissage ou de la base de donnée)
+                \item[Explicabilité] Le processus de décision d'un IA de confiance doit être transparent et compréhensible pour l'utilisateur.
+                \item[Justesse] Une IA de confiance doit minimiser les biais.
+                \item[Justifiabilité] Une IA de confiance doit pouvoir justifier son bon comportement et notamment sa capacité à respecter les réglementations
+                \item[Sécurité] Une IA de confiance doit détecter et prévenir les usages malicieux et cherchant à nuire.
+        \end{description}
+
+        Dans la suite, on s'intéresse aux différentes stratégies pour améliorer l'explicabilité des systèmes RAG et RA-LLM. 
 
 
     \subsection{Explicabilité pour le RAG}
