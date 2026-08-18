@@ -270,4 +270,4 @@ TODO
 - resulatas, resulatats
 - présentaion -> présentation
 - intelliegnce -> intelligence
-
+- extrcation -> extraction

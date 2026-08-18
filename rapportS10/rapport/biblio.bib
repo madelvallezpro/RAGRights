@@ -1,4 +1,39 @@
 
+@inproceedings{macavaney_simplified_2021,
+	title = {Simplified {Data} {Wrangling} with ir\_datasets},
+	booktitle = {{SIGIR}},
+	author = {MacAvaney, Sean and Yates, Andrew and Feldman, Sergey and Downey, Doug and Cohan, Arman and Goharian, Nazli},
+	year = {2021},
+}
+
+@misc{hofstatter_efficiently_2021,
+	title = {Efficiently {Teaching} an {Effective} {Dense} {Retriever} with {Balanced} {Topic} {Aware} {Sampling}},
+	url = {http://arxiv.org/abs/2104.06967},
+	doi = {10.48550/arXiv.2104.06967},
+	abstract = {A vital step towards the widespread adoption of neural retrieval models is their resource efficiency throughout the training, indexing and query workflows. The neural IR community made great advancements in training effective dual-encoder dense retrieval (DR) models recently. A dense text retrieval model uses a single vector representation per query and passage to score a match, which enables low-latency first stage retrieval with a nearest neighbor search. Increasingly common, training approaches require enormous compute power, as they either conduct negative passage sampling out of a continuously updating refreshing index or require very large batch sizes for in-batch negative sampling. Instead of relying on more compute capability, we introduce an efficient topic-aware query and balanced margin sampling technique, called TAS-Balanced. We cluster queries once before training and sample queries out of a cluster per batch. We train our lightweight 6-layer DR model with a novel dual-teacher supervision that combines pairwise and in-batch negative teachers. Our method is trainable on a single consumer-grade GPU in under 48 hours (as opposed to a common configuration of 8x V100s). We show that our TAS-Balanced training method achieves state-of-the-art low-latency (64ms per query) results on two TREC Deep Learning Track query sets. Evaluated on NDCG@10, we outperform BM25 by 44\%, a plainly trained DR by 19\%, docT5query by 11\%, and the previous best DR model by 5\%. Additionally, TAS-Balanced produces the first dense retriever that outperforms every other method on recall at any cutoff on TREC-DL and allows more resource intensive re-ranking models to operate on fewer passages to improve results further.},
+	urldate = {2026-08-18},
+	publisher = {arXiv},
+	author = {Hofstätter, Sebastian and Lin, Sheng-Chieh and Yang, Jheng-Hong and Lin, Jimmy and Hanbury, Allan},
+	month = may,
+	year = {2021},
+	note = {arXiv:2104.06967 [cs.IR]},
+	keywords = {Computer Science - Computation and Language, Computer Science - Information Retrieval},
+}
+
+@misc{geiger_causal_2021,
+	title = {Causal {Abstractions} of {Neural} {Networks}},
+	url = {http://arxiv.org/abs/2106.02997},
+	doi = {10.48550/arXiv.2106.02997},
+	abstract = {Structural analysis methods (e.g., probing and feature attribution) are increasingly important tools for neural network analysis. We propose a new structural analysis method grounded in a formal theory of causal abstraction that provides rich characterizations of model-internal representations and their roles in input/output behavior. In this method, neural representations are aligned with variables in interpretable causal models, and then interchange interventions are used to experimentally verify that the neural representations have the causal properties of their aligned variables. We apply this method in a case study to analyze neural models trained on Multiply Quantified Natural Language Inference (MQNLI) corpus, a highly complex NLI dataset that was constructed with a tree-structured natural logic causal model. We discover that a BERT-based model with state-of-the-art performance successfully realizes parts of the natural logic model's causal structure, whereas a simpler baseline model fails to show any such structure, demonstrating that BERT representations encode the compositional structure of MQNLI.},
+	urldate = {2026-08-18},
+	publisher = {arXiv},
+	author = {Geiger, Atticus and Lu, Hanson and Icard, Thomas and Potts, Christopher},
+	month = oct,
+	year = {2021},
+	note = {arXiv:2106.02997 [cs.AI]},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning},
+}
+
 @misc{wang_multilingual_2024,
 	title = {Multilingual {E5} {Text} {Embeddings}: {A} {Technical} {Report}},
 	shorttitle = {Multilingual {E5} {Text} {Embeddings}},

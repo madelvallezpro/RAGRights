@@ -98,7 +98,7 @@ le sens humainement entendable) d'avoir confiance. Le NIST (National Institute o
 and Technology (US)) propose différents axes ou composantes de l'IA de confiance : ... [Ni+25] + [Ref citée par Ni+25 du NIST]
         \end{verbatim}
 
-        La définition d'IA de confiance (Trustworthy AI) n'est pas fixée et change souvent en fonction des situations et contextes d'utilisations de cette expression. Dans le contexte du Machine Learning, on désigne l'IA de confiance comme l'ensembles des systèmes d'IA dans lesquels il est légitime (dans le sens humainement entendable) d'avoir confiance. \cite{ni_towards_2025} rappèle les composantes de l'IA de confiance proposés par Le NIST (National Institute of Standards and Technology (USA)):
+        La définition d'IA de confiance (Trustworthy AI) n'est pas fixée et change souvent en fonction des contextes d'utilisations de cette expression. Dans le cas du Machine Learning, on désigne l'IA de confiance comme l'ensemble des systèmes d'IA dans lesquels il est légitime (dans le sens humainement entendable) d'avoir confiance. \cite{ni_towards_2025} rappèle les composantes de l'IA de confiance proposés par Le NIST (National Institute of Standards and Technology (USA)):
 
         \begin{description}
                 \item[Fiabilité] Le comportement d'un IA de confiance doit être systématiquement adapté, l'incertitude sur son comportement doit être quantifiable et quantifié et ses capacité de généralisation doivent être robustes.
@@ -144,9 +144,21 @@ de l'association/intégration des deux)
 *Intervention-based technique*, Representation analysis, Toy Model and synthetic tasks)
         \end{verbatim}
 
-        \cite{somvanshi_bridging_2026} distingue trois paradigmes d'explicabilité. L'\textit{interprétabilité post-hoc} construit des explication à partir de l'étude du comportement des modèles. Les modèles \textit{interprétables by-design} dont l'explication est auto-contenue. L'\textit{interprétabilité mécaniste} cherche à identifier les (groupes) de composants qui induisent les différents comportements des modèles. 
+        L'explicabilité de l'intelligence artificielle est constituée de deux branches. Certains modèles contiennent leur explication. On parle de modèle \textit{explicable by-design}. C'est le cas des premiers modèles de machine learning tels que les arbres de décision mais aussi de modèles plus récents comme les Sparse Auto-Encodeurs.\\
+        Les modèles explicables by-design s'opposent à des modèles plus opaques tels que les réseaux de neurones profonds. Le processus de décision de ces modèles n'est pas directement accessible. Les méthodes d'\textit{explicabilité post-hoc} permettent de construire des explications à partir de l'étude de leur comportement.
 
-        \md{à finir}
+        \cite{somvanshi_bridging_2026} présente un sous-paradigme de l'explicabilité : l'\textit{interprétabilité mécaniste}. L'interprétabilité mécaniste vise à identifier les parties ou sous-parties d'un modèle responsables des différents comportements du modèle. Les méthodes d'interprétabilité mécaniste vont explorer la sensibilité des paramètres du modèle sur des entrées choisies afin de construire une cartographie du modèle faisant la correspondance entre ses compétences et connaissances et ses composants ou groupe de composants. on retrouve plusieurs approches au sein des méthodes d'interprétabilité mécaniste.
+
+        Les méthodes de \textbf{manual circuit tracing} cherchent à identifier les sous-graphes de modèles neuronaux responsables d'un certain comportement recherché. Pour cela, elles observent les paramètres et les flux de données lors de l'utilisation du modèle.
+
+        Les méthodes de \textbf{representation analysis} observent les représentations latentes des couches intermédiaires grace à des outils d'unembedding. De cette manière, on peut localiser la détection de phénomènes présents dans l'entrée et la mise en place de notions dans la construction de la sortie.
+
+        Les techniques de \textbf{feature decomposition} cherchent à distinguer les différentes compétences traitées par chaque partie du modèle. Pour cela, elles intègrent des Sparse Auto-Encodeurs sur les parties du modèle visées puis déduisent, par l'observation de ces SAE, les compétences de chaque partie du modèle.
+
+        Les méthodes basées sur les \textbf{toy models and synthetic tasks} consistent à concevoir des environnements contrôlés favorisant la localisation de motifs dans le modèle associés un comportement visé. Ces méthodes supposent qu'une même compétence prendra la même forme dans tous les modèles disposant de cette compétence.
+
+        Les méthodes \textbf{intervention-based} observent l'impact de modifications du modèle sur son comportement pour en déduire la présence et la localisation des compétences du modèle. On retrouve trois approches parmi les techniques intervention-based : les techniques d'intervention par \textit{ablation}, les techniques d'intervention par \textit{activation patching} que nous détaillerons dans la prochaine sous partie et les techniques de \textit{path patching}. 
+
 
     \subsection{Activation Patching}
 
@@ -156,3 +168,73 @@ de l'association/intégration des deux)
 - Perturbation
 - Données produites, visualisation et interprétation des graphiques
         \end{verbatim}
+
+        \subsubsection{Définiton et fonctionnement de l'Activation Patching}
+            L'activation patching est une méthode d'interprétabilité mécaniste intervention-based pour les modèles profond. Elle identifie les composants d'un modèle sensibles à une famille de perturbations des entrées minimales pour changer la sortie \cite{geiger_causal_2021}. Pour cela, on effectue trois passes du dataset par perturbation : une sur les entrées non perturbées, une sur les entrées perturbées pour lesquelles on sauvegarde toutes les activations intermédiaires et une sur les entrées perturbées mais dans une version du modèle avec une activation remplacée par l'activation équivalente de la passe sur les données non perturbées. On s'intéresse alors à combien ce remplacement rapproche la sortie de celle attendue.
+
+            \cite{chen_axiomatic_2024} propose une adaptation de cette méthode pour les modèle d'extraction d'information. Les entrées sont alors des paires (question, document) et la sortie, un score de pertinence. La perturbation ne doit plus nécessairement réduire la performance du modèle sur les entrées. (On peut penser à une perturbation qui duplique les mots importants de la question si ils apparaissent dans le document.) Par conséquent, la troisième passe ne se fait plus nécessairement sur les entrées non perturbées mais sur la version des entrées ayant la meilleure performance.  La version de l'activation patching de \cite{chen_axiomatic_2024} est formalisée dans l'encart \ref{box:activationPatchingIR}. 
+
+            \begin{tcolorbox}[
+                colback=gray!5!white,
+                colframe=gray!75!black,
+                title=Activation Patching pour l'Extraction d'Information \cite{chen_axiomatic_2024}]
+
+                Soit $Q \times D \subset \mathcal{Q}\times\mathcal{D}$  l'ensemble des paires question, document. Soit $Q \times \tilde{D}$ le même ensemble mais avec les documents perturbés à la place 
+
+                \begin{enumerate}
+                    \item Faire une passe pour toutes les paires $Q\times D$
+                    \begin{itemize}
+                        \item noter $o_{n}^e$ la sortie de chaque noeud $n, \forall e \in Q\times D$
+                        \item noter $p_D$ la performance du modèle sur les données non perturbées
+                    \end{itemize} 
+                    \item Faire une passe pour toutes les paires $Q\times \tilde{D}$
+                    \begin{itemize}
+                        \item noter $o_{n}^{\tilde{e}}$ la sortie de chaque noeud $n, \forall \tilde{e} \in Q\times \tilde{D}$
+                        \item noter $p_{\tilde{D}}$ la performance du modèle sur les données perturbées
+                    \end{itemize}
+                    \item On renomme $D, e, \tilde{D}$ et $\tilde{e}$ respectivement
+                    \begin{itemize}
+                        \item $\hat{D}, \hat{e}, \check{D}$ et $\check{e}$ si $p_D > p_{\tilde{D}}$
+                        \item $\check{D}, \check{e}, \hat{D}$ et $\hat{e}$ sinon
+                    \end{itemize}
+                    Pour chaque noeud $n$
+                    \item Faire une passe de $Q\times\check{D}$ en remplaçant $o_{i,j}^{\check{e}}$ par $o_{n}^{\hat{e}}$ pour chaque $\check{e}$. On note la performance $\bar{p}_n$
+                    \item $P_{n} = \frac{\bar{p}_n - p_{\hat{D}} }{p_{\check{D}} - p_{\hat{D}}}$ exprime l'impact de la perturbation sur la performance du modèle pour le noeud $n$
+                \end{enumerate}
+
+                \label{box:activationPatchingIR}
+            \end{tcolorbox}
+
+            L'activation patching fourni  trois performances par noeud avec lesquelles on peut estimer la sensibilité de chaque noeud à la perturbation. Si la sensibilité est élevée en valeur absolue, le noeud est sensible à la perturbation. Si la sensibilité est positive, le patch effectué attendue la perturbation. Si la sensibilité est négative, le patch accentue la perturbation. \md{Nouveauté à utiliser pour l'interpretation des matrices...}
+
+        \subsubsection{Implémentation de l'Activation Patching}
+
+            \cite{parry_mechir_2025} propose MechIR \md{\cite{mechir}}, une implémentation en python des outils permettant d'appliquer les méthodes d'interprétabilité mécaniste à des modèles PyTorch et des modèles issus de HuggingFace. MechIR permet notamment de mettre en place l'activation patching comme proposé par \cite{chen_axiomatic_2024}.
+
+            MechIR permet à l'heure actuelle d'appliquer trois formes de perturbation sur les documents:
+            \begin{itemize}
+                \item \texttt{append} : Ajoute un mot fourni en paramètre à la fin des documents,
+                \item \texttt{prepend} : Ajoute un mot fourni en paramètre au début des documents,
+                \item \texttt{replace} : Remplace chaque occurrence d'un mot par un autre. Les deux mots sont fourni en paramètre.
+            \end{itemize}
+
+            Pour qu'une perturbation soit pertinente, elle doit changer significativement la sortie du modèle (ie. perturbe significativement le score) sans dénaturer excessivement l'entrée. MechIR propose une visualisation préalable de la distribution des scores de pertinence attribué par le modèle sur les données et les données perturbées (voir Figure~\ref{fig:PerturbationVizMechIRDemo})pour estimer la capacité de la perturbation à impacter les scores. Une perturbation impacte significativement les sorties des paires question, document si les distributions des scores de pertinence pour les documents perturbés et non-perturbés sont significativement différentes.
+            
+            Par exemple, la Figure~\ref{fig:PerturbationVizMechIRDemo} Visualise les distribution des scores de pertinences pour trois perturbation (ajouter \textit{microwave} au début du document, ajouter \textit{microwave} à la fin du document et remplacer \textit{microwave} par \textit{toaster}). Le dataset utilisé est une partie du dataset Vaswani issu de la librairie irdataset \cite{hou_advancing_2025} et le modèle analysé est TAS-B \cite{hofstatter_efficiently_2021}.\\
+            L'axe des abscisses correspond à la valeur prise par les scores et l'axe des ordonnées à leur densité. Plus la densité est élevée, plus il y a de scores proche de la valeur en ordonnée. La distribution des scores de pertinence des documents vis à vis des question est représentée en jaune et celle des scores pour les documents perturbés est en vert. La distribution des scores pour les documents non perturbés est identique pour les trois perturbation étant donné qu'on manipule le même dataset. Les perturbations de type \append et \replace impactent un peu les distribution des scores mais elles continuent à suivre la mème tendance. La perturbation de type \prepend impacte plus la distribution des scores de pertinence : les densité sont élevées pour les scores différent et le profil de la courbe est très différent pour les scores de documents perturbés et non perturbés.
+
+            \begin{figure}\begin{center}
+                \includegraphics[width=0.8\textwidth]{images/MechIRDemo_PerturbationsInfluence_TABSB-Vaswani.png}
+                \caption{Distribution des scores de pertinences pour trois perturbation sur les dataset Vaswani et le modèle TAS-B}
+                \label{fig:PerturbationVizMechIRDemo}
+            \end{center}\end{figure}
+
+            Une fois la perturbation choisie, on peut appliquer l'activation patching pour chaque noeud du modèle choisi et visualiser les sensibilité à la perturbation de chacun d'entre eux (voir Figure~\ref{fig:SensibiliteVizMechIRDemo}).
+
+            \begin{figure}
+                \includegraphics[width=0.8\textwidth]{images/ActivationPatchingAllHeadExempleMechIR.png}
+                \caption{Matrices de sensibilité des noeuds du modèle TAS-B pour la première perturbation de l'exemple}
+                \label{fig:SensibiliteVizMechIRDemo}
+            \end{figure}
+
+            Dans la Figure~\ref{fig:SensibiliteVizMechIRDemo}, on identifie chaque noeud du modèle à l'aide ses coordonnées (numéro de couche, position dans la couche). Le score affiché correspond à la moyenne des sensibilité obtenu pour chaque document Plus le noeuds à un score élevé en valeur absolue (ie. plus la couleur est foncée), plus la perturbation impacte le comportement du noeuds. Cela signifie que la modification portait sur une information utilisée par le noeud dans le modèle. \md{à finir}
