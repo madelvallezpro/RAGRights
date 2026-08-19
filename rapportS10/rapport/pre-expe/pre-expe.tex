@@ -13,6 +13,11 @@ parfois complexe ou suite de mots clés)
         - peuvent contenir des images
     \end{verbatim}
 
+    Le sujet de l'extraction d'information et du RAG est d'actualité au sein de la recherche en machine learning à l'international. Son application au français et son évaluation anime les recherches en France. À l'occasion de l'atelier EvalLLM2026 qui portait sur l'évaluation des modèles génératifs et du RAG, ont été organisé deux challenges. L'un d'entre eux portait sur le RAG. La première tâche était une tâche d'extraction d'information et la seconde tâche portait sur l'attribution de sources (à partir d'une question, d'extraits de documents et d'une réponse, associer à chaque fragment de la réponse un document d'où l'information est issue). Ce challenge mettant à disposition une grande quantité de documents en français spécifiques à un domaine (la défense) et un protocole d'évaluation des résultats, je me suis inscrite à la première tâche pour donner un cadre à la construction du modèle et du protocole d'amélioration. 
+    
+    La tâche d'extraction d'information demandais de répondre à des requêtes sous la forme d'une ou plusieurs questions complexes ou d'une suite de mots clés sans séparateur à l'aide d'une base de documents. Cette dernière contenait en grande partie des PDF contenant parfois des images. Les documents avaient diverses origines, ne suivaient pas structure commune particulière et étaient en majorité en français (quelques documents en anglais ou disponibles dans les deux langues).
+    Le format des entrées et des sorties était fourni à l'avance mais les données n'étaient accessibles que pendant les trois jours de production des résultats. Aucun dataset étiqueté n'était fourni.
+
 \section{Construction d'un dataset adapté}
     \begin{verbatim}
 À REPRENDRE
@@ -54,7 +59,7 @@ différents pdf, taille des documents, répartition positif/négatif)
 - Formalisation de l'objectif
         \end{verbatim}
 
-    \subsection{Intérgration des travaux dans l'explicabilité post-hoc des modèles d'extraction d'information}
+    \subsection{Intégration des travaux dans l'explicabilité post-hoc des modèles d'extraction d'information}
         \begin{verbatim}
 - Cartographie de modèle d'extraction d'information
 - Analyse des éléments identifiés par le modèle lors du passage d'un document
