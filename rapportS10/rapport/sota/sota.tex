@@ -70,7 +70,15 @@ caractéristiques de ces modèles : [R24/04] [R16/02]
 - BDD sparse et interprétable [Prouteau]???
         \end{verbatim}
 
+        Au delà des tentatives de perfectionnement des systèmes RAG par la conception de nouvelles approches d'amélioration des entrées et des extraits et de nouvelles techniques d'intégration, cette architecture est aussi concernée par les problématiques de la gestion des données multimodales ou à flux continu, la résolution de tâches nécessitant un raisonnement long ou poussé et les enjeux d'interprétabilité et d'impact environnemental.
 
+        \cite{chen_seeing_2025} propose un système RAG avec une base de données multi-modales où chaque entrée est un couple (image, texte). Les paires extraites à partir de la requête, elle aussi bi-modale, sont ré-ordonnées avant d'être fournies comme contexte au générateur.
+
+        Pour traiter les tâches à forte intensité de raisonnement (reasoning intensive tasks), \cite{xu_search---chain_2024} propose un système RAG combiné à un modèle de décomposition de raisonnement (Chain-of-Query). La requête de l'utilisateur est décomposé en sous-requêtes résolues une à une. Elles sont en suite vérifiées à l'aide des documents extraits. Le raisonnement est vérifié, complété et éventuellement repris en fonction du score de crédibilité obtenu. Une trace complète du raisonnement est restituée en sortie.
+
+        Les systèmes RAG sont aussi intéressants à intégrer à une architecture agentique en tant que source d'information. \cite{liu_hm-rag_2025} présente un framework Hiérarchique Multi-agent Multi-modal composé d'un agent de décomposition des requêtes utilisateur, d'un agent RAG pour des données structurées, non-structurées et sous forme de graphes et d'un agent de prise de décision construisant la sortie finale.
+
+        \cite{zhu_static_2025} s'intéresse au cas particulier des bases de données dynamiques. Lorsque le flux d'apport de donné est important, le besoin de restructuration de la base de donnée est régulier or le coût calculatoire et énergétique associé est dissuasif. \cite{zhu_static_2025} propose StreamingRAG, une architecture composée d'une base de données dynamique qui maintien un ensemble de prototypes compact représentatif du flux de données tout en évitant sa reconstruction permanente.
 
 
     \subsection{Architecture et Modèles utilisées au cours du stage}
@@ -205,7 +213,7 @@ de l'association/intégration des deux)
                 \label{box:activationPatchingIR}
             \end{tcolorbox}
 
-            L'activation patching fourni  trois performances par noeud avec lesquelles on peut estimer la sensibilité de chaque noeud à la perturbation. Si la sensibilité est élevée en valeur absolue, le noeud est sensible à la perturbation. Si la sensibilité est positive, le patch effectué attendue la perturbation. Si la sensibilité est négative, le patch accentue la perturbation. \md{Nouveauté à utiliser pour l'interpretation des matrices...}
+            L'activation patching fourni  trois performances par noeud avec lesquelles on peut estimer la sensibilité de chaque noeud à la perturbation. Si la sensibilité est élevée en valeur absolue, le noeud est sensible à la perturbation. Si la sensibilité est positive, le patch effectué atténue la perturbation. Si la sensibilité est négative, le patch accentue la perturbation. \md{Nouveauté à utiliser pour l'interpretation des matrices...}
 
         \subsubsection{Implémentation de l'Activation Patching}
 
@@ -220,7 +228,7 @@ de l'association/intégration des deux)
 
             Pour qu'une perturbation soit pertinente, elle doit changer significativement la sortie du modèle (ie. perturbe significativement le score) sans dénaturer excessivement l'entrée. MechIR propose une visualisation préalable de la distribution des scores de pertinence attribué par le modèle sur les données et les données perturbées (voir Figure~\ref{fig:PerturbationVizMechIRDemo})pour estimer la capacité de la perturbation à impacter les scores. Une perturbation impacte significativement les sorties des paires question, document si les distributions des scores de pertinence pour les documents perturbés et non-perturbés sont significativement différentes.
             
-            Par exemple, la Figure~\ref{fig:PerturbationVizMechIRDemo} Visualise les distribution des scores de pertinences pour trois perturbation (ajouter \textit{microwave} au début du document, ajouter \textit{microwave} à la fin du document et remplacer \textit{microwave} par \textit{toaster}). Le dataset utilisé est une partie du dataset Vaswani issu de la librairie irdataset \cite{hou_advancing_2025} et le modèle analysé est TAS-B \cite{hofstatter_efficiently_2021}.\\
+            Par exemple, la Figure~\ref{fig:PerturbationVizMechIRDemo} visualise les distributions des scores de pertinence pour trois perturbations (ajouter \textit{microwave} au début du document, ajouter \textit{microwave} à la fin du document et remplacer \textit{microwave} par \textit{toaster}). Le dataset utilisé est une partie du dataset Vaswani issu de la librairie irdataset \cite{hou_advancing_2025} et le modèle analysé est TAS-B \cite{hofstatter_efficiently_2021}.\\
             L'axe des abscisses correspond à la valeur prise par les scores et l'axe des ordonnées à leur densité. Plus la densité est élevée, plus il y a de scores proche de la valeur en ordonnée. La distribution des scores de pertinence des documents vis à vis des question est représentée en jaune et celle des scores pour les documents perturbés est en vert. La distribution des scores pour les documents non perturbés est identique pour les trois perturbation étant donné qu'on manipule le même dataset. Les perturbations de type \append et \replace impactent un peu les distribution des scores mais elles continuent à suivre la mème tendance. La perturbation de type \prepend impacte plus la distribution des scores de pertinence : les densité sont élevées pour les scores différent et le profil de la courbe est très différent pour les scores de documents perturbés et non perturbés.
 
             \begin{figure}\begin{center}
@@ -229,7 +237,7 @@ de l'association/intégration des deux)
                 \label{fig:PerturbationVizMechIRDemo}
             \end{center}\end{figure}
 
-            Une fois la perturbation choisie, on peut appliquer l'activation patching pour chaque noeud du modèle choisi et visualiser les sensibilité à la perturbation de chacun d'entre eux (voir Figure~\ref{fig:SensibiliteVizMechIRDemo}).
+            Une fois la perturbation choisie, on peut appliquer l'activation patching pour chaque noeud du modèle choisi et visualiser les sensibilité à la perturbation de chacun d'entre eux (voir Figure~\ref{fig:SensibiliteVizMechIRDemo}). Chaque noeud du modèle est identifié à l'aide ses coordonnées (numéro de couche, position dans la couche). Le score du noeud correspond à la moyenne des sensibilité obtenu pour chaque document. Plus le noeuds à un score élevé en valeur absolue (ie. plus la couleur est foncée), plus la perturbation impacte son comportement. Cela signifie que la modification porte sur une information utilisée par le noeud dans le modèle. Si le score est positif (resp. négatif), le patching atténue (resp. accentue) la perturbation en moyenne.
 
             \begin{figure}
                 \includegraphics[width=0.8\textwidth]{images/ActivationPatchingAllHeadExempleMechIR.png}
@@ -237,4 +245,5 @@ de l'association/intégration des deux)
                 \label{fig:SensibiliteVizMechIRDemo}
             \end{figure}
 
-            Dans la Figure~\ref{fig:SensibiliteVizMechIRDemo}, on identifie chaque noeud du modèle à l'aide ses coordonnées (numéro de couche, position dans la couche). Le score affiché correspond à la moyenne des sensibilité obtenu pour chaque document Plus le noeuds à un score élevé en valeur absolue (ie. plus la couleur est foncée), plus la perturbation impacte le comportement du noeuds. Cela signifie que la modification portait sur une information utilisée par le noeud dans le modèle. \md{à finir}
+            Dans la Figure~\ref{fig:SensibiliteVizMechIRDemo}, on remarque principalement le noeud (1,6). Une interprétation possible est que le patching du noeud diminue fortement l'estimation de pertinence effectuée par le modèle sur les documents non perturbé. \md{pas satisfaisant}
+

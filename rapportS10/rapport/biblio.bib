@@ -1,4 +1,20 @@
 
+@inproceedings{chen_seeing_2025,
+	address = {Abu Dhabi, UAE},
+	title = {Seeing {Beyond}: {Enhancing} {Visual} {Question} {Answering} with {Multi}-{Modal} {Retrieval}},
+	shorttitle = {Seeing {Beyond}},
+	url = {https://aclanthology.org/2025.coling-industry.35/},
+	abstract = {Multi-modal Large language models (MLLMs) have made significant strides in complex content understanding and reasoning. However, they still suffer from model hallucination and lack of specific knowledge when facing challenging questions. To address these limitations, retrieval augmented generation (RAG) has emerged as an effective solution. While incorporating knowledge has led to improvements, it also highlights the need for a more robust knowledge selection strategy. For multi-modal tasks, such as visual question answering (VQA), integrating all modalities is crucial in providing comprehensive information for accurate answers. Therefore, we propose to construct an encoder model for extracting joint embedding from all modalities, enabling alignment between the corresponding query and knowledge through contrastive learning. To further improve performance, we introduce an additional MLLM re-selection step, which selects the best matching knowledge from the top-k retrieved results of our alignment model. We evaluated our method, SeBe-VQA, on the Encyclopedic VQA dataset. Our knowledge retrieval results demonstrate the benefit of our multi-modal framework. By incorporating the retrieved knowledge along with the question, we achieve a significant performance improvement compared with the previous method and scenarios without knowledge provision.},
+	urldate = {2026-08-19},
+	booktitle = {Proceedings of the 31st {International} {Conference} on {Computational} {Linguistics}: {Industry} {Track}},
+	publisher = {Association for Computational Linguistics},
+	author = {Chen, Boqi and Khare, Anuj and Kumar, Gaurav and Akula, Arjun and Narayana, Pradyumna},
+	editor = {Rambow, Owen and Wanner, Leo and Apidianaki, Marianna and Al-Khalifa, Hend and Eugenio, Barbara Di and Schockaert, Steven and Darwish, Kareem and Agarwal, Apoorv},
+	month = jan,
+	year = {2025},
+	pages = {410--421},
+}
+
 @inproceedings{macavaney_simplified_2021,
 	title = {Simplified {Data} {Wrangling} with ir\_datasets},
 	booktitle = {{SIGIR}},
@@ -171,6 +187,24 @@
 	year = {2025},
 	note = {arXiv:2508.05662},
 	keywords = {Computer Science - Artificial Intelligence, Computer Science - Information Retrieval},
+}
+
+@inproceedings{prouteau_sinr_2021,
+	address = {Porto, Portugal},
+	series = {Lecture {Notes} in {Computer} {Science}},
+	title = {{SINr}: {Fast} {Computing} of {Sparse} {Interpretable} {Node} {Representations} is not a {Sin}!},
+	shorttitle = {{SINr}},
+	url = {https://hal.science/hal-03197434},
+	doi = {10.1007/978-3-030-74251-5_26},
+	abstract = {While graph embedding aims at learning low-dimensional representations of nodes encompassing the graph topology, word embedding focus on learning word vectors that encode semantic properties of the vocabulary. The first finds applications on tasks such as link prediction and node classification while the latter is systematically considered in natural language processing. Most of the time, graph and word embeddings are considered on their own as distinct tasks. However, word co-occurrence matrices, widely used to extract word embeddings, can be seen as graphs. Furthermore, most network embedding techniques rely either on a word embedding methodology (Word2vec) or on matrix factorization, also widely used for word embedding. These methods are usually computationally expensive, parameter dependant and the dimensions of the embedding space are not interpretable. To circumvent these issues, we introduce the Lower Dimension Bipartite Graphs Framework (LDBGF) which takes advantage of the fact that all graphs can be described as bipartite graphs, even in the case of textual data. This underlying bipartite structure may be explicit, like in coauthor networks. However, with LDBGF, we focus on uncovering latent bipartite structures, lying for instance in social or word co-occurrence networks, and especially such structures providing conciser and interpretable representations of the graph at hand. We further propose SINr, an efficient implementation of the LDBGF approach that extracts Sparse Interpretable Node Representations using community structure to approximate the underlying bipartite structure. In the case of graph embedding, our near-linear time method is the fastest of our benchmark, parameter-free and provides state-of-the-art results on the classical link prediction task. We also show that low-dimensional vectors can be derived from SINr using singular value decomposition. In the case of word embedding, our approach proves to be very efficient considering the classical similarity evaluation.},
+	urldate = {2026-03-16},
+	booktitle = {Lecture {Notes} in {Computer} {Science},},
+	publisher = {Springer, Cham},
+	author = {Prouteau, Thibault and Connes, Victor and Dugué, Nicolas and Perez, Anthony and Lamirel, Jean-Charles and Camelin, Nathalie and Meignier, Sylvain},
+	month = apr,
+	year = {2021},
+	keywords = {Community detection, Graph embedding, Linear-time algorithm, Link prediction, Network science, Word embedding},
+	pages = {325--337},
 }
 
 @article{hou_advancing_2025,
