@@ -15,8 +15,8 @@ parfois complexe ou suite de mots clés)
 
     Le sujet de l'extraction d'information et du RAG est d'actualité au sein de la recherche en machine learning à l'international. Son application au français et son évaluation anime les recherches en France. À l'occasion de l'atelier EvalLLM2026 qui portait sur l'évaluation des modèles génératifs et du RAG, ont été organisé deux challenges. L'un d'entre eux portait sur le RAG. La première tâche était une tâche d'extraction d'information et la seconde tâche portait sur l'attribution de sources (à partir d'une question, d'extraits de documents et d'une réponse, associer à chaque fragment de la réponse un document d'où l'information est issue). Ce challenge mettant à disposition une grande quantité de documents en français spécifiques à un domaine (la défense) et un protocole d'évaluation des résultats, je me suis inscrite à la première tâche pour donner un cadre à la construction du modèle et du protocole d'amélioration. 
     
-    La tâche d'extraction d'information demandais de répondre à des requêtes sous la forme d'une ou plusieurs questions complexes ou d'une suite de mots clés sans séparateur à l'aide d'une base de documents. Cette dernière contenait en grande partie des PDF contenant parfois des images. Les documents avaient diverses origines, ne suivaient pas structure commune particulière et étaient en majorité en français (quelques documents en anglais ou disponibles dans les deux langues).
-    Le format des entrées et des sorties était fourni à l'avance mais les données n'étaient accessibles que pendant les trois jours de production des résultats. Aucun dataset étiqueté n'était fourni.
+    La tâche d'extraction d'information demandait de répondre à des requêtes sous la forme d'une ou plusieurs questions complexes ou d'une suite de mots clés sans séparateur à l'aide d'une base de documents et fournir les pages des documents utilisés pour répondre ainsi que leur rang de pertinence. La base de documents contenait en grande partie des PDF contenant parfois des images. Les documents avaient diverses origines, ne suivaient pas structure commune particulière et étaient en majorité en français (quelques documents en anglais ou disponibles dans les deux langues).
+    Le format des entrées et des sorties était fourni à l'avance.Les documents étaient accessibles dès l'inscription mais les questions n'étaient communiquées que durant les trois jours de test (à l'exception des cinq questions présentes dans l'exemple de format des données). Aucun dataset étiqueté n'était fourni.
 
 \section{Construction d'un dataset adapté}
     \begin{verbatim}
@@ -36,9 +36,20 @@ différents pdf, taille des documents, répartition positif/négatif)
 ---
 
 - Le format de dataset visé
-  - tous les dérouler V0, V1 et format V2 (à chaque fois: format, ce qui manque, les modifications proposées)
+  - tous les dérouler V0, V1 et format V2 (à chaque fois: format
+  ce qui manque, les modifications proposées)
     \end{verbatim}
 
+    Les données fournies par le challenge étant brutes, un premier traitement a été effectué. Les PDf ont été converti au format Markdown à l'aide de PyMuPDF4LLM \cite{artifex} pour les stocker dans base de donnée. Ce format est lisible pour l'humain et est souvent utilisé en entrée et sortie des grands modèles de langue. Les images n'ont pas été conservées car nous ne nous intéressons pas au traitement de données multi-modales. Ce pourrais être une perspective d'évolution dans le conception du modèle. \md{hors sujet?} Les textes récupérés sont découpés en page et en chunk plus petits pour les pages contenant plus de 500 tokens.
+
+    La construction de la base de donnée a nécessité plusieurs itérations. Les différentes versions sont toutes au format CSV avec des champs d'identification de la question (identifiant) et de l'extrait (nom du fichier, identifiant, numéro de page, numéro de chunk dans le document), la question et l'extrait du document. Pour la base de donnée du modèle et son utilisation, les questions et les documents sont fournis dans deux fichiers CSV distincts pour toutes les versions. La base est mise sous forme de paires (produit cartésien) pour l'utilisation de MechIR et l'application de l'activation patching.
+
+    La première base de donnée est une base naïve avec toutes les questions et tous les extraits des documents fournis. Pour effectuer les manipulations avec MechIR, il faut manipuler le produit cartésien des questions et des extraits, soit une base de plus de 27 million d'entrées, surdimensionnée pour l'utilisation. De plus, du fait du produit cartésien, la majorité des documents ne sont pas pertinents pour la question. La base de donnée n'est pas équilibrée. Cela rend l'utilisation de MechIR et de l'activation patching moins accessible car plus difficile à interpréter. Dans un premier temps, la base de donnée a été échantillonnée pour ne garder qu'une petite partie mais la base de donnée obtenue n'est toujours pas équilibrée. 
+
+    Pour résoudre le problème de l'équilibre, la seconde base de donnée est construite artificiellement à partir des extraits et des questions précédentes. Pour chacune des 26 questions, un extrait pertinent et un extrait non pertinent ont été choisis. La base de donnée obtenue est équilibrée, étiquetée et de taille très raisonnable. Pour autant, la diversité des mots utilisés et des sujets abordés rend difficile la construction d'une perturbation qui impacte la sortie sans dénaturer les documents.
+
+    La troisième base de donnée a été construite à partir d'une seule question. Ainsi, les extraits pertinents partagent un plus grand nombre de mots sur lesquels il est possible de s'appuyer pour construire des perturbations. Pour maintenir l'équilibre, les extraits sont pour moitié non pertinents. Le choix des extraits est fait à partir de trois PDF : un pour les extraits pertinents et deux our les extraits non pertinents. 
+    
 
 \section{Adaptation du modèle RAG4HN}
     \begin{verbatim}
