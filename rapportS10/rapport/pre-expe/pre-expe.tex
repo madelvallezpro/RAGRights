@@ -83,15 +83,36 @@ différents pdf, taille des documents, répartition positif/négatif)
     \md{Est-il pertinent de mentionner le montée en version des librairies dans cette partie ?}
 
     
-\section{Objectifs}
-    \subsection{Localisation de la langue de spécialité dans un modèle}
-        \begin{verbatim}
-- Définition de langue de spécialité
-- Formalisation de l'objectif
-        \end{verbatim}
+\section{Objectifs du stage}
+    \md{Ne serait-ce pas plus pertinent au début du chapitre suivant ?}
 
-    \subsection{Intégration des travaux dans l'explicabilité post-hoc des modèles d'extraction d'information}
-        \begin{verbatim}
-- Cartographie de modèle d'extraction d'information
-- Analyse des éléments identifiés par le modèle lors du passage d'un document
-        \end{verbatim}
+%     \color{gray}
+%     \subsection{Localisation de la langue de spécialité dans un modèle}
+%         \begin{verbatim}
+% - Définition de langue de spécialité
+% - Formalisation de l'objectif
+%         \end{verbatim}
+
+%     \subsection{Intégration des travaux dans l'explicabilité post-hoc des modèles d'extraction d'information}
+%         \begin{verbatim}
+% - Cartographie de modèle d'extraction d'information
+% - Analyse des éléments identifiés par le modèle lors du passage d'un document
+%         \end{verbatim}
+%     \color{black}
+
+
+
+
+\paragraph{La langue de spécialité} correspond à l'ensemble du vocabulaire et des tournures spécifiques à un domaine d'expertise \cite{cabre_terminologie_1998}. Si la façon de s'exprimer ne change que de façon limité, certains mots ont parfois un sens différent (exemple: \textit{noeuds} en deep learning) et certaines façons de s'exprimer sont inhabituelles en dehors du domaine (ex: codes de rédaction d'une preuve mathématique). Chaque domaine dispose de sa langue de spécialité qui est incluse dans la langue générale et en intersection avec la langue commune.
+
+\paragraph{Hypothèse} Considérant que l'activation patching permet de localiser les composants et noeuds d'un modèle sensibles à une perturbation, on s'intéresse aux hypothèses suivantes:
+
+\begin{description}
+    \item[H1 : ] Dans les modèles de langue, une langue de spécialité repose sur certains composants du modèle.
+    \item[H2 : ] Ces composants peuvent être cartographiés à l'aide de l'activation patching.
+\end{description}
+
+\paragraph{Objectifs} Ce stage vise à appliquer l'activation patching à la localisation du vocabulaire spécifique de la langue de spécialité (vocabulaire de spécialité) du domaine de la défense. L'objectif est de proposer une méthodologie, un cadre de mise en pratique de l'activation patching pour la localisation du vocabulaire de spécialité à l'aide de l'outil MechIR ainsi qu'une application au cas de la langue de spécialité de la défense sur le modèle mE5-small.
+
+\paragraph{Intégration dans l'explicabilité post-hoc des modèles d'extraction d'infomation et des systèmes RAG} La possibilité de localiser le vocabulaire de spécialité ouvre la voie à la localisation de concepts et/ou domaines precis dans un modèle de langue. Il devient alors possible de cartographier ces modèles. Ces cartographies pourraient à terme être utilisées pour expliquer le raisonnement, les éléments pris en compte dans l'entrée et dans les documents extraits au sein d'un système RAG ou RA-LLM.
+
