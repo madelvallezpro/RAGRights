@@ -12,11 +12,12 @@
         Les modèles d'apprentissage profond tels que les réseaux de neurones profond, réseaux convolutionnels ou les réseaux basés sur le mécanisme d'attention constituent leur connaissances à partir des données utilisées pour les entraîner. Cependant, leurs connaissances et leur capacité d'extrapolation sont limités. Cela rend ces modèles vulnérables à l'obsolescence des résultats et aux hallucinations \cite{huang_survey_2025}. Pour traiter ces problématiques, \cite{lewis_retrieval-augmented_2020} propose d'associer une base de donnée et un modèle d'extraction des données de cette base à un modèle génératif. La base de donnée permet d'entretenir plus facilement les connaissances du modèle obtenu afin de limiter l'obsolescence des résultats et/ou agrandir la base de connaissance selon le besoin ou la tâche visée.\\
         Les systèmes combinant un modèle d'extraction (\textit{retrieval} en anglais) et un modèle génératif sont appelées systèmes RAG (Retrieval Augmented by Generation). La question ou requête de l'utilisateur est fournie au modèle d'extraction qui récupère les documents ou extraits de documents pertinent au regard de la question. Ces documents ainsi que la question sont alors donnés au générateur qui produit le résultat final. Ce processus est schématisé dans le Figure~\ref{fig:ArchiRAG}
 
-        \begin{figure}\begin{center}
+        \begin{figure}
+            \centering
             \includegraphics[width=0.6\textwidth]{images/DefRAG.drawio.png}
             \caption{Schema de l'architecture RAG proposée par \cite{lewis_retrieval-augmented_2020}}
             \label{fig:ArchiRAG}
-        \end{center}\end{figure}
+        \end{figure}
 
         Les systèmes RAG peuvent être appliqués à de nombreuses tâches générant différents types de données (génération d'image, génération et/ou complétion de signaux, génération de texte, traduction,...). Lorsque le modèle génératif est un Grand Modèle de Langue (LLM), on parle de systèmes RA-LLM \cite{fan_survey_2024}. Ces modèles sont utilisées pour grande diversité de tâches du traitement automatique des langues. On retrouve notamment les différentes variantes de réponse aux questions (questions à forte intensité de raisonnement, question sur domaine ouvert,...), les tâches d'analyse de texte (vérification de fait, liage d'entité, détection d'entité nommées), des tâches de génération ou de complétion (traduction, prédiction de citation, dialogue, résumé de texte, complétion de texte à trous,...) ou encore les tâches d'extraction (extraction d'information, extraction d'argument, ...)
 
@@ -243,15 +244,17 @@
             Par exemple, la Figure~\ref{fig:PerturbationVizMechIRDemo} visualise les distributions des scores de pertinence pour trois perturbations (ajouter \textit{microwave} au début du document, ajouter \textit{microwave} à la fin du document et remplacer \textit{microwave} par \textit{toaster}). Le dataset utilisé est une partie du dataset Vaswani issu de la librairie irdataset \cite{hou_advancing_2025} et le modèle analysé est TAS-B \cite{hofstatter_efficiently_2021}.\\
             L'axe des abscisses correspond à la valeur prise par les scores et l'axe des ordonnées à leur densité. Plus la densité est élevée, plus il y a de scores proche de la valeur en ordonnée. La distribution des scores de pertinence des documents vis à vis des question est représentée en jaune et celle des scores pour les documents perturbés est en vert. La distribution des scores pour les documents non perturbés est identique pour les trois perturbation étant donné qu'on manipule le même dataset. Les perturbations de type \append et \replace impactent un peu les distribution des scores mais elles continuent à suivre la mème tendance. La perturbation de type \prepend  impacte plus la distribution des scores de pertinence : les densité sont élevées pour les scores différent et le profil de la courbe est très différent pour les scores de documents perturbés et non perturbés.
 
-            \begin{figure}\begin{center}
+            \begin{figure}
+                \centering
                 \includegraphics[width=0.8\textwidth]{images/MechIRDemo_PerturbationsInfluence_TABSB-Vaswani.png}
                 \caption{Distribution des scores de pertinences pour trois perturbation sur les dataset Vaswani et le modèle TAS-B}
                 \label{fig:PerturbationVizMechIRDemo}
-            \end{center}\end{figure}
+            \end{figure}
 
             Une fois la perturbation choisie, on peut appliquer l'activation patching pour chaque noeud du modèle choisi et visualiser les sensibilité à la perturbation de chacun d'entre eux (voir Figure~\ref{fig:SensibiliteVizMechIRDemo}). Chaque noeud du modèle est identifié à l'aide ses coordonnées (numéro de couche, position dans la couche). Le score du noeud correspond à la moyenne des sensibilité obtenu pour chaque document. Plus le noeuds à un score élevé en valeur absolue (ie. plus la couleur est foncée), plus la perturbation impacte son comportement. Cela signifie que la modification porte sur une information utilisée par le noeud dans le modèle. Si le score est positif (resp. négatif), le patching atténue (resp. accentue) la perturbation en moyenne.
 
             \begin{figure}
+                \centering
                 \includegraphics[width=0.8\textwidth]{images/ActivationPatchingAllHeadExempleMechIR.png}
                 \caption{Matrices de sensibilité des noeuds du modèle TAS-B pour la première perturbation de l'exemple}
                 \label{fig:SensibiliteVizMechIRDemo}

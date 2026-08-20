@@ -65,11 +65,12 @@ différents pdf, taille des documents, répartition positif/négatif)
 
     Les données du challenge n'étant pas au format (titre, document), la première extraction a été supprimée. Pour la même raison, le reclassement des textes extraits a été revu : la composante du TF-IDF est appliquée sur les extraits au lieu des titres (voir Figure~\ref{fig:rerank_rag4X}). Le module de récupération de document sur le web n'étant pas compatible avec le challenge, il a aussi été écarté. 
 
-    \begin{figure}\begin{center}
+    \begin{figure}
+        \centering
         \includegraphics[width=0.8\textwidth]{images/rerank_RAG4X-comparaison.drawio.png}
         \caption{Calcul du score de pertinence pour le reclassement des extraits de RAG4historicalNewspapers à gauche et de notre version simplifiée à droite}
         \label{fig:rerank_rag4X}
-    \end{center}\end{figure}
+    \end{figure}
 
     L'architecture obtenue est illustrée par la Figure~\ref{fig:ArchiRAG4def}.
 
