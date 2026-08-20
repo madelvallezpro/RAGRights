@@ -40,7 +40,7 @@ différents pdf, taille des documents, répartition positif/négatif)
   ce qui manque, les modifications proposées)
     \end{verbatim}
 
-    Les données fournies par le challenge étant brutes, un premier traitement a été effectué. Les PDf ont été converti au format Markdown à l'aide de PyMuPDF4LLM \cite{artifex} pour les stocker dans base de donnée. Ce format est lisible pour l'humain et est souvent utilisé en entrée et sortie des grands modèles de langue. Les images n'ont pas été conservées car nous ne nous intéressons pas au traitement de données multi-modales. Ce pourrais être une perspective d'évolution dans le conception du modèle. \md{hors sujet?} Les textes récupérés sont découpés en page et en chunk plus petits pour les pages contenant plus de 500 tokens.
+    Les données fournies par le challenge étant brutes, un premier traitement a été effectué. Les PDf ont été converti au format Markdown à l'aide de PyMuPDF4LLM \cite{artifex_software_pymupdf4llm_2026} pour les stocker dans base de donnée. Ce format est lisible pour l'humain et est souvent utilisé en entrée et sortie des grands modèles de langue. Les images n'ont pas été conservées car nous ne nous intéressons pas au traitement de données multi-modales. Ce pourrais être une perspective d'évolution dans le conception du modèle. \md{hors sujet?} Les textes récupérés sont découpés en page et en chunk plus petits pour les pages contenant plus de 500 tokens.
 
     La construction de la base de donnée a nécessité plusieurs itérations. Les différentes versions sont toutes au format CSV avec des champs d'identification de la question (identifiant) et de l'extrait (nom du fichier, identifiant, numéro de page, numéro de chunk dans le document), la question et l'extrait du document. Pour la base de donnée du modèle et son utilisation, les questions et les documents sont fournis dans deux fichiers CSV distincts pour toutes les versions. La base est mise sous forme de paires (produit cartésien) pour l'utilisation de MechIR et l'application de l'activation patching.
 
@@ -61,6 +61,25 @@ différents pdf, taille des documents, répartition positif/négatif)
 - Reprise du reranking (mettre au propre la photo du schema sur l'ardoise)
     \end{verbatim}
 
+    Pour répondre au challenge, nous avions besoin d'une architecture RAG complète fonctionnelle avec un extracteur sur lequel appliquer l'activation patching. Le stage ne portant pas sur la conception d'une architecture, nous avons repris et simplifié l'architecture proposée par \cite{tran_retrieval_2024} pour l'adapter à la première tâche du challenge RAG. Le choix de cette architecture est motivé par la disponibilité du code source et le fait qu'elle est déjà adapté aux documents en français.
+
+    Les données du challenge n'étant pas au format (titre, document), la première extraction a été supprimée. Pour la même raison, le reclassement des textes extraits a été revu : la composante du TF-IDF est appliquée sur les extraits au lieu des titres (voir Figure~\ref{fig:rerank_rag4X}). Le module de récupération de document sur le web n'étant pas compatible avec le challenge, il a aussi été écarté. 
+
+    \begin{figure}\begin{center}
+        \includegraphics[width=0.8\textwidth]{images/rerank_RAG4X-comparaison.drawio.png}
+        \caption{Calcul du score de pertinence pour le reclassement des extraits de RAG4historicalNewspapers à gauche et de notre version simplifiée à droite}
+        \label{fig:rerank_rag4X}
+    \end{center}\end{figure}
+
+    L'architecture obtenue est illustrée par la Figure~\ref{fig:ArchiRAG4def}.
+
+    \begin{figure}
+        \includegraphics[width=\textwidth]{images/RAGHN-perso.drawio.png}
+        \caption{Version simplifiée de RAG4HistoricalNewspapers utilisée pour le challenge}
+        \label{fig:ArchiRAG4def}
+    \end{figure}
+
+    \md{Est-il pertinent de mentionner le montée en version des librairies dans cette partie ?}
 
     
 \section{Objectifs}
