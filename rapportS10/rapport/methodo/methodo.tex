@@ -1,29 +1,48 @@
-
-\md{À REMETTRE EN FORME}
 \section{Construction des perturbations}
-    \begin{verbatim}
-- on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
-(car liés au vocabulaire de spécialité) en les replaçant
-- La conception de perturbations necessite de bien choisir les mots à remplacer (traité dans la sous partie 1) et les mots remplaçants (traité dans la sous partie 2). 
-- La sous partie 3 propose un nouveau type de perturbations
-    \end{verbatim}
+%     \begin{verbatim}
+% - on s'intéresse aux perturbations de type replace pour travailler sur l'impact des mots importants
+% (car liés au vocabulaire de spécialité) en les replaçant
+% - La conception de perturbations necessite de bien choisir les mots à remplacer (traité dans la sous partie 1) et les mots remplaçants (traité dans la sous partie 2). 
+% - La sous partie 3 propose un nouveau type de perturbations
+%     \end{verbatim}
+
+    Dans un premier temps, on se concentre sur les perturbations de type \replace. Cela permet d'exploiter la multiplicité des sens (polysémie) de certains mots de spécialité en jouant sur leur sens de spécialité et leur sens commun ou issu d'une aussi spécialité (ex: \textit{grenade} ). \\
+    Pour construire des perturbations de type \replace qui impactent le modèle et qui soient pertinentes à interpréter, il faut bien choisir le mot à remplacer et le mot remplaçant. On propose aussi un nouveau type de perturbation.
 
     \subsection{Identification des mots cibles}
         \begin{verbatim}
 - Le choix des remplaçant est fait par jugement humain
-    - Le choix des mots à remplacer se fait à l'aide de 
+- Le choix des mots à remplacer se fait à l'aide de 
     - fréquence dans l'échantillon de données sélectionné
     - IDF 
     - appartenance au vocabulaire de spécialité (jugement humain)
     - présence du mot dans la question étudiée (cas du dataset à 1! question)
-- la bonne couverture des documents est importante (commentaire sur NaN) pour avoir des résultats lisibles
+- la bonne couverture des documents est importante (commentaire sur NaN) 
+pour avoir des résultats lisibles
+- cas du voc de spécialité : ne pas être un stop word / les critères précédents permettent en association avec un doci ou un simple jugement humain d'identifier le vocabulaire de spécialité
         \end{verbatim}
+
+        Pour qu'une perturbation de type \replace impacte un modèle, elle doit s'appliquer à un très grand nombre voire tous les documents. Lorsqu'un document n'est pas modifié par une perturbation (ie. ne contient pas le mot remplacé), il apportera un score de sensibilité de valeur \texttt{NaN} à cause de la division par zéro induite par l'activation patching. Pour réduire cette difficulté, on peut limiter le nombre de documents utilisés pour appliquer l'activation patching.
+
+        Après avoir écarté les mots vides (stop-words), on propose les critères de sélection des mots suivants pour impacter le modèle et s'appliquer à un grand nombre de documents:
+        \begin{itemize}
+            \item Fréquence du mot dans le dataset
+            \item L'IDF du mot dans le dataset
+            \item La présence du mot dans la question ciblée
+        \end{itemize}
+
+        
+        Les indicateurs de fréquence permettent de faciliter l'identification du vocabulaire de spécialité. On peut aussi s'aider d'un dictionnaire. 
+
+
 
     \subsection{Perturbation replace par niveau}
         \begin{verbatim}
 - On propose plusieurs candidats au remplacement classé en 4 niveaux ...
 - Rq : il faudrait fonder l'estimation du niveau des perturbations
         \end{verbatim}
+
+        
 
     \subsection{Perturbations de type full\_replace}
         \begin{verbatim}
