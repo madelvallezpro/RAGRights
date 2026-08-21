@@ -1,3 +1,16 @@
+\color{cyan}
+\begin{verbatim}
+REPRISE DU PLAN DU CHAPITRE DU 21/08
+
+Objectifs du stage et préliminaires
+- Hypothèses et objectifs du stage
+- Challenge RAG@EvalLLM
+    Reprendre rapidement pour faire écho aux objectifs de façon plus claire
+- Construction du dataset (ou simplement Dataset ?)
+- Adaptation du modèle RAG4HistoricalNewspapers (ou simplement _Système_ ou _Modèle_ ?)
+\end{verbatim}
+\color{black}
+
 \section{Challenge RAG@EvalLLM}
     \begin{verbatim}
 - Le sujet de l'extraction d'informatoin et lu RAG est d'actualité 
@@ -51,7 +64,7 @@ différents pdf, taille des documents, répartition positif/négatif)
     La troisième base de donnée a été construite à partir d'une seule question. Ainsi, les extraits pertinents partagent un plus grand nombre de mots sur lesquels il est possible de s'appuyer pour construire des perturbations. Pour maintenir l'équilibre, les extraits sont pour moitié non pertinents. Le choix des extraits est fait à partir de trois PDF : un pour les extraits pertinents et deux our les extraits non pertinents. 
     
 
-\section{Adaptation du modèle RAG4HN}
+\section{Adaptation du modèle RAG4HistoricalNewspapers}
     \begin{verbatim}
 - Choix de ce modèle : traite des données en FR
 - Suppression de la partie WebSearch (hors sujet)
@@ -105,7 +118,7 @@ différents pdf, taille des documents, répartition positif/négatif)
 
 \paragraph{La langue de spécialité} correspond à l'ensemble du vocabulaire et des tournures spécifiques à un domaine d'expertise \cite{cabre_terminologie_1998}. Si la façon de s'exprimer ne change que de façon limité, certains mots ont parfois un sens différent (exemple: \textit{noeuds} en deep learning) et certaines façons de s'exprimer sont inhabituelles en dehors du domaine (ex: codes de rédaction d'une preuve mathématique). Chaque domaine dispose de sa langue de spécialité qui est incluse dans la langue générale et en intersection avec la langue commune.
 
-\paragraph{Hypothèse} Considérant que l'activation patching permet de localiser les composants et noeuds d'un modèle sensibles à une perturbation, on s'intéresse aux hypothèses suivantes:
+\paragraph{Hypothèses} Considérant que l'activation patching permet de localiser les composants et noeuds d'un modèle sensibles à une perturbation, on s'intéresse aux hypothèses suivantes:
 
 \begin{description}
     \item[H1 : ] Dans les modèles de langue, une langue de spécialité repose sur certains composants du modèle.
