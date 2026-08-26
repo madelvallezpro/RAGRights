@@ -271,3 +271,5 @@ TODO
 - présentaion -> présentation
 - intelliegnce -> intelligence
 - extrcation -> extraction
+- accord du mot noeud + \oe
+- scores de perturbation -> socre de pertinence

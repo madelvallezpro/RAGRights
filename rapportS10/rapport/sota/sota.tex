@@ -9,8 +9,8 @@
 % modèles [Lewis+20] (= définition de RAG)
 % - Ces approches peuvent être appliquées aux tâches et modèles du TALN : RALLM
 %         \end{verbatim}
-        Les modèles d'apprentissage profond tels que les réseaux de neurones profond, réseaux convolutionnels ou les réseaux basés sur le mécanisme d'attention constituent leur connaissances à partir des données utilisées pour les entraîner. Cependant, leurs connaissances et leur capacité d'extrapolation sont limités. Cela rend ces modèles vulnérables à l'obsolescence des résultats et aux hallucinations \cite{huang_survey_2025}. Pour traiter ces problématiques, \cite{lewis_retrieval-augmented_2020} propose d'associer une base de donnée et un modèle d'extraction des données de cette base à un modèle génératif. La base de donnée permet d'entretenir plus facilement les connaissances du modèle obtenu afin de limiter l'obsolescence des résultats et/ou agrandir la base de connaissance selon le besoin ou la tâche visée.\\
-        Les systèmes combinant un modèle d'extraction (\textit{retrieval} en anglais) et un modèle génératif sont appelées systèmes RAG (Retrieval Augmented by Generation). La question ou requête de l'utilisateur est fournie au modèle d'extraction qui récupère les documents ou extraits de documents pertinent au regard de la question. Ces documents ainsi que la question sont alors donnés au générateur qui produit le résultat final. Ce processus est schématisé dans le Figure~\ref{fig:ArchiRAG}
+        Les modèles d'apprentissage profond tels que les réseaux de neurones profond, réseaux convolutionnels ou les réseaux basés sur le mécanisme d'attention constituent leur connaissances à partir des données utilisées pour les entraîner. Cependant, leurs connaissances et leur capacité d'extrapolation sont limités. Cela rend ces modèles vulnérables à l'obsolescence des résultats et aux hallucinations \cite{huang_survey_2025}. Pour traiter ces problématiques, \cite{lewis_retrieval-augmented_2020} propose d'associer une base de donnée et un modèle d'extraction des données de cette base à un modèle génératif. La base de données permet d'entretenir plus facilement les connaissances du modèle obtenu afin de limiter l'obsolescence des résultats et/ou d'agrandir la base de connaissances selon le besoin ou la tâche visée.\\
+        Les systèmes combinant un modèle d'extraction (\textit{retrieval} en anglais) et un modèle génératif sont appelées systèmes RAG (\textit{Retrieval Augmented Generation}). La question ou requête de l'utilisateur est fournie au modèle d'extraction qui récupère les documents ou extraits de documents pertinent au regard de la question. Ces documents ainsi que la question sont alors donnés au générateur qui produit le résultat final. Ce processus est schématisé dans le Figure~\ref{fig:ArchiRAG}
 
         \begin{figure}
             \centering
@@ -19,13 +19,13 @@
             \label{fig:ArchiRAG}
         \end{figure}
 
-        Les systèmes RAG peuvent être appliqués à de nombreuses tâches générant différents types de données (génération d'image, génération et/ou complétion de signaux, génération de texte, traduction,...). Lorsque le modèle génératif est un Grand Modèle de Langue (LLM), on parle de systèmes RA-LLM \cite{fan_survey_2024}. Ces modèles sont utilisées pour grande diversité de tâches du traitement automatique des langues. On retrouve notamment les différentes variantes de réponse aux questions (questions à forte intensité de raisonnement, question sur domaine ouvert,...), les tâches d'analyse de texte (vérification de fait, liage d'entité, détection d'entité nommées), des tâches de génération ou de complétion (traduction, prédiction de citation, dialogue, résumé de texte, complétion de texte à trous,...) ou encore les tâches d'extraction (extraction d'information, extraction d'argument, ...)
+        Les systèmes RAG peuvent être appliqués à de nombreuses tâches générant différents types de données (génération d'image, génération et/ou complétion de signaux, génération de texte, traduction,...). Lorsque le modèle génératif est un Grand Modèle de Langue (LLM), on parle de systèmes RA-LLM \cite{fan_survey_2024}. Ces modèles sont utilisées pour grande diversité de tâches du traitement automatique des langues. On retrouve notamment les différentes variantes de réponse aux questions (questions à forte intensité de raisonnement, question sur domaine ouvert \footnote{Plus connus sous le nom de \textit{Reasonning-Intensive Question Answering}, \textit{Open-Domain QA, ...}},...), les tâches d'analyse de texte (vérification de fait, liage d'entité \footnote{Fact Checking, Entity Linking, ... })
+        %\alh{je doute mais j'aurais bien mis les appelations en anglais aussi quelque part comme en footnote un truc du genre "mieux connu sous les appelations de \textit{fact checking, NER, LOD, }"}
+        , des tâches de génération ou de complétion (traduction, prédiction de citation, dialogue, résumé de texte, complétion de texte à trous \footnote{Slot Filling},...) ou encore les tâches d'extraction (extraction d'information, extraction d'argument, ...)
 
 
 
     \subsection{L'architecture des modèles RA-LLM}
-
-        \md{Cette sous-section est un résumé de \cite{fan_survey_2024}}
 
 %         \begin{verbatim}
 % Description de l'archi de façon plus avancée
@@ -58,8 +58,14 @@
         \paragraph{Intégration} Une fois les documents récupérés et augmentés, il faut les fournir au générateur. \cite{fan_survey_2024} distingue trois stratégies d'intégration. L'\textit{intégration en entrée} consiste à combiner les documents et la question (généralement à l'aide d'une template de prompt) avant de la fournir au générateur. L'\textit{intégration en sortie} consiste à prendre en compte le ou les documents à la fin du processus de génération à l'aide d'un processus de fusion. L'\textit{intégration dans les couches intermédiaires} injecte les documents encodés dans les couches intermédiaires du générateur.\\
         Un autre élément à prendre en compte dans l'intégration des documents au cours de la génération est la fréquence et donc le nombre d'extractions effectués pour une question. Le recours à la génération peut  se faire avec une fréquence fixée (une seule fois, tout les n token,...) ou être déclenchée au cours de la génération (par un modèle annexe, par la génération d'un token spécifique, en fonction d'un logit,...).
 
-        \md{Parler de l'entrainement de ces architectures ?}
-
+        \paragraph{Entraînement} Lors de la conception d'un système RAG, on assemble des modèles pré-entraînés. Une fois le système assemblé, il est possible d'affiner les composants pour les faire correspondre à la tâche visée et/ou augmenter leur symbiose. \cite{fan_survey_2024} distingue quatre approches d'entraînement complémentaire. La première consiste en ne pas ré-entraîner le modèle. On parle de système \textit{training-free}. La seconde approche est l'\textit{independent training}. L'extracteur et le générateur sont entraînés chacun de leur coté de façon totalement indépendante en dehors de la pipeline du système RAG.  Le \textit{sequential training} entraîne les deux composants l'un après l'autre mais le second est entraîné à l'intérieur de la pipeline du système RAG. Il n'y a pas d'ordre fixe pour le séquentiel training; il peut être \textit{Retriever-first} ou \textit{LLMs-first}. Le \textit{joint training} consiste à entraîner les deux modèles simultanément. Le schéma de la figure~\ref{fig:EntrainementsRAG} issu de \cite{fan_survey_2024} illustre ces quatre approches.
+        
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{images/Training.pdf}
+            \caption{Illustration des approches d'entraînement des systèmes RAG par \cite{fan_survey_2024}}
+            \label{fig:EntrainementsRAG}
+        \end{figure}
 
     \subsection{Architectures aperçues au cours du stage}
 
@@ -76,11 +82,13 @@
 
         \cite{chen_seeing_2025} propose un système RAG avec une base de données multi-modales où chaque entrée est un couple (image, texte). Les paires extraites à partir de la requête, elle aussi bi-modale, sont ré-ordonnées avant d'être fournies comme contexte au générateur.
 
-        Pour traiter les tâches à forte intensité de raisonnement (reasoning intensive tasks), \cite{xu_search---chain_2024} propose un système RAG combiné à un modèle de décomposition de raisonnement (Chain-of-Query). La requête de l'utilisateur est décomposé en sous-requêtes résolues une à une. Elles sont en suite vérifiées à l'aide des documents extraits. Le raisonnement est vérifié, complété et éventuellement repris en fonction du score de crédibilité obtenu. Une trace complète du raisonnement est restituée en sortie.
+        Pour traiter les tâches à forte intensité de raisonnement (\textit{reasoning intensive tasks}), \cite{xu_search---chain_2024} propose un système RAG combiné à un modèle de décomposition de raisonnement (\textit{Chain-of-Query}). La requête de l'utilisateur est décomposé en sous-requêtes résolues une à une. Elles sont en suite vérifiées à l'aide des documents extraits. Le raisonnement est vérifié, complété et éventuellement repris en fonction du score de crédibilité obtenu. Une trace complète du raisonnement est restituée en sortie.
 
-        Les systèmes RAG sont aussi intéressants à intégrer à une architecture agentique en tant que source d'information. \cite{liu_hm-rag_2025} présente un framework Hiérarchique Multi-agent Multi-modal composé d'un agent de décomposition des requêtes utilisateur, d'un agent RAG pour des données structurées, non-structurées et sous forme de graphes et d'un agent de prise de décision construisant la sortie finale.
+        Les systèmes RAG sont aussi intéressants à intégrer à une architecture agentique en tant que source d'information. \cite{liu_hm-rag_2025} présente un framework Hiérarchique Multi-agent Multi-modal composé d'un agent de décomposition des requêtes utilisateur qui découpe la requête entrée en sous tâches, d'un agent RAG pour des données structurées, non-structurées et sous forme de graphes à partir duquel les réponses aux sous questions sont obtenues et d'un agent de prise de décision  qui juge la qualité de chaque entrée, les assemble pour obtenir la sortie finale. 
+        %\alh{c'ets peut être moi qui suis peu concentrée mais autant les précédet, je comprends la nuance avec le rest eautant là y a trop de choses non expliquées pour que cela ne soit informatif, soit rester plus flou en disant que le RAG a pénétré le paradigme agentif, ou alors que l'on peut entrevoir le RAG comme une agent parmis d'autres dans certaines archis et cite ? mais là c'est trop de concepts non expliqués}
 
-        \cite{zhu_static_2025} s'intéresse au cas particulier des bases de données dynamiques. Lorsque le flux d'apport de donné est important, le besoin de restructuration de la base de donnée est régulier or le coût calculatoire et énergétique associé est dissuasif. \cite{zhu_static_2025} propose StreamingRAG, une architecture composée d'une base de données dynamique qui maintien un ensemble de prototypes compact représentatif du flux de données tout en évitant sa reconstruction permanente.
+        \cite{zhu_static_2025} s'intéresse au cas particulier des bases de données dynamiques. Lorsque le flux d'apport de donné est important, le besoin de restructuration de la base de donnée est régulier or le coût calculatoire et énergétique associé est dissuasif. \cite{zhu_static_2025} propose StreamingRAG, une architecture composée d'une base de données dynamique qui maintien un ensemble de documents (appelés prototypes) représentatifs du flux de données en l'agrémentant et la nettoyant au cours du temps. La base de données ne contient pas tous les éléments, ce qui est avantageux en terme de coût de mémoire, de calcul, d'énergie et de latence, tout en restant représentative du flux de document y compris lorsque celui-ci évolue. 
+        %\alh{même problème ici soit c'est trop soit pas assez}
 
 
     \subsection{Architecture et Modèles utilisées au cours du stage}
@@ -93,7 +101,9 @@
 % - L'extracteur de RAG4HN est mE5 [Wang+25b] (version multilingue de E5 [Whang+25a])
 %         \end{verbatim}
 
-        Dans la suite, nous utilisons une version simplifiée de l'architecture RAG4HistoricalNewspaper conçue par \cite{tran_retrieval_2024}. Cette architecture est conçue pour faciliter l'exploration d'archives de journaux historiques. Comme illustré dans le Figure~\ref{fig:RAG4HN}, un premier extracteur récupère les articles pertinents au regard de leur titre. Ces informations sont utilisées pour orienter l'extraction des extraits articles. Dans le cas où aucun titre ou document ne sont extraits, des ressources sont récupérées via une recherche Web. La première extraction peut être vue comme une amélioration de la requête pour l'extraction des extraits d'articles. Les deux extracteurs utilisent le modèle mE5-small de \cite{wang_multilingual_2024} et ChromaDB pour la gestion des données. Après l'extraction, les articles obtenus sont reclassés. Le score utilisé est issu d'une combinaison linéaire entre le score de Cohere et le TF-IDF des titres concaténés avec les étiquettes des entités nommées de la question. Seuls les trois meilleurs documents au dessus d'un certain seuil sont conservés. Ce reclassement est une technique d'amélioration des ressources extraites. Pour finir, les documents et la question initiale sont fournis à travers une prompt template à LLaMa3 \cite{touvron_llama_2023} qui est utilisé comme générateur.
+        Dans la suite, nous utilisons une version simplifiée de l'architecture RAG4HistoricalNewspaper conçue par \cite{tran_retrieval_2024}. Cette architecture est conçue pour faciliter l'exploration d'archives de journaux historiques. Comme illustré dans le Figure~\ref{fig:RAG4HN}, un premier extracteur récupère les articles pertinents au regard de leur titre. Ces informations sont utilisées pour orienter l'extraction des extraits articles. Dans le cas où aucun titre ou document ne sont extraits, des ressources sont récupérées via une recherche Web. La première extraction peut être vue comme une amélioration de la requête pour l'extraction des extraits d'articles. Les deux extracteurs utilisent le modèle mE5-small de \cite{wang_multilingual_2024} et ChromaDB pour la gestion des données. Après l'extraction, les articles obtenus sont reclassés. Le score utilisé est issu d'une combinaison linéaire entre le score de Cohere accessible depuis l'API \cite{cohere_rerank_2024}
+        %\alh{il faut dire comment il est calculé}
+        et le TF-IDF des titres concaténés avec les étiquettes des entités nommées de la question. Seuls les trois meilleurs documents au dessus d'un certain seuil sont conservés. Ce reclassement est une technique d'amélioration des ressources extraites. Pour finir, les documents et la question initiale sont fournis à travers un prompt template à LLaMa3 \cite{touvron_llama_2023} qui est utilisé comme générateur.
 
         \begin{figure}
             \includegraphics[width=\textwidth]{images/RAGHN.drawio.png}
@@ -117,7 +127,7 @@
 % and Technology (US)) propose différents axes ou composantes de l'IA de confiance : ... [Ni+25] + [Ref citée par Ni+25 du NIST]
 %         \end{verbatim}
 
-        La définition d'IA de confiance (Trustworthy AI) n'est pas fixée et change souvent en fonction des contextes d'utilisations de cette expression. Dans le cas du Machine Learning, on désigne l'IA de confiance comme l'ensemble des systèmes d'IA dans lesquels il est légitime (dans le sens humainement entendable) d'avoir confiance. \cite{ni_towards_2025} rappèle les composantes de l'IA de confiance proposés par Le NIST (National Institute of Standards and Technology (USA)):
+        La définition d'IA de confiance (Trustworthy AI) n'est pas fixée et change souvent en fonction des contextes d'utilisations de cette expression. Dans le cas du Machine Learning, on désigne l'IA de confiance comme l'ensemble des systèmes d'IA dans lesquels il est légitime (dans le sens humainement entendable) d'avoir confiance. \cite{ni_towards_2025} rappelle les composantes de l'IA de confiance proposés par Le NIST (National Institute of Standards and Technology (USA)):
 
         \begin{description}
                 \item[Fiabilité] Le comportement d'un IA de confiance doit être systématiquement adapté, l'incertitude sur son comportement doit être quantifiable et quantifié et ses capacité de généralisation doivent être robustes.
@@ -133,7 +143,6 @@
 
     \subsection{Explicabilité pour le RAG}
 
-    \md{Je pensais initialement rédiger cette partie en calquant sur la partie \cite{ni_towards_2025} correspondante comme je l'ai fait pour la sous-section précédente. Certains éléments de sa version des fait ne me plaisent plus autant donc j'ai préféré une version plus gros grain avec une part de jugement personnel. Je ne sais pas si ce format est adapté pour un état de l'art.}
 %         \begin{verbatim}
 % Dans la suite, nous nous concentrons sur l'explicabilité dans le contexte du RAG. [Ni+25] 
 % distingue deux temps pour l'explicabilité : Extraction et génération ... (prévoir la question 
@@ -152,7 +161,8 @@
 
         Dans le contexte de l'explicabilité des systèmes RAG, \cite{ni_towards_2025} propose de distinguer l'explication du modèle d'extraction et l'explication du modèle génératif. De façon plus générale, une approche naïve d'explication des systèmes RAG est de construire des explications pour chaque composant du modèle (extraction, génération, améliorations, ...). La difficulté intervient au moment de mettre en perspective les explications fournies entre elles. \cite{ni_towards_2025} souligne l'absence de de méthode d'explication pour l'extraction d'information spécifique contexte du RAG ni d'étude de l'application des méthodes génériques à ce cas. La même question se pose pour l'explication des modèle génératifs : les méthodes d'explications classiques sont-elles capable de prendre en compte la présence des autres composants? 
 
-        Au delà de l'objectif de transparence de l'explicabilité, \cite{ni_towards_2025} pointe la possible utilisation d'explication d'un composant comme indication supplémentaire pour améliorer les performances d'un autre composant. \md{développer avec un exemple?}
+        Au delà de l'objectif de transparence de l'explicabilité, \cite{ni_towards_2025} pointe la possible utilisation d'explication d'un composant comme indication supplémentaire pour améliorer les performances d'un autre composant. 
+        %\md{développer avec un exemple?}\alh{si le temps, à faire en dernier peut être}
 
         
 
@@ -166,19 +176,21 @@
 %         \end{verbatim}
 
         L'explicabilité de l'intelligence artificielle est constituée de deux branches. Certains modèles contiennent leur explication. On parle de modèle \textit{explicable by-design}. C'est le cas des premiers modèles de machine learning tels que les arbres de décision mais aussi de modèles plus récents comme les Sparse Auto-Encodeurs.\\
+        %\alh{tombe un peu comme une cheveu sur la soupe, au moins dire avec des mots simples ce que c'est ou plutôt enquoi ces modèles sont explicables by design}
         Les modèles explicables by-design s'opposent à des modèles plus opaques tels que les réseaux de neurones profonds. Le processus de décision de ces modèles n'est pas directement accessible. Les méthodes d'\textit{explicabilité post-hoc} permettent de construire des explications à partir de l'étude de leur comportement.
 
-        \cite{somvanshi_bridging_2026} présente un sous-paradigme de l'explicabilité : l'\textit{interprétabilité mécaniste}. L'interprétabilité mécaniste vise à identifier les parties ou sous-parties d'un modèle responsables des différents comportements du modèle. Les méthodes d'interprétabilité mécaniste vont explorer la sensibilité des paramètres du modèle sur des entrées choisies afin de construire une cartographie du modèle faisant la correspondance entre ses compétences et connaissances et ses composants ou groupe de composants. on retrouve plusieurs approches au sein des méthodes d'interprétabilité mécaniste.
+        \cite{somvanshi_bridging_2026} présente un sous-paradigme de l'explicabilité : l'\textbf{\textit{interprétabilité mécaniste}}. L'interprétabilité mécaniste vise à identifier les parties ou sous-parties d'un modèle responsables des différents comportements du modèle. Les méthodes d'interprétabilité mécaniste vont explorer la sensibilité des paramètres du modèle sur des entrées choisies afin de construire une cartographie du modèle faisant la correspondance entre ses compétences et connaissances et ses composants ou groupe de composants. on retrouve plusieurs approches au sein des méthodes d'interprétabilité mécaniste.
 
-        Les méthodes de \textbf{manual circuit tracing} cherchent à identifier les sous-graphes de modèles neuronaux responsables d'un certain comportement recherché. Pour cela, elles observent les paramètres et les flux de données lors de l'utilisation du modèle.
+        Les méthodes de \textbf{\textit{manual circuit tracing}} cherchent à identifier les sous-graphes de modèles neuronaux responsables d'un certain comportement recherché. Pour cela, elles observent les paramètres et les flux de données lors de l'utilisation du modèle.
 
-        Les méthodes de \textbf{representation analysis} observent les représentations latentes des couches intermédiaires grace à des outils d'unembedding. De cette manière, on peut localiser la détection de phénomènes présents dans l'entrée et la mise en place de notions dans la construction de la sortie.
+        Les méthodes de \textbf{\textit{representation analysis}} observent les représentations latentes des couches intermédiaires grâce à des outils d'unembedding. De cette manière, on peut localiser la détection de phénomènes présents dans l'entrée et la mise en place de notions dans la construction de la sortie.
 
-        Les techniques de \textbf{feature decomposition} cherchent à distinguer les différentes compétences traitées par chaque partie du modèle. Pour cela, elles intègrent des Sparse Auto-Encodeurs sur les parties du modèle visées puis déduisent, par l'observation de ces SAE, les compétences de chaque partie du modèle.
+        Les techniques de \textbf{\textit{feature decomposition}} cherchent à distinguer les différentes compétences traitées par chaque partie du modèle. Pour cela, elles intègrent des Sparse Auto-Encodeurs (SAE) sur les parties du modèle visées puis déduisent, par l'observation de ces SAE, les compétences de chaque partie du modèle.
 
-        Les méthodes basées sur les \textbf{toy models and synthetic tasks} consistent à concevoir des environnements contrôlés favorisant la localisation de motifs dans le modèle associés un comportement visé. Ces méthodes supposent qu'une même compétence prendra la même forme dans tous les modèles disposant de cette compétence.
+        Les méthodes basées sur les \textbf{\textit{toy models and synthetic tasks}} consistent à concevoir des environnements contrôlés favorisant la localisation de motifs dans le modèle associés un comportement visé. Ces méthodes supposent qu'une même compétence prendra la même forme dans tous les modèles disposant de cette compétence.
 
-        Les méthodes \textbf{intervention-based} observent l'impact de modifications du modèle sur son comportement pour en déduire la présence et la localisation des compétences du modèle. On retrouve trois approches parmi les techniques intervention-based : les techniques d'intervention par \textit{ablation}, les techniques d'intervention par \textit{activation patching} que nous détaillerons dans la prochaine sous partie et les techniques de \textit{path patching}. 
+        Les méthodes \textbf{\textit{intervention-based}} observent l'impact de modifications du modèle sur son comportement pour en déduire la présence et la localisation des compétences du modèle. On retrouve trois approches parmi les techniques intervention-based : les techniques d'intervention par \textbf{\textit{ablation}}, les techniques d'intervention par \textbf{\textit{activation patching}} que nous détaillerons dans la prochaine sous partie et les techniques de \textbf{\textit{path patching}}. 
+        %\alh{j'aurais passé en italique et gras tous les termes manual circuit tracing,... et ablation, ...}
 
 
     \subsection{Activation Patching}
@@ -190,10 +202,11 @@
 % - Données produites, visualisation et interprétation des graphiques
 %         \end{verbatim}
 
-        \subsubsection{Définiton et fonctionnement de l'Activation Patching}
-            L'activation patching est une méthode d'interprétabilité mécaniste intervention-based pour les modèles profond. Elle identifie les composants d'un modèle sensibles à une famille de perturbations des entrées minimales pour changer la sortie \cite{geiger_causal_2021}. Pour cela, on effectue trois passes du dataset par perturbation : une sur les entrées non perturbées, une sur les entrées perturbées pour lesquelles on sauvegarde toutes les activations intermédiaires et une sur les entrées perturbées mais dans une version du modèle avec une activation remplacée par l'activation équivalente de la passe sur les données non perturbées. On s'intéresse alors à combien ce remplacement rapproche la sortie de celle attendue.
+        \subsubsection{Définition et fonctionnement de l'Activation Patching}
+            L'activation patching est une méthode d'interprétabilité mécaniste intervention-based pour les modèles profond. Elle identifie les composants d'un modèle sensibles à une famille de perturbations des entrées minimales pour changer la sortie \cite{geiger_causal_2021}. Pour cela, on effectue trois passes du dataset par perturbation : une sur les entrées non perturbées, une sur les entrées perturbées pour lesquelles on sauvegarde toutes les activations intermédiaires et une sur les entrées perturbées mais dans une version du modèle avec une activation remplacée par l'activation équivalente de la passe sur les données non perturbées. On s'intéresse alors à combien ce remplacement rapproche la représentation du document perturbé de celle du document non perturbé. % \alh{rapprocher ? ici on a ds scores de pertinence qu'il faut réexpliquer je pense, et il faut structurer davantage le texte, avec des puces par exemple}
 
-            \cite{chen_axiomatic_2024} propose une adaptation de cette méthode pour les modèle d'extraction d'information. Les entrées sont alors des paires (question, document) et la sortie, un score de pertinence. La perturbation ne doit plus nécessairement réduire la performance du modèle sur les entrées. (On peut penser à une perturbation qui duplique les mots importants de la question si ils apparaissent dans le document.) Par conséquent, la troisième passe ne se fait plus nécessairement sur les entrées non perturbées mais sur la version des entrées ayant la meilleure performance.  La version de l'activation patching de \cite{chen_axiomatic_2024} est formalisée dans l'encart \ref{box:activationPatchingIR}. 
+            \cite{chen_axiomatic_2024} propose une adaptation de cette méthode pour les modèle d'extraction d'information. Les entrées sont alors des paires (question, document) et la sortie, un score de pertinence. La perturbation ne doit plus nécessairement réduire la performance du modèle sur les entrées. (On peut penser à une perturbation qui duplique les mots importants de la question si ils apparaissent dans le document.) Par conséquent, la troisième passe ne se fait plus nécessairement sur les entrées non perturbées mais sur la version des entrées ayant la meilleure performance. %\alh{prendre le temps (une phrase en plus) d'expliquer pourquoi ça marche car c'est contre intuitif} 
+            La version de l'activation patching de \cite{chen_axiomatic_2024} est formalisée dans l'encart \ref{box:activationPatchingIR}. 
 
             \begin{tcolorbox}[
                 colback=gray!5!white,
@@ -205,12 +218,12 @@
                 \begin{enumerate}
                     \item Faire une passe pour toutes les paires $Q\times D$
                     \begin{itemize}
-                        \item noter $o_{n}^e$ la sortie de chaque noeud $n, \forall e \in Q\times D$
+                        \item noter $o_{n}^e$ la sortie de chaque nœud $n, \forall e \in Q\times D$
                         \item noter $p_D$ la performance du modèle sur les données non perturbées
                     \end{itemize} 
                     \item Faire une passe pour toutes les paires $Q\times \tilde{D}$
                     \begin{itemize}
-                        \item noter $o_{n}^{\tilde{e}}$ la sortie de chaque noeud $n, \forall \tilde{e} \in Q\times \tilde{D}$
+                        \item noter $o_{n}^{\tilde{e}}$ la sortie de chaque nœud $n, \forall \tilde{e} \in Q\times \tilde{D}$
                         \item noter $p_{\tilde{D}}$ la performance du modèle sur les données perturbées
                     \end{itemize}
                     \item On renomme $D, e, \tilde{D}$ et $\tilde{e}$ respectivement
@@ -218,15 +231,16 @@
                         \item $\hat{D}, \hat{e}, \check{D}$ et $\check{e}$ si $p_D > p_{\tilde{D}}$
                         \item $\check{D}, \check{e}, \hat{D}$ et $\hat{e}$ sinon
                     \end{itemize}
-                    Pour chaque noeud $n$
+                    Pour chaque nœud $n$
                     \item Faire une passe de $Q\times\check{D}$ en remplaçant $o_{i,j}^{\check{e}}$ par $o_{n}^{\hat{e}}$ pour chaque $\check{e}$. On note la performance $\bar{p}_n$
-                    \item $P_{n} = \frac{\bar{p}_n - p_{\hat{D}} }{p_{\check{D}} - p_{\hat{D}}}$ exprime l'impact de la perturbation sur la performance du modèle pour le noeud $n$
+                    \item $P_{n} = \frac{\bar{p}_n - p_{\hat{D}} }{p_{\check{D}} - p_{\hat{D}}}$ exprime l'impact de la perturbation sur la performance du modèle pour le nœud $n$
                 \end{enumerate}
 
                 \label{box:activationPatchingIR}
             \end{tcolorbox}
 
-            L'activation patching fourni  trois performances par noeud avec lesquelles on peut estimer la sensibilité de chaque noeud à la perturbation. Si la sensibilité est élevée en valeur absolue, le noeud est sensible à la perturbation. Si la sensibilité est positive, le patch effectué atténue la perturbation. Si la sensibilité est négative, le patch accentue la perturbation. \md{Nouveauté à utiliser pour l'interpretation des matrices...}
+            L'activation patching fourni  trois performances par nœud avec lesquelles on peut estimer la sensibilité de chaque nœud à la perturbation. Si la sensibilité est élevée en valeur absolue, le nœud est sensible à la perturbation. Si la sensibilité est positive, le patch effectué atténue la perturbation. Si la sensibilité est négative, le patch accentue la perturbation. 
+            %\md{Nouveauté à utiliser pour l'interpretation des matrices...}\alh{?}
 
         \subsubsection{Implémentation de l'Activation Patching}
 
@@ -234,15 +248,17 @@
 
             MechIR permet à l'heure actuelle d'appliquer trois formes de perturbation sur les documents:
             \begin{itemize}
-                \item \texttt{append} : Ajoute un mot fourni en paramètre à la fin des documents,
-                \item \texttt{prepend} : Ajoute un mot fourni en paramètre au début des documents,
-                \item \texttt{replace} : Remplace chaque occurrence d'un mot par un autre. Les deux mots sont fourni en paramètre.
+                \item \append : Ajoute un mot fourni en paramètre à la fin des documents,
+                \item \prepend : Ajoute un mot fourni en paramètre au début des documents,
+                \item \replace : Remplace chaque occurrence d'un mot par un autre. Les deux mots sont fourni en paramètre.
             \end{itemize}
 
             Pour qu'une perturbation soit pertinente, elle doit changer significativement la sortie du modèle (ie. perturbe significativement le score) sans dénaturer excessivement l'entrée. MechIR propose une visualisation préalable de la distribution des scores de pertinence attribué par le modèle sur les données et les données perturbées (voir Figure~\ref{fig:PerturbationVizMechIRDemo})pour estimer la capacité de la perturbation à impacter les scores. Une perturbation impacte significativement les sorties des paires question, document si les distributions des scores de pertinence pour les documents perturbés et non-perturbés sont significativement différentes.
             
-            Par exemple, la Figure~\ref{fig:PerturbationVizMechIRDemo} visualise les distributions des scores de pertinence pour trois perturbations (ajouter \textit{microwave} au début du document, ajouter \textit{microwave} à la fin du document et remplacer \textit{microwave} par \textit{toaster}). Le dataset utilisé est une partie du dataset Vaswani issu de la librairie irdataset \cite{hou_advancing_2025} et le modèle analysé est TAS-B \cite{hofstatter_efficiently_2021}.\\
-            L'axe des abscisses correspond à la valeur prise par les scores et l'axe des ordonnées à leur densité. Plus la densité est élevée, plus il y a de scores proche de la valeur en ordonnée. La distribution des scores de pertinence des documents vis à vis des question est représentée en jaune et celle des scores pour les documents perturbés est en vert. La distribution des scores pour les documents non perturbés est identique pour les trois perturbation étant donné qu'on manipule le même dataset. Les perturbations de type \append et \replace impactent un peu les distribution des scores mais elles continuent à suivre la mème tendance. La perturbation de type \prepend  impacte plus la distribution des scores de pertinence : les densité sont élevées pour les scores différent et le profil de la courbe est très différent pour les scores de documents perturbés et non perturbés.
+            Par exemple, la Figure~\ref{fig:PerturbationVizMechIRDemo} visualise les distributions des scores de pertinence pour trois perturbations (ajouter \textit{microwave} au début du document, ajouter \textit{microwave} à la fin du document et remplacer \textit{microwave} par \textit{toaster}. %\alh{si vous donnez les exemples, dire tout de suite que c'est sur un corpus de physique})
+            Le dataset utilisé est une partie du dataset Vaswani issu de la librairie irdataset \cite{hou_advancing_2025}, les extraits manipulés sont des abstracts d'articles de physique et le modèle analysé est TAS-B \cite{hofstatter_efficiently_2021}.\\
+            L'axe des abscisses correspond à la valeur prise par les scores et l'axe des ordonnées à leur densité. Plus la densité est élevée, plus il y a de scores proche de la valeur en ordonnée. %\alh{pas très clair, dire par exemple comment lire le replace dans la figure 2.4 qui a du sens} 
+            La distribution des scores de pertinence des documents vis à vis des question est représentée en orange et celle des scores pour les documents perturbés est en vert. La distribution des scores pour les documents non perturbés est identique pour les trois perturbations étant donné qu'on manipule le même dataset. Les perturbations de type \append et \replace impactent un peu les distribution des scores mais elles continuent à suivre la mème tendance. La perturbation de type \prepend  impacte plus la distribution des scores de pertinence : les densité sont élevées pour les scores différent et le profil de la courbe est très différent pour les scores de documents perturbés et non perturbés.
 
             \begin{figure}
                 \centering
@@ -251,16 +267,16 @@
                 \label{fig:PerturbationVizMechIRDemo}
             \end{figure}
 
-            Une fois la perturbation choisie, on peut appliquer l'activation patching pour chaque noeud du modèle choisi et visualiser les sensibilité à la perturbation de chacun d'entre eux (voir Figure~\ref{fig:SensibiliteVizMechIRDemo}). Chaque noeud du modèle est identifié à l'aide ses coordonnées (numéro de couche, position dans la couche). Le score du noeud correspond à la moyenne des sensibilité obtenu pour chaque document. Plus le noeuds à un score élevé en valeur absolue (ie. plus la couleur est foncée), plus la perturbation impacte son comportement. Cela signifie que la modification porte sur une information utilisée par le noeud dans le modèle. Si le score est positif (resp. négatif), le patching atténue (resp. accentue) la perturbation en moyenne.
+            Une fois la perturbation choisie, on peut appliquer l'activation patching pour chaque nœud du modèle choisi et visualiser les sensibilité à la perturbation de chacun d'entre eux (voir Figure~\ref{fig:SensibiliteVizMechIRDemo}). Chaque nœud du modèle est identifié à l'aide ses coordonnées (numéro de couche, position dans la couche). Le score du nœud correspond à la moyenne des sensibilité obtenu pour chaque document. Plus le nœuds à un score élevé en valeur absolue (ie. plus la couleur est foncée), plus la perturbation impacte son comportement. Cela signifie que la modification porte sur une information utilisée par le nœud dans le modèle. Si le score est positif (resp. négatif), le patching atténue (resp. accentue) la perturbation en moyenne.
 
             \begin{figure}
                 \centering
                 \includegraphics[width=0.8\textwidth]{images/ActivationPatchingAllHeadExempleMechIR.png}
-                \caption{Matrices de sensibilité des noeuds du modèle TAS-B pour la première perturbation de l'exemple}
+                \caption{Matrices de sensibilité des nœuds du modèle TAS-B pour la première perturbation de l'exemple}
                 \label{fig:SensibiliteVizMechIRDemo}
             \end{figure}
 
-            Dans la Figure~\ref{fig:SensibiliteVizMechIRDemo}, on remarque principalement le noeud (1,6). Une interprétation possible est que le patching du noeud diminue fortement l'estimation de pertinence effectuée par le modèle sur les documents non perturbé. \md{pas satisfaisant}
+            Dans la Figure~\ref{fig:SensibiliteVizMechIRDemo}, on remarque principalement le nœud (1,6). Une interprétation possible est que le patching du nœud diminue fortement l'estimation de pertinence effectuée par le modèle sur les documents non perturbé. %\md{pas satisfaisant}
 
 
-            \md{RQ : ajouter la distinction entre QA (et autres tâches de RAG) et IR et leur lien}
+            %\md{RQ : ajouter la distinction entre QA (et autres tâches de RAG) et IR et leur lien}

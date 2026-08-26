@@ -1,26 +1,53 @@
 
-\md{À REPRENDRE}
+%\md{À REPRENDRE}
 \section{Résultats et Analyse}
 
     \subsection{Application à la cartographie du vocabulaire de la défense français dans mE5}
-        \begin{verbatim}
-- Grand nombre de noeuds de la dernière couche du modèle
-- pas de noeuds clairement associé au vocabulaire
-...
-        \end{verbatim}
+%         \begin{verbatim}
+% - Grand nombre de nœuds de la dernière couche du modèle
+% - Peu de nœud pour certaines perturbations
+% - pas de nœuds clairement associé au vocabulaire
+% ...
+%         \end{verbatim}
 
+        Les résultats obtenus à l'aide des outils et éléments méthodologiques présenté dans le chapitre précédent ne sont pour l'instant pas très concluants. 
+        
+        La majorité des perturbations permettent de mettre en évidence quelques nœuds sensibles. La majorité d'entre eux se situe dans les dernières couches du modèle, et une grande partie de ces nœuds appartient à la dernière couche du modèle. Il n'est pas exclu que cette sensibilité soit le reflet de l'étalement des documents dans l'espace de représentation appris par le modèle mE5. Le cas échéant, la qualité de l'amélioration qui pourra être déduite de ces informations sera limitée. Il en va de même pour les explications qui pourraient en être déduites.
+
+        Au delà de la localisation des nœuds identifiés par les perturbations, il ne semble pas se dégager de tendance permettant d'aboutir à une cartographie de la gestion du vocabulaire de spécialité de la défense. En effet, certains nœuds sont sensibles à plusieurs perturbations portant sur un même mot comme  dans la figure~\ref{fig:MatNoeudsSensibles} pour les perturbations portant sur le mot ciblé \textit{aérien}. Cependant, il ne se dégage pas de tendance plus globale regroupant tout ou partie du vocabulaire de spécialité de la défense pour l'instant. 
+
+        Toutefois, ces faiblesses sont à modérer. L'échelle à laquelle les expérimentations ont été effectuées étant très faible (peu de mots, petit dataset unique, un seul domaine,...) il n'est pas exclu que des résultats supplémentaire apparaissent en passant à plus grande échelle.
 
     \subsection{Préconisations d'utilisation}
-        \begin{verbatim}
-- des perturbations qui couvrent tous ou très grande partie des documents étudiés
-- utiliser la question comme document témoin
-        \end{verbatim}
+%         \begin{verbatim}
+% - des perturbations qui couvrent tous ou très grande partie des documents étudiés
+% - utiliser la question comme document témoin
+%         \end{verbatim}
+
+        Afin de profiter pleinement des outils et de la méthode proposée, il est important de rester vigilant sur certains points.
+
+        Pour que les perturbations permettent de localiser le vocabulaire spécifique visé ou plus généralement d'identifier une compétence linguistique ou cognitive, les perturbations utilisées doivent couvrir le plus possible l'ensemble de documents ou extraits utilisés. Pour cela, il peut être pertinent d'utiliser plusieurs petits datasets dont le contenu est orienté afin que certains mots de vocabulaire apparaissent plus facilement. 
+
+        Pour le cas de la localisation du vocabulaire de spécialité, il faut rester vigilant sur le choix des mots à remplacer. Une  partie des mots porteurs de sens ne font pas partie du vocabulaire spécifique. Appliquer une perturbation sur ces mots aura un impact sur la distribution des scores de pertinence des documents perturbés cependant elle ne permettra pas de localiser le vocabulaire de spécialité en l'appliquant à l'activation patching.
+
+        Une vigilance particulière doit aussi être porté sur le bruit et les biais. Dans le cas des perturbations ayant un impact modéré sur la représentation des documents au sein du modèle, les nœuds peuvent ne montrer qu'une faible sensibilité. Le bruit induit par l'activation patching peut alors prendre le dessus et créer des faux positifs.  De la même façon, le choix d'utiliser plusieurs petits datasets augmente le risque d'introduire un biais lors de leur construction. Une analyse systématique et rigoureuse des données fournies par l'activation patching et les étapes préalables permet la plupart du temps de les identifier. Il en va de même pour la construction des perturbations. Elles reposent sur la diversité du vocabulaire et la maîtrise de la langue de spécialité du concepteur.
 
 
 \section{Perspectives d'évolution de la méthode proposée}
 
-    \begin{verbatim}
-- échelle pour situer le niveau d'un mot candidat remplaçant en fonction du mot remplacé
-- critère d'identification du vocabulaire de spécialité
-- intégration d'autres informations au critère de sensibilité
-    \end{verbatim}
+%     \begin{verbatim}
+% - échelle pour situer le niveau d'un mot candidat remplaçant en fonction du mot remplacé
+% - critère d'identification du vocabulaire de spécialité FAIT?
+% - intégration d'autres informations au critère de sensibilité
+% - élargir à toute la langue de spécialité (tournues et usages linguistiques)
+% - compilation des résulatts obtenus sur plsueiurs datasets
+%     \end{verbatim}
+
+    Au cours de la conception de la méthode proposée, des faiblesses ont été identifiées et des pistes d'amélioration ont été évoquées.
+    Lors de la formulation des niveaux de perturbation, la notion d'"absence de lien" entre le mot cible et le mot remplaçant était fondée sur une intuition. \cite{greimas_semiotique_1979} propose une définition de l'"incompatibilité" entre deux mots qui pourrai être exploitée afin de garantir le niveau de la perturbation à sa construction. Un outil permettant de faciliter le choix des mots remplaçants reste à construire.
+
+    Aucune méthode n'est proposée pour l'instant pour de mettre en perspective les matrices de sensibilité moyenne d'une même perturbation appliquée sur deux datasets différents. Cela reste une piste pour étoffer la méthodologie proposée.
+
+    Au delà de ces faiblesses, \cite{parry_mechir_2025} propose deux autres types de perturbations que nous n'avons pas exploité dans la méthodologie. Une diversification des types perturbations et l'adaptation des outils d'interprétation des résultats est une piste d'exploration d'autant plus que les perturbations de type \prepend et \append donnent des résultats intéressants dans ses travaux.
+
+    De façon plus générale, il serai pertinent d'étendre la méthode actuelle à l'ensemble de la langue de spécialité. Les travaux actuels ne portent que sur le vocabulaire. La conception de perturbations permettant d'identifier les tournures spécifiques à un domaine de spécialité est une perspective intéressante.

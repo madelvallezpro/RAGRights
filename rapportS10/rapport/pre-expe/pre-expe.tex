@@ -1,59 +1,96 @@
-\color{cyan}
-\begin{verbatim}
-REPRISE DU PLAN DU CHAPITRE DU 21/08
+% \color{cyan}
+% \begin{verbatim}
+% REPRISE DU PLAN DU CHAPITRE DU 21/08
 
-Objectifs du stage et préliminaires
-- Hypothèses et objectifs du stage
-- Challenge RAG@EvalLLM
-    Reprendre rapidement pour faire écho aux objectifs de façon plus claire
-- Construction du dataset (ou simplement Dataset ?)
-- Adaptation du modèle RAG4HistoricalNewspapers (ou simplement _Système_ ou _Modèle_ ?)
-\end{verbatim}
-\color{black}
+% Objectifs du stage et préliminaires
+% - Hypothèses et objectifs du stage
+% - Challenge RAG@EvalLLM
+%     Reprendre rapidement pour faire écho aux objectifs de façon plus claire
+% - Construction du dataset (ou simplement Dataset ?)
+% - Adaptation du modèle RAG4HistoricalNewspapers (ou simplement _Système_ ou _Modèle_ ?)
+% \end{verbatim}
+% \color{black}
+
+    
+\section{Objectifs du stage}
+
+%     \color{gray}
+%     \subsection{Localisation de la langue de spécialité dans un modèle}
+%         \begin{verbatim}
+% - Définition de langue de spécialité
+% - Formalisation de l'objectif
+%         \end{verbatim}
+
+%     \subsection{Intégration des travaux dans l'explicabilité post-hoc des modèles d'extraction d'information}
+%         \begin{verbatim}
+% - Cartographie de modèle d'extraction d'information
+% - Analyse des éléments identifiés par le modèle lors du passage d'un document
+%         \end{verbatim}
+%     \color{black}
+
+
+
+
+\paragraph{La langue de spécialité} correspond à l'ensemble du vocabulaire et des tournures spécifiques à un domaine d'expertise \cite{cabre_terminologie_1998}. Si la façon de s'exprimer ne change que de façon limité, certains mots ont parfois un sens différent (exemple: \textit{nœuds} en deep learning) et certaines façons de s'exprimer sont inhabituelles en dehors du domaine (ex: codes de rédaction d'une preuve mathématique). Chaque domaine dispose de sa langue de spécialité qui est incluse dans la langue générale et en intersection avec la langue commune.
+
+\paragraph{Hypothèses} Considérant que l'activation patching permet de localiser les composants et nœuds d'un modèle sensibles à une perturbation, on s'intéresse aux hypothèses suivantes:
+
+\begin{description}
+    \item[H1 : ] Dans les modèles de langue, une langue de spécialité repose sur certains composants du modèle.
+    \item[H2 : ] Ces composants peuvent être cartographiés à l'aide de l'activation patching.
+\end{description}
+
+\paragraph{Objectifs} Ce stage vise à appliquer l'activation patching à la localisation du vocabulaire spécifique de la langue de spécialité (vocabulaire de spécialité) du domaine de la défense. L'objectif est de proposer une méthodologie, un cadre de mise en pratique de l'activation patching pour la localisation du vocabulaire de spécialité à l'aide de l'outil MechIR ainsi qu'une application au cas de la langue de spécialité de la défense sur le modèle mE5-small.
+
+\paragraph{Intégration dans l'explicabilité post-hoc des modèles d'extraction d'information et des systèmes RAG} La possibilité de localiser le vocabulaire de spécialité ouvre la voie à la localisation de concepts et/ou domaines précis dans un modèle de langue. Il devient alors possible de cartographier ces modèles. Ces cartographies pourraient à terme être utilisées pour expliquer le raisonnement, les éléments pris en compte dans l'entrée et dans les documents extraits au sein d'un système RAG ou RA-LLM. %\md{Est-il pertinent d'évoquer le fond du projet de IJ-CVL?}\alh{en l'état le texte se tient, si à la fin vous avez du temps effectivement ce peut être interessant mais pas du tout une priorité}
+
+
 
 \section{Challenge RAG@EvalLLM}
-    \begin{verbatim}
-- Le sujet de l'extraction d'informatoin et lu RAG est d'actualité 
-- Présentation du Challenge RAG@EvalLLM
-    - La tâche
-        - Identification des documents pertinents pour une question (phrase 
-parfois complexe ou suite de mots clés) 
-        - questions fournies au dernier moment
-        - pas de gold
-    - Les données
-        - pdf à traiter sans structure normée du contenu
-        - majoritairement en français sauf quelques uns en anglais
-        - peuvent contenir des images
-    \end{verbatim}
+%     \begin{verbatim}
+% - Le sujet de l'extraction d'informatoin et lu RAG est d'actualité 
+% - Présentation du Challenge RAG@EvalLLM
+%     - La tâche
+%         - Identification des documents pertinents pour une question (phrase 
+% parfois complexe ou suite de mots clés) 
+%         - questions fournies au dernier moment
+%         - pas de gold
+%     - Les données
+%         - pdf à traiter sans structure normée du contenu
+%         - majoritairement en français sauf quelques uns en anglais
+%         - peuvent contenir des images
+%     \end{verbatim}
 
     Le sujet de l'extraction d'information et du RAG est d'actualité au sein de la recherche en machine learning à l'international. Son application au français et son évaluation anime les recherches en France. À l'occasion de l'atelier EvalLLM2026 qui portait sur l'évaluation des modèles génératifs et du RAG, ont été organisé deux challenges. L'un d'entre eux portait sur le RAG. La première tâche était une tâche d'extraction d'information et la seconde tâche portait sur l'attribution de sources (à partir d'une question, d'extraits de documents et d'une réponse, associer à chaque fragment de la réponse un document d'où l'information est issue). Ce challenge mettant à disposition une grande quantité de documents en français spécifiques à un domaine (la défense) et un protocole d'évaluation des résultats, je me suis inscrite à la première tâche pour donner un cadre à la construction du modèle et du protocole d'amélioration. 
     
-    La tâche d'extraction d'information demandait de répondre à des requêtes sous la forme d'une ou plusieurs questions complexes ou d'une suite de mots clés sans séparateur à l'aide d'une base de documents et fournir les pages des documents utilisés pour répondre ainsi que leur rang de pertinence. La base de documents contenait en grande partie des PDF contenant parfois des images. Les documents avaient diverses origines, ne suivaient pas structure commune particulière et étaient en majorité en français (quelques documents en anglais ou disponibles dans les deux langues).
-    Le format des entrées et des sorties était fourni à l'avance.Les documents étaient accessibles dès l'inscription mais les questions n'étaient communiquées que durant les trois jours de test (à l'exception des cinq questions présentes dans l'exemple de format des données). Aucun dataset étiqueté n'était fourni.
+    La tâche d'extraction d'information demandait de répondre à des requêtes sous la forme d'une ou plusieurs questions complexes ou d'une suite de mots clés sans séparateur à l'aide d'une base de documents et fournir les pages des documents utilisés pour répondre ainsi que leur rang de pertinence. La base de documents contenait en grande partie des PDF contenant parfois des images. Les documents avaient diverses origines, ne suivaient pas structure commune particulière et étaient en majorité en français (quelques documents étaient en anglais ou disponibles dans les deux langues).
+    Le format des entrées et des sorties était fourni à l'avance. Les documents étaient accessibles dès l'inscription mais les questions n'étaient communiquées que durant les trois jours de test (à l'exception des cinq questions présentes dans l'exemple de format des données). Aucun dataset étiqueté n'était fourni. 
+    
+    Je souhaitais présenter une version améliorée du modèle mE5 à l'aide de l'activation patching afin de mettre enjeux les hypothèses présentées précédemment. Malheureusement, la méthodologie n'étant pas au point, je n'ai pas eu le temps d'aller jusqu'au bout du challenge et de cet objectif. %\alh{dire alors que le stratégie a été de tirer profit de ce dataset pour pouvoir mettre en jeu nos hypothèses et dans un objectif qui ne sera pas atteint de mettre a jour mE5 guidé par le patching. Dire aussi que nous n'avons pas eu le temps de réaliser tout ceci puisque la méthodologie a donné du fil a retordre au vu des résultats obtenus}
 
 \section{Construction d'un dataset adapté}
-    \begin{verbatim}
-À REPRENDRE
-Base de données:        
-- Paires 
-- liste des champs et justification
-Choix pour datasets
-- Dataset avec des paires question-document (questions différentes et 
-différents pdf, taille des documents, répartition positif/négatif)
-- Dataset avec une seule question (construction à partir de 3 pdf) 
-[description du dataset dans les expés et les specs]
-    - motivation (reprendre l'expé présentée par MechIR, faciliter la création)
-    - limites (biais, diversité ~> généralisabilité)
-=> Placer le nom des outils utilisés (PyMuPDF4LLM et langchain.text_splitter.MarkdownSplitter)
+%     \begin{verbatim}
+% À REPRENDRE
+% Base de données:        
+% - Paires 
+% - liste des champs et justification
+% Choix pour datasets
+% - Dataset avec des paires question-document (questions différentes et 
+% différents pdf, taille des documents, répartition positif/négatif)
+% - Dataset avec une seule question (construction à partir de 3 pdf) 
+% [description du dataset dans les expés et les specs]
+%     - motivation (reprendre l'expé présentée par MechIR, faciliter la création)
+%     - limites (biais, diversité ~> généralisabilité)
+% => Placer le nom des outils utilisés (PyMuPDF4LLM et langchain.text_splitter.MarkdownSplitter)
 
----
+% ---
 
-- Le format de dataset visé
-  - tous les dérouler V0, V1 et format V2 (à chaque fois: format
-  ce qui manque, les modifications proposées)
-    \end{verbatim}
+% - Le format de dataset visé
+%   - tous les dérouler V0, V1 et format V2 (à chaque fois: format
+%   ce qui manque, les modifications proposées)
+%     \end{verbatim}
 
-    Les données fournies par le challenge étant brutes, un premier traitement a été effectué. Les PDf ont été converti au format Markdown à l'aide de PyMuPDF4LLM \cite{artifex_software_pymupdf4llm_2026} pour les stocker dans base de donnée. Ce format est lisible pour l'humain et est souvent utilisé en entrée et sortie des grands modèles de langue. Les images n'ont pas été conservées car nous ne nous intéressons pas au traitement de données multi-modales. Ce pourrais être une perspective d'évolution dans le conception du modèle. \md{hors sujet?} Les textes récupérés sont découpés en page et en chunk plus petits pour les pages contenant plus de 500 tokens.
+    Les données fournies par le challenge étant brutes, un premier traitement a été effectué. Les PDFs ont été convertis au format Markdown à l'aide de PyMuPDF4LLM \cite{artifex_software_pymupdf4llm_2026} pour les stocker dans base de donnée. Ce format est lisible pour l'humain et est souvent utilisé en entrée et sortie des grands modèles de langue. Les images n'ont pas été conservées car nous ne nous intéressons pas au traitement de données multi-modales. Ce pourrait être une perspective d'évolution dans le conception du modèle. Les textes récupérés sont découpés en pages et en chunks plus petits pour les pages contenant plus de 500 tokens. Le découpage prend en compte la structure Markdown (séparation entre paragraphes, avant un nouveau titre,...)
 
     La construction de la base de donnée a nécessité plusieurs itérations. Les différentes versions sont toutes au format CSV avec des champs d'identification de la question (identifiant) et de l'extrait (nom du fichier, identifiant, numéro de page, numéro de chunk dans le document), la question et l'extrait du document. Pour la base de donnée du modèle et son utilisation, les questions et les documents sont fournis dans deux fichiers CSV distincts pour toutes les versions. La base est mise sous forme de paires (produit cartésien) pour l'utilisation de MechIR et l'application de l'activation patching.
 
@@ -61,18 +98,25 @@ différents pdf, taille des documents, répartition positif/négatif)
 
     Pour résoudre le problème de l'équilibre, la seconde base de donnée est construite artificiellement à partir des extraits et des questions précédentes. Pour chacune des 26 questions, un extrait pertinent et un extrait non pertinent ont été choisis. La base de donnée obtenue est équilibrée, étiquetée et de taille très raisonnable. Pour autant, la diversité des mots utilisés et des sujets abordés rend difficile la construction d'une perturbation qui impacte la sortie sans dénaturer les documents.
 
-    La troisième base de donnée a été construite à partir d'une seule question. Ainsi, les extraits pertinents partagent un plus grand nombre de mots sur lesquels il est possible de s'appuyer pour construire des perturbations. Pour maintenir l'équilibre, les extraits sont pour moitié non pertinents. Le choix des extraits est fait à partir de trois PDF : un pour les extraits pertinents et deux our les extraits non pertinents. 
+    La troisième base de donnée a été construite à partir d'une seule question. Ainsi, les extraits pertinents partagent un plus grand nombre de mots sur lesquels il est possible de s'appuyer pour construire des perturbations. Pour maintenir l'équilibre, les extraits sont pour moitié non pertinents. Le choix des extraits est fait à partir de trois PDFs : un pour les extraits pertinents et deux pour les extraits non pertinents. 
+
+    Le troisième dataset est la version remaniée des données du challenge RAG@EvalLLM qui est utilisée pour concevoir les propositions méthodologiques du chapitre suivant. C'est sur ces données que les exemples présentés sont appliqués. La question retenue est la suivante :
+    \begin{quote}
+        Quelles sont les trois principales catégories de limitations techniques affectant les systèmes de drones, et comment chacune influence-t-elle l'efficacité opérationnelle de ces vecteurs ?
+    \end{quote}
+
+    Les extraits sont issus de trois PDF portant respectivement sur les limitations matérielles du drone, le code de la défense concernant les matériel de guerre et les fausses informations dans le contexte des Jeux Olympiques et Paralympiques. Le dataset final contient 28 extraits dont 14 extraits pertinents vis a vis de la question, tous issus du premier PDF.
     
 
 \section{Adaptation du modèle RAG4HistoricalNewspapers}
-    \begin{verbatim}
-- Choix de ce modèle : traite des données en FR
-- Suppression de la partie WebSearch (hors sujet)
-- Suppression de la première extraction sur la base des titres 
-(incompatible avec le format des données du challenge)
-- Montée en version des librairies pour la compatibilité avec les outils 
-- Reprise du reranking (mettre au propre la photo du schema sur l'ardoise)
-    \end{verbatim}
+%     \begin{verbatim}
+% - Choix de ce modèle : traite des données en FR
+% - Suppression de la partie WebSearch (hors sujet)
+% - Suppression de la première extraction sur la base des titres 
+% (incompatible avec le format des données du challenge)
+% - Montée en version des librairies pour la compatibilité avec les outils 
+% - Reprise du reranking (mettre au propre la photo du schema sur l'ardoise)
+%     \end{verbatim}
 
     Pour répondre au challenge, nous avions besoin d'une architecture RAG complète fonctionnelle avec un extracteur sur lequel appliquer l'activation patching. Le stage ne portant pas sur la conception d'une architecture, nous avons repris et simplifié l'architecture proposée par \cite{tran_retrieval_2024} pour l'adapter à la première tâche du challenge RAG. Le choix de cette architecture est motivé par la disponibilité du code source et le fait qu'elle est déjà adapté aux documents en français.
 
@@ -93,38 +137,5 @@ différents pdf, taille des documents, répartition positif/négatif)
         \label{fig:ArchiRAG4def}
     \end{figure}
 
-    \md{Est-il pertinent de mentionner le montée en version des librairies dans cette partie ?}
+    %\md{Est-il pertinent de mentionner le montée en version des librairies dans cette partie ?} \alh{je ne crois pas}
 
-    
-\section{Objectifs du stage}
-    \md{Ne serait-ce pas plus pertinent au début du chapitre suivant ?}
-
-%     \color{gray}
-%     \subsection{Localisation de la langue de spécialité dans un modèle}
-%         \begin{verbatim}
-% - Définition de langue de spécialité
-% - Formalisation de l'objectif
-%         \end{verbatim}
-
-%     \subsection{Intégration des travaux dans l'explicabilité post-hoc des modèles d'extraction d'information}
-%         \begin{verbatim}
-% - Cartographie de modèle d'extraction d'information
-% - Analyse des éléments identifiés par le modèle lors du passage d'un document
-%         \end{verbatim}
-%     \color{black}
-
-
-
-
-\paragraph{La langue de spécialité} correspond à l'ensemble du vocabulaire et des tournures spécifiques à un domaine d'expertise \cite{cabre_terminologie_1998}. Si la façon de s'exprimer ne change que de façon limité, certains mots ont parfois un sens différent (exemple: \textit{noeuds} en deep learning) et certaines façons de s'exprimer sont inhabituelles en dehors du domaine (ex: codes de rédaction d'une preuve mathématique). Chaque domaine dispose de sa langue de spécialité qui est incluse dans la langue générale et en intersection avec la langue commune.
-
-\paragraph{Hypothèses} Considérant que l'activation patching permet de localiser les composants et noeuds d'un modèle sensibles à une perturbation, on s'intéresse aux hypothèses suivantes:
-
-\begin{description}
-    \item[H1 : ] Dans les modèles de langue, une langue de spécialité repose sur certains composants du modèle.
-    \item[H2 : ] Ces composants peuvent être cartographiés à l'aide de l'activation patching.
-\end{description}
-
-\paragraph{Objectifs} Ce stage vise à appliquer l'activation patching à la localisation du vocabulaire spécifique de la langue de spécialité (vocabulaire de spécialité) du domaine de la défense. L'objectif est de proposer une méthodologie, un cadre de mise en pratique de l'activation patching pour la localisation du vocabulaire de spécialité à l'aide de l'outil MechIR ainsi qu'une application au cas de la langue de spécialité de la défense sur le modèle mE5-small.
-
-\paragraph{Intégration dans l'explicabilité post-hoc des modèles d'extraction d'infomation et des systèmes RAG} La possibilité de localiser le vocabulaire de spécialité ouvre la voie à la localisation de concepts et/ou domaines precis dans un modèle de langue. Il devient alors possible de cartographier ces modèles. Ces cartographies pourraient à terme être utilisées pour expliquer le raisonnement, les éléments pris en compte dans l'entrée et dans les documents extraits au sein d'un système RAG ou RA-LLM. \md{Est-il pertinent d'évoquer le fond du projet de IJ-CVL?}

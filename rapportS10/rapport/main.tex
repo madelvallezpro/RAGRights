@@ -12,7 +12,7 @@
 \usepackage{multicol} % pour ecrire sur plusieurs colones localement
 \usepackage{xcolor} %metre du texte en couleur
 \usepackage{tcolorbox} % boite encart
-\usepackage{hyperref} %objets cliquables
+\usepackage{subcaption} % figures et sous-figures
 
 % ecrire des maths
 \usepackage{amsmath, amsfonts, amssymb}
@@ -23,6 +23,7 @@
 
 
 
+\usepackage{hyperref} %objets cliquables
 %%%%%%% COMMANDES   
 \newcommand{\N}[1]{\mathbb{N}^{#1}}
 \newcommand{\append}{\texttt{append }}
@@ -41,9 +42,41 @@
 \date{\today}
 
 \begin{document}
-    \maketitle
+    \thispagestyle{empty}
+    \setcounter{page}{0}
+    \begin{center} 
+        \includegraphics[scale=0.4]{images/Logo Minerve_RVB.jpg}
+        \hspace*{\stretch{1}}
+        \includegraphics[scale=0.2]{images/France_2030_Logo_rouge_bleu_transparent.png}
+        \hspace*{\stretch{1}}
+        \includegraphics[scale=0.5]{images/LIFO.png} 
+    \end{center}
+    
+    \vfill
+    \begin{center}
+        \rule{0.5\textwidth}{1pt}\\
+        \vspace{0.5 \baselineskip}
+        \huge \textbf{Rapport de Stage recherche Semestre 10 \newline M2 GPEx Minerve} \\
+        \Large \textbf{Interprétabilité Mécaniste pour l'Extraction d'Information dans les systèmes de RAG}\\
+        \normalsize
+        \rule{0.5\textwidth}{1pt}\\
+        par \large Marine DELVALLEZ \normalsize \\
+    
+        \vspace{2cm}
 
-    \chapter*{Remerciements}
+        \begin{tabular}{llll}
+            \emph{Jury} : & Thi-Bich-Hanh DAO &\emph{Tutrice de stage} : & Anaïs HALFTERMEYER\\
+                          & Anaïs HALFTERMEYER &                        & 
+        \end{tabular}
+
+        \vfill
+        2 Février - 28 Août\\
+        Année universitaire 2025-2026
+
+    \end{center}
+
+
+    %\chapter*{Remerciements}
 
     \tableofcontents
 
@@ -54,7 +87,7 @@
     \input{sota/sota.tex}
 
 
-    \chapter{Travail préalable et préparation des expériences}
+    \chapter{Objectifs du stage et préliminaires}
     \input{pre-expe/pre-expe.tex}
 
     \chapter{Contribution méthodologique}
@@ -71,7 +104,9 @@
     \bibliographystyle{apalike}
 
     \appendix
-    \chapter{Résultats bruts d'expériences}
-    \input{res-expe/res-expe.tex}
+    % \chapter{Résultats bruts d'expériences}
+    % \input{res-expe/res-expe.tex}
+
+    \input{annexes/annexes.tex}
 
 \end{document}

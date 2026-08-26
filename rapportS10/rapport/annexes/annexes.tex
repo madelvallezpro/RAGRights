@@ -1,0 +1,72 @@
+\chapter{Lieu du stage, outils et ressources utilisés}
+
+\section{Laboratoire d'Informatique Fondamentale d'Orléans}
+    Le stage présenté dans ce rapport s'est déroulé au sein du Laboratoire d'Informatique Fondamentale d'Orléans (LIFO), unité de recherche en informatique à l'Université d'Orléans et à l'INSA Centre Val de Loire. Le laboratoire rassemble des enseignants-chercheurs, chercheurs, doctorants et personnels d'appui autour de travaux couvrant un large spectre de l'informatique fondamentale.
+
+    Les activités de recherche du LIFO sont organisées en cinq équipes, chacune développant une expertise dans un domaine particulier de l'informatique fondamentale ou appliquée. Cette structuration permet de couvrir un large éventail de thématiques de recherche, allant des fondements théoriques de l'informatique jusqu'au développement de méthodes et d'outils répondant à des problématiques concrètes. Les équipes du laboratoire sont les suivantes :
+
+    \begin{itemize}
+        \item L'équipe \textbf{GAMoC} (Graphes, Algorithmes et Modèles de Calcul) s'intéresse à l'algorithmique dans toutes sortes de structures discrètes (graphes, automates, pavages,...). Ces travaux se divisent en deux thèmes : l'étude des problèmes NP-difficiles et l'étude des nouveaux modèles de calcul.
+        \item L'équipe \textbf{LMV} (Langages, Modélisation et Vérification) porte sur la fiabilité et la sécurité des logiciels. Ses travaux portent notamment sur la conception d'outils garantissant la présence de propriété critiques pour les logiciels.
+        \item L'équipe \textbf{PaMDA} s'inscrit dans le domaine des Sciences des Données. Ses travaux se divisent en deux axes. L'axe parallélisme explore les modèle et patterns de programmation spécifiques à certaines architectures. L'axe Base de Données porte sur la structuration et l'optimisation de l'interrogation des données.
+        \item L'équipe \textbf{SDS} (Sécurité des Données et des Systèmes) s'inscrit dans le domaine de la sécurité informatique au sens large. Son axe sécurité des données  porte sur la confidentialité et l'anonymat et l'axe sécurité des systèmes porte sur la conception et la preuve de protocoles de sécurisation.
+        \item L'équipe \textbf{CA} (Contraintes et Apprentissage) est structurée autour de trois axes. La modélisation et la programmation par contraintes, l'apprentissage automatique sous toutes ses formes (apprentissage supervisé, profond, hybride, par renforcement,...) et le traitement automatique des langues. Ces trois axes intègrent un thème transverse : l'intégration de connaissances et l'interprétabilité des modèles.
+    \end{itemize}
+
+    Dans le cadre de ce stage, j'ai intégré l'équipe Contraintes et Apprentissage sous la supervision de Mme Halftermeyer. Les travaux réalisés s'inscrivent dans l'axe de recherche de l'équipe consacré au traitement automatique des langues naturelles (TALN) et intègrent l'axe transversal à travers mes propositions méthodologiques d'explicabilité.
+
+\section{Outils utilisés durant le stage}
+
+%     \md{Annexe}
+%     \begin{verbatim}
+% - Développement de l'architecture et réalisation des expérimentations en python dans 3 formats 
+% (script, implémentation d'un CLI, notebook)
+% - Principales librairies python utilisées : PyTorch, TransformerLens, HuggingFace, PyMuPDF4LLM,...
+% - Utilisation de plusieurs git pour assurer le suivi des versions des outils développé lors du stage
+% - Pour l'execution de tâches demandantes en charge de calcul (Génération de la base de représentation 
+% des données, execution des différentes architectures explorées et/ou implémentées) : utilisation des 
+% grappes de calcul accessibles aux chercheurs du LIFO CaSciModOT et Mirev
+% - utilisation d'outils à base d'IA très modérée et pour les tâches de l'ordre de reformulation
+% (ChatGPT), traduction (DeepL), exploration de la littérature (LitMaps, Perplexity), rédaction 
+% de petites fonctions et outils python (ChatGPT)
+%     \end{verbatim}
+
+    Les travaux réalisés au cours de ce stage ont mobilisé différents outils logiciels et ressources de calcul dédiés au développement, à l'expérimentation et à l'évaluation de méthodes d'explicabilité pour les modèles de traitement automatique des langues.
+
+    Les développements réalisés durant ce stage ont été principalement effectués en \textbf{Python}, sous trois formats complémentaires : des \textbf{notebooks Jupyter} pour le prototypage et l'exploration des données, des \textbf{scripts} pour l'exécution des expérimentations, et une \textbf{interface en ligne de commande (CLI)} afin de structurer les outils développés et de faciliter leur réutilisation.
+    
+    Les principales bibliothèques utilisées sont \textbf{PyTorch} \cite{paszke_pytorch_2019} pour le développement et l'exécution des modèles, \textbf{Hugging Face} \cite{wolf_huggingfaces_2020} pour l'accès aux modèles de traitement automatique des langues, \textbf{TransformerLens} \cite{nanda_transformerlens_2022} pour l'analyse interne des architectures Transformer, ainsi que des bibliothèques plus spécialisées telles que \textbf{PyMuPDF4LLM} \cite{artifex_software_pymupdf4llm_2026} pour l'extraction de contenu à partir de documents PDF.
+    
+    Le suivi du développement a été assuré à l'aide de \textbf{Git} pour faciliter la gestion des versions et le suivi du bon déroulé du stage.
+    
+    Les expérimentations les plus coûteuses en calcul, telles que la génération des représentations des données ou l'évaluation des différentes architectures étudiées, ont été exécutées sur les grappes de calcul Centre de Calcul Scientifique en région Centre-Val de Loire (\textbf{CaSciModOT}) et \textbf{Mirev}, mises à disposition des chercheurs du LIFO.
+    
+    Enfin, plusieurs outils d'intelligence artificielle générative ont été utilisés de manière ponctuelle pour des tâches d'assistance : \textbf{ChatGPT} pour la reformulation et le développement de fonctions Python simples, \textbf{DeepL} pour la traduction d'extraits de documents scientifiques, et \textbf{Litmaps} ainsi que \textbf{Perplexity} pour la veille bibliographique et l'exploration de la littérature. Ces outils n'ont pas été utilisés pour la conception des contributions scientifiques présentées dans ce mémoire.
+
+
+    \section{Financement}
+
+    Ce travail a bénéficié d'une aide de l’État gérée par l'Agence Nationale de la Recherche au titre de France 2030 portant la référence "Minerve" ANR-22-EXES-0010.
+
+
+\chapter{Dépôt Git des outils développés durant le stage}
+
+Les outils et scripts développés dans le cadre de ce stage sont disponibles sur le dépôt GitLab suivant :
+
+\begin{quote}
+GitLab : \url{https://gogit.univ-orleans.fr/lifo/ah/ragrights}
+\end{quote}
+
+Ce dépôt contient notamment :
+
+\begin{itemize}
+    \item des traces d'exploration bibliographique;
+    \item les notebooks d'exploration ;
+    \item les scripts d'expérimentation ;
+    \item l'interface en ligne de commande développée au cours du stage ;
+    \item la documentation d'utilisation;
+    \item les différentes supports de communication et rapports produits dans ce cadre.
+\end{itemize}
+
+
+
