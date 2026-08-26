@@ -2,12 +2,10 @@
 
 import json
 import numpy as np
-import sys
 import seaborn as sns
 import matplotlib.pyplot as plt
 import argparse
 from pathlib import Path
-from itertools import combinations
 
 
 def compter_noeuds_sensibles(json_path, pert_type):
@@ -32,33 +30,33 @@ def compter_noeuds_sensibles(json_path, pert_type):
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    premiere_perturbation = next(iter(data.values()))
-    shape = np.array(premiere_perturbation["patching_mean"]).shape
+    premiere_perturbation = data[0]
+    shape = np.array(premiere_perturbation["results"]["patching_mean"]).shape
 
     compteurs = np.zeros(shape, dtype=int)
     compteur_pert =  {}
 
-    for perturbation, valeurs in data.items():
+    for perturbation in data:
 
-        if pert_type == "all" or pert_type == perturbation_type(perturbation):
-            mean = np.array(valeurs["patching_mean"])
-            std = np.array(valeurs["patching_std"])
+        if pert_type == "all" or pert_type == perturbation["type"]:
+            mean = np.array(perturbation["results"]["patching_mean"])
+            std = np.array(perturbation["results"]["patching_std"])
             resc_mean = (np.sign(mean) / np.absolute(mean).max()) * np.absolute(mean)
             resc_std = (np.sign(std) / np.absolute(std).max()) * np.absolute(std)
 
-            compteur_pert[perturbation] ={}
-            compteur_pert[perturbation]["carte"] = ((np.abs(mean) > 0.1) & (np.abs(resc_mean) > 0.5)) | ((np.abs(std) > 0.1) & (np.abs(resc_std) > 0.5))
+            compteur_pert[perturbation["pert"]["name"]] ={}
+            compteur_pert[perturbation["pert"]["name"]]["carte"] = ((np.abs(mean) > 0.1) & (np.abs(resc_mean) > 0.5)) | ((np.abs(std) > 0.1) & (np.abs(resc_std) > 0.5))
 
-            compteur_pert[perturbation]["noeuds_sensibles"] = []
+            compteur_pert[perturbation["pert"]["name"]]["noeuds_sensibles"] = []
             for i in range(mean.shape[0]):
                 for j in range(mean.shape[1]):
-                    if compteur_pert[perturbation]["carte"][i,j]:
-                        compteur_pert[perturbation]["noeuds_sensibles"].append((i,j,mean[i,j], std[i,j], resc_mean[i,j], resc_std[i,j]))
+                    if compteur_pert[perturbation["pert"]["name"]]["carte"][i,j]:
+                        compteur_pert[perturbation["pert"]["name"]]["noeuds_sensibles"].append((i,j,mean[i,j], std[i,j], resc_mean[i,j], resc_std[i,j]))
 
 
-            compteur_pert[perturbation]["total"] = np.sum(compteur_pert[perturbation]["carte"])
+            compteur_pert[perturbation["pert"]["name"]]["total"] = np.sum(compteur_pert[perturbation["pert"]["name"]]["carte"])
 
-            compteurs += compteur_pert[perturbation]["carte"]
+            compteurs += compteur_pert[perturbation["pert"]["name"]]["carte"]
 
     return compteurs, compteur_pert
 
